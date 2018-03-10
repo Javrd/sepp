@@ -85,6 +85,8 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'mvp.Account'
+
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 

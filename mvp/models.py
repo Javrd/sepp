@@ -9,7 +9,7 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500, null=True)
     logo = models.URLField(null=True)
-    sentMessages = models.ManyToManyField('self', symmetrical=False, through='Message', related_name="receivedMessages")
+    receivers = models.ManyToManyField('self', symmetrical=False, through='Message', related_name="senders")
     account = models.OneToOneField(Account, on_delete=models.CASCADE)
 
 
@@ -47,8 +47,8 @@ class Geolocation(models.Model):
 class Message(models.Model):
     timeStamp = models.DateTimeField()
     text = models.CharField(max_length=500)
-    sender = models.ForeignKey(User, related_name='sentMessage', on_delete=models.CASCADE)
-    receiver = models.ForeignKey(User, related_name='receivedMessage', on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, related_name='sentMessages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='receivedMessages', on_delete=models.CASCADE)
 
 
 # Offers from venues

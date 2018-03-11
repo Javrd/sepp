@@ -1,0 +1,8 @@
+##Venue:name,email,description,logo,geolocation,address,capactity
+Venue1,Venue1@email.com,this is a description,urlexample,11.0/5.0,address1,5,201
+Venue2,Venue2@email.com,this is a description,urlexample,55.0/5.0,address2,5,202
+Venue3,Venue3@email.com,this is a description,urlexample,56.0/5.0,address3,5,203
+Venue4,Venue4@email.com,this is a description,urlexample,65.0/5.0,address4,5,204
+Venue5,Venue5@email.com,this is a description,urlexample,82.0/5.0,address5,5,205
+Venue7,Venue7@email.com,this is a description,urlexample,55.0/5.0,address6,5,206
+Venue6,Venue6@email.com,this is a description,urlexample,25.0/5.0,address6,5,207

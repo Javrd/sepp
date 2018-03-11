@@ -1,42 +1,41 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
+# Users
 class Account(AbstractUser):
     pass
 
 class User(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100, unique=True)
-    description = models.CharField(max_length=500)
-    logo = models.URLField()
-    sentMessage = models.ManyToManyField('self', symmetrical=False, through='Message')
+    description = models.CharField(max_length=500, null=True)
+    logo = models.URLField(null=True)
+    sentMessages = models.ManyToManyField('self', symmetrical=False, through='Message', related_name="receivedMessages")
     account = models.OneToOneField(Account, on_delete=models.CASCADE)
 
 
 class Artist(User):
-    artistNumber = models.IntegerField()
+    artistNumber = models.IntegerField(null=True)
 
 
 class Venue(User):
-    geolocation = models.OneToOneField("Geolocation", on_delete=models.CASCADE)
-    address = models.CharField(max_length=100)
-    capactity = models.IntegerField()
+    geolocation = models.OneToOneField("Geolocation", on_delete=models.CASCADE, null=True)
+    address = models.CharField(max_length=100, null=True)
+    capacity = models.IntegerField(null=True)
 
 
 class Photo(models.Model):
     url = models.URLField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="photos")
 
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
-    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name="tags")
 
 
 class Media(models.Model):
     url = models.URLField()
-    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name="media")
 
 
 class Geolocation(models.Model):
@@ -44,24 +43,31 @@ class Geolocation(models.Model):
     longitude = models.FloatField()
 
 
+# Message system
 class Message(models.Model):
     timeStamp = models.DateTimeField()
     text = models.CharField(max_length=500)
-    from_user = models.ForeignKey(User, related_name='from_user', on_delete=models.CASCADE)
-    to_user = models.ForeignKey(User, related_name='to_user', on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, related_name='sentMessage', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='receivedMessage', on_delete=models.CASCADE)
 
 
+# Offers from venues
 class Offer(models.Model):
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=500)
-    offeredAmount = models.FloatField()
+    description = models.CharField(max_length=500, null=True)
+    offeredAmount = models.FloatField(null=True)
     date = models.DateTimeField()
 
 
+# Announcements
 class Performance(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
     date = models.DateTimeField()
-    paymentAmount = models.FloatField()
-    paymentDate = models.DateTimeField()
     public = models.BooleanField()
+
+class Payment(models.Model):
+    amount = models.FloatField()
+    date = models.DateTimeField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    performance = models.OneToOneField(Performance, on_delete=models.CASCADE)

@@ -19,5 +19,6 @@ from mvp.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('offerList/', offerList, name='offerList')
+    path('offerList/', offerList, name='offerList'),
+    path('offerForm/', offerForm, name='offerForm')
 ]

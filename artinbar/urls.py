@@ -20,5 +20,6 @@ from mvp.views import *
 
 urlpatterns = [
     url('admin/', admin.site.urls),
-    url('newVenue/', nuevoVenue)
+    url('newVenue/', nuevoVenue),
+    url('newArtist/', newArtist),
 ]

@@ -1,10 +1,10 @@
 """Import models from mvp/data/xxx.csv."""
+import csv
+import datetime
 import os
 import django
 os.environ['DJANGO_SETTINGS_MODULE'] = 'artinbar.settings'
 django.setup()
-import csv
-import datetime
 from mvp.models import Artist
 from mvp.models import Venue
 from mvp.models import User
@@ -12,6 +12,7 @@ from mvp.models import Account
 from mvp.models import Geolocation
 from mvp.models import Message
 from mvp.models import Photo
+from mvp.models import Tag
 
 
 def importArtists():
@@ -99,13 +100,31 @@ def importPhotos():
             new.save()
 
 
+def importTags():
+    """Import tags from tags.csv to database."""
+    with open('mvp/data/tags.csv') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        print(spamreader.__next__())
+        for line in spamreader:
+            name = line[0]
+            artisId = Artist.objects.get(pk=line[1])
+            tagId = line[2]
+            print(line)
+            new = Tag.objects.create(name=name, artist=artisId, id=tagId)
+
+            new.save()
+
+
+"""Delete all data from database"""
 Account.objects.all().delete()
 Artist.objects.all().delete()
 Venue.objects.all().delete()
 Message.objects.all().delete()
 Photo.objects.all().delete()
-
+Tag.objects.all().delete()
+"""Import new data"""
 importArtists()
 importVenues()
 importMessages()
 importPhotos()
+importTags()

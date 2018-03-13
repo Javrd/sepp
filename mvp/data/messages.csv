@@ -1,4 +1,4 @@
-##Message:Date,text,senderId,receiverID,MessageId
+##Message:date,text,senderId,receiverId,messageId
 2018/2/2,Lorem ipsum dolor sit amet,101,201,301
 2018/2/2,Lorem ipsum dolor sit amet,201,101,302
 2018/2/2,Lorem ipsum dolor sit amet,201,101,303

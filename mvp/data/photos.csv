@@ -1,4 +1,4 @@
-##photos:url,userId,id
+##photos:url,userId,photoId
 photoexample1,101,401
 photoexample1,101,402
 photoexample1,101,403

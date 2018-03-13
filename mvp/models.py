@@ -75,5 +75,3 @@ class Payment(models.Model):
     date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     performance = models.OneToOneField(Performance, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="payments")
-    performance = models.OneToOneField(Performance, on_delete=models.CASCADE,primary_key=True,related_name="performance")

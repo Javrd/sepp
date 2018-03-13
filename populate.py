@@ -13,6 +13,10 @@ from mvp.models import Geolocation
 from mvp.models import Message
 from mvp.models import Photo
 from mvp.models import Tag
+from mvp.models import Media
+from mvp.models import Offer
+from mvp.models import Performance
+from mvp.models import Payment
 
 
 def importArtists():
@@ -71,7 +75,7 @@ def importMessages():
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
         for line in spamreader:
-            timeStamp = datetime.datetime.now()
+            timeStamp = datetime.datetime.strptime(line[0], '%Y-%m-%d %I:%M%p')
             text = line[1]
             sender = User.objects.get(pk=line[2])
             receiver = User.objects.get(pk=line[3])
@@ -115,6 +119,84 @@ def importTags():
             new.save()
 
 
+def importMedias():
+    """Import Medias from medias.csv to database."""
+    with open('mvp/data/medias.csv') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        print(spamreader.__next__())
+        for line in spamreader:
+            url = line[0]
+            artisId = Artist.objects.get(pk=line[1])
+            mediaId = line[2]
+            print(line)
+            new = Media.objects.create(url=url, artist=artisId, id=mediaId)
+
+            new.save()
+
+
+def importOffers():
+    """Import Offers from offers.csv to database."""
+    with open('mvp/data/offers.csv') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        print(spamreader.__next__())
+        for line in spamreader:
+            name = line[0]
+            description = line[1]
+            offeredAmount = line[2]
+            date = datetime.datetime.strptime(line[3], '%Y-%m-%d')
+            venue = Venue.objects.get(pk=line[4])
+            offerId = line[5]
+            print(line)
+            new = Offer.objects.create(name=name, description=description,
+                                       offeredAmount=offeredAmount, date=date,
+                                       venue=venue, id=offerId)
+
+            new.save()
+
+
+def importPerfomances():
+    """Import performances from performances.csv to database."""
+    with open('mvp/data/performances.csv') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        print(spamreader.__next__())
+        for line in spamreader:
+            name = line[0]
+            description = line[1]
+            date = datetime.datetime.strptime(line[2], '%Y-%m-%d')
+            public = line[3]
+            artist = Artist.objects.get(pk=line[4])
+            venue = Venue.objects.get(pk=line[5])
+            performanceId = line[6]
+            print(line)
+            new = Performance.objects.create(name=name,
+                                             description=description,
+                                             date=date, public=public,
+                                             artist=artist, venue=venue,
+                                             id=performanceId)
+
+            new.save()
+
+
+def importPayments():
+    """Import Payment from payment.csv to database."""
+    with open('mvp/data/payments.csv') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        print(spamreader.__next__())
+        for line in spamreader:
+            amount = line[0]
+            date = datetime.datetime.strptime(line[1], '%Y-%m-%d')
+            user = User.objects.get(pk=line[2])
+            performance = Performance.objects.get(pk=line[3])
+            paymentId = line[4]
+            print(line)
+            new = Payment.objects.create(amount=amount,
+                                         date=date, user=user,
+                                         performance=performance,
+                                         id=paymentId)
+
+            new.save()
+
+
 """Delete all data from database"""
 Account.objects.all().delete()
 Artist.objects.all().delete()
@@ -122,9 +204,19 @@ Venue.objects.all().delete()
 Message.objects.all().delete()
 Photo.objects.all().delete()
 Tag.objects.all().delete()
+Media.objects.all().delete()
+Offer.objects.all().delete()
+Performance.objects.all().delete()
+Payment.objects.all().delete()
+
+
 """Import new data"""
 importArtists()
 importVenues()
 importMessages()
 importPhotos()
 importTags()
+importMedias()
+importOffers()
+importPerfomances()
+importPayments()

@@ -1,0 +1,9 @@
+{% if offer_list %}
+    <ul>
+    {% for offer in offer_list %}
+        <li>{{ offer.name }}, {{ offer.description }}, {{ offer.offeredAmount }}, {{ offer.date }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay listas disponibles.</p>
+{% endif %}

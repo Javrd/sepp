@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from mvp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.indexRedir, name='index'),
+    path('artinbar', views.index, name='index'),
 ]

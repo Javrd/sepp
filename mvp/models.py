@@ -57,6 +57,7 @@ class Offer(models.Model):
     description = models.CharField(max_length=500, null=True)
     offeredAmount = models.FloatField(null=True)
     date = models.DateTimeField()
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name="offers")
 
 
 # Announcements
@@ -65,9 +66,14 @@ class Performance(models.Model):
     description = models.CharField(max_length=500)
     date = models.DateTimeField()
     public = models.BooleanField()
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name="performances")
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name="performances")
+
 
 class Payment(models.Model):
     amount = models.FloatField()
     date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     performance = models.OneToOneField(Performance, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="payments")
+    performance = models.OneToOneField(Performance, on_delete=models.CASCADE,primary_key=True,related_name="performance")

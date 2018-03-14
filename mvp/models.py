@@ -1,16 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Users
-class Account(AbstractUser):
-    pass
 
-class User(models.Model):
+class User(AbstractUser):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500, null=True)
     logo = models.URLField(null=True)
     receivers = models.ManyToManyField('self', symmetrical=False, through='Message', related_name="senders")
-    account = models.OneToOneField(Account, on_delete=models.CASCADE)
+    # account = models.OneToOneField(Account, on_delete=models.CASCADE)
 
 
 class Artist(User):

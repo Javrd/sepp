@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import *
-from .models import Venue, Artist
+from django.forms import ModelForm
+from .models import Venue, Artist, Geolocation
 from django import forms
 import getpass
 
@@ -7,8 +8,13 @@ import getpass
 class VenueForm(UserCreationForm):
     class Meta:
         model = Venue
-        fields = ['geolocation', 'address', 'capacity']
-        # fields = []
+        fields = ['name', 'email', 'username', 'logo', 'description', 'address', 'capacity']
+
+class GeolocationForm(ModelForm):
+
+    class Meta:
+        model = Geolocation
+        fields = ['latitude', 'longitude']
 
 class ArtistForm(forms.Form):
     name = forms.CharField(max_length=30, help_text='Required.')

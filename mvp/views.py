@@ -8,13 +8,18 @@ from mvp.models import Artist, Account
 
 def nuevoVenue(request):
     if request.method=='POST':
-        formulario = VenueForm(request.POST)
-        if formulario.is_valid():
-            formulario.save()
+        formulario = VenueForm(request.POST, prefix='Ven')
+        subformulario = GeolocationForm(request.POST, prefix='Geo')
+        if formulario.is_valid() and subformulario.is_valid():
+            newVenue = formulario.save()
+            newGeo = subformulario.save()
+            newVenue.geolocation = newGeo
+            newVenue.save()
             return HttpResponseRedirect(reverse('principal.views.inicio'))
     else:
-        formulario = VenueForm(request.POST)
-    context = {'formulario':formulario}
+        formulario = VenueForm(request.POST, prefix='Ven')
+        subformulario = GeolocationForm(request.POST, prefix='Geo')
+    context = {'formulario':formulario, 'subformulario':subformulario}
     return render(request, 'venueForm.html', context)
 
 def artistForm(request):

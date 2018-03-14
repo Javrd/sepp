@@ -20,7 +20,7 @@ from mvp.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('offerList/', offerList, name='offerList'),
-    path('', views.indexRedir, name='index'),
-    path('artinbar', views.index, name='index'),
+    path('', indexRedir, name='index'),
+    path('artinbar', index, name='index'),
     path('offerForm/', offerForm, name='offerForm')
 ]

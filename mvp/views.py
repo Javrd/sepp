@@ -4,7 +4,17 @@ from django.shortcuts import render, redirect
 from .forms import *
 from .forms import ArtistForm
 from mvp.models import Artist, Account
+from django.template import loader
 
+
+
+def indexRedir(request):
+    return redirect("/artinbar")
+
+
+def index(request):
+    template = loader.get_template('index.html')
+    return HttpResponse(template.render({}, request))
 
 def nuevoVenue(request):
     if request.method=='POST':

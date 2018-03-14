@@ -3,26 +3,53 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 from .forms import *
 from .forms import ArtistForm
-from mvp.models import Artist, Account
+from mvp.models import Artist
+from django.template import loader
 
+def indexRedir(request):
+    return redirect("/artinbar")
+
+
+def index(request):
+    template = loader.get_template('index.html')
+    return HttpResponse(template.render({}, request))
 
 def nuevoVenue(request):
     if request.method=='POST':
-        formulario = VenueForm(request.POST)
-        if formulario.is_valid():
-            formulario.save()
+        formulario = VenueForm(request.POST, prefix='Ven')
+        subformulario = GeolocationForm(request.POST, prefix='Geo')
+        if formulario.is_valid() and subformulario.is_valid():
+            newVenue = formulario.save()
+            newGeo = subformulario.save()
+            newVenue.geolocation = newGeo
+            newVenue.save()
             return HttpResponseRedirect(reverse('principal.views.inicio'))
     else:
-        formulario = VenueForm(request.POST)
-    context = {'formulario':formulario}
+        formulario = VenueForm(request.POST, prefix='Ven')
+        subformulario = GeolocationForm(request.POST, prefix='Geo')
+    context = {'formulario':formulario, 'subformulario':subformulario}
     return render(request, 'venueForm.html', context)
+'''
+def artistForm(request):
+    if request.method=='POST':
+        formulario = ArtistForm(request.POST, prefix='Ven')
+        if formulario.is_valid():
+            newArtist = Artist()
+            newArtist = formulario.save()
+            newArtist.save()
+            return HttpResponseRedirect(reverse('principal.views.inicio'))
+    else:
+        formulario = ArtistForm(request.POST, prefix='Ven')
+    context = {'formulario':formulario,}
+    return render(request, 'artistForm.html', context)
+'''
 
 def artistForm(request):
     if request.method == 'POST':
-        form = ArtistForm(request.POST or None)
-        if form.is_valid():
+        formulario = ArtistForm(request.POST or None)
+        if formulario.is_valid():
 
-            form_data = form.cleaned_data
+            form_data = formulario.cleaned_data
             name = form_data.get("name")
             description = form_data.get("description")
             email = form_data.get("email")
@@ -30,15 +57,14 @@ def artistForm(request):
             password = form_data.get("password")
             logo = form_data.get("logo")
             artistNumber = form_data.get("artistNumber")
-            account = Account.objects.create(username=username,email=email,password=password)
-            artist = Artist.objects.create(name=name, description=description, logo=logo, account=account, artistNumber=artistNumber)
+            artist = Artist.objects.create_user(name=name, description=description, logo=logo, username=username,email=email,password=password, artistNumber=artistNumber)
 
             return HttpResponseRedirect('/index/')
 
     else:
-        form = ArtistForm()
+        formulario = ArtistForm()
 
 
-    context =  {'form':form,}
+    context =  {'formulario':formulario}
     return render(request, 'artistForm.html', context)
 

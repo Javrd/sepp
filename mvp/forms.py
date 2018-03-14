@@ -1,15 +1,29 @@
 from django.contrib.auth.forms import *
-from .models import Venue, Artist
+from django.forms import ModelForm
+from .models import Venue, Artist, Geolocation
 from django import forms
-import getpass
 
 
 class VenueForm(UserCreationForm):
     class Meta:
         model = Venue
-        fields = ['geolocation', 'address', 'capacity']
+        fields = ['name', 'email', 'username', 'logo', 'description', 'address', 'capacity']
         # fields = []
 
+class GeolocationForm(ModelForm):
+
+    class Meta:
+        model = Geolocation
+        fields = ['latitude', 'longitude']
+
+'''
+class ArtistForm(UserCreationForm):
+    class Meta:
+        model = Artist
+        fields = ['name', 'email', 'username', 'logo', 'description', 'artistNumber']
+
+
+'''
 class ArtistForm(forms.Form):
     name = forms.CharField(max_length=30, help_text='Required.')
     username = forms.CharField(max_length=30, help_text='Required.')

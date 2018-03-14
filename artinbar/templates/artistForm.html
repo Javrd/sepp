@@ -1,11 +1,9 @@
-<title>Artista</title>
-{% block titulo %}Nuevo artista{% endblock %}
-{% block encabezado %}
-    <h1>Registra un nuevo artista</h1>
-{% endblock %}
-{% block contenido %}
-    <form id='form' method='post' action=''>{% csrf_token %}
-        <table>{{ form }}</table>
-        <p><input type='submit' value='Sing up'/></p>
-    </form>
+
+{% block content %}
+  <h2>Soy un artista</h2>
+  <form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Registrar"/>
+  </form>
 {% endblock %}

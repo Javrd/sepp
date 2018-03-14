@@ -29,8 +29,9 @@ def artistForm(request):
             username = form_data.get("username")
             password = form_data.get("password")
             logo = form_data.get("logo")
+            artistNumber = form_data.get("artistNumber")
             account = Account.objects.create(username=username,email=email,password=password)
-            artist = Artist.objects.create(name=name, description=description, logo=logo, account=account)
+            artist = Artist.objects.create(name=name, description=description, logo=logo, account=account, artistNumber=artistNumber)
 
             return HttpResponseRedirect('/index/')
 

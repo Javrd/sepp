@@ -17,6 +17,7 @@ class ArtistForm(forms.Form):
     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
     description = forms.CharField(max_length=500,required=False)
     logo = forms.URLField(required=False)
+    artistNumber = forms.IntegerField(required=False)
     class Meta:
         model = Artist
         fields = ['name',  'username', 'password', 'email', 'logo', 'artistNumber']

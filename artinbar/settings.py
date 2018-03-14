@@ -56,7 +56,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'artinbar/templates'),
+            os.path.join(BASE_DIR, 'artinbar/../mvp/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

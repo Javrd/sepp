@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import *
 from .models import Venue, Artist
 from django import forms
+import getpass
 
 
 class VenueForm(UserCreationForm):

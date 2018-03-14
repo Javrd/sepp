@@ -1,4 +1,4 @@
-##Venue:name,email,description,logo,geolocation,address,capactity,venuesId
+##Venue:name,email,description,logo,geolocation,address,capactity
 Venue1,Venue1@email.com,this is a description,urlexample,11.0/5.0,address1,5,201
 Venue2,Venue2@email.com,this is a description,urlexample,55.0/5.0,address2,5,202
 Venue3,Venue3@email.com,this is a description,urlexample,56.0/5.0,address3,5,203

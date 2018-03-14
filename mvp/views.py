@@ -14,10 +14,6 @@ def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render({}, request))
 
-def index(request):
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render({}, request))
-
 def nuevoVenue(request):
     if request.method=='POST':
         formulario = VenueForm(request.POST, prefix='Ven')
@@ -33,6 +29,20 @@ def nuevoVenue(request):
         subformulario = GeolocationForm(request.POST, prefix='Geo')
     context = {'formulario':formulario, 'subformulario':subformulario}
     return render(request, 'venueForm.html', context)
+'''
+def artistForm(request):
+    if request.method=='POST':
+        formulario = ArtistForm(request.POST, prefix='Ven')
+        if formulario.is_valid():
+            newArtist = Artist()
+            newArtist = formulario.save()
+            newArtist.save()
+            return HttpResponseRedirect(reverse('principal.views.inicio'))
+    else:
+        formulario = ArtistForm(request.POST, prefix='Ven')
+    context = {'formulario':formulario,}
+    return render(request, 'artistForm.html', context)
+'''
 
 def artistForm(request):
     if request.method == 'POST':

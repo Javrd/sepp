@@ -1,4 +1,4 @@
-##artist:name,email,description,logo,artistId
+##artist: name, email, descpcion,logo,artistNumber
 artirst1,artist1@email.com,this is a description,urlexample,1,101
 artirst2,artist2@email.com,this is a description,urlexample,6,102
 artirst3,artist3@email.com,this is a description,urlexample,6,103

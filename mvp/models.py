@@ -1,11 +1,17 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+# Users
+#class Account(AbstractUser):
+#    pass
+
 class User(AbstractUser):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500, null=True)
     logo = models.URLField(null=True)
     receivers = models.ManyToManyField('self', symmetrical=False, through='Message', related_name="senders")
+
+    # account = models.OneToOneField(Account, on_delete=models.CASCADE)
 
 
 class Artist(User):
@@ -52,7 +58,6 @@ class Offer(models.Model):
     description = models.CharField(max_length=500, null=True)
     offeredAmount = models.FloatField(null=True)
     date = models.DateTimeField()
-    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name="offers")
 
 
 # Announcements
@@ -61,9 +66,6 @@ class Performance(models.Model):
     description = models.CharField(max_length=500)
     date = models.DateTimeField()
     public = models.BooleanField()
-    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name="performances")
-    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name="performances")
-
 
 class Payment(models.Model):
     amount = models.FloatField()

@@ -8,13 +8,22 @@ class VenueForm(UserCreationForm):
     class Meta:
         model = Venue
         fields = ['name', 'email', 'username', 'logo', 'description', 'address', 'capacity']
+        # fields = []
 
 class GeolocationForm(ModelForm):
 
     class Meta:
         model = Geolocation
         fields = ['latitude', 'longitude']
-		
+
+'''
+class ArtistForm(UserCreationForm):
+    class Meta:
+        model = Artist
+        fields = ['name', 'email', 'username', 'logo', 'description', 'artistNumber']
+
+
+'''
 class ArtistForm(forms.Form):
     name = forms.CharField(max_length=30, help_text='Required.')
     username = forms.CharField(max_length=30, help_text='Required.')

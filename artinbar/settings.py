@@ -55,9 +55,7 @@ ROOT_URLCONF = 'artinbar.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'artinbar/../mvp/templates'),
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,7 +85,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'mvp.User'
+AUTH_USER_MODEL = 'mvp.Account'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

@@ -3,6 +3,7 @@ from django.db import models
 
 class User(AbstractUser):
     name = models.CharField(max_length=100)
+    email = models.EmailField('email address', blank=False)
     description = models.CharField(max_length=500, null=True)
     logo = models.URLField(null=True)
     receivers = models.ManyToManyField('self', symmetrical=False, through='Message', related_name="senders")

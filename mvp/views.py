@@ -1,6 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect
+from django.views.generic.base import View
+
 from .forms import *
 from .forms import ArtistForm
 from mvp.models import Artist
@@ -34,27 +36,33 @@ def nuevoVenue(request):
     context = {'formulario':formulario, 'subformulario':subformulario}
     return render(request, 'venueForm.html', context)
 
-def artistForm(request):
-    if request.method == 'POST':
-        formulario = ArtistForm(request.POST or None)
-        if formulario.is_valid():
+class registerArtistView(View):
 
-            form_data = formulario.cleaned_data
+    def get(self, request):
+        form = ArtistForm()
+        context = {'artist_form':form}
+
+        return render(request, 'artistForm.html', context)
+
+    def post(self, request):
+
+        form = ArtistForm(request.POST)
+        if form.is_valid():
+
+            form_data = form.cleaned_data
             name = form_data.get("name")
             description = form_data.get("description")
             email = form_data.get("email")
             username = form_data.get("username")
             password = form_data.get("password")
             logo = form_data.get("logo")
-            artistNumber = form_data.get("artistNumber")
-            artist = Artist.objects.create_user(name=name, description=description, logo=logo, username=username,email=email,password=password, artistNumber=artistNumber)
+            artist_number = form_data.get("artistNumber")
+            artist = Artist.objects.create_user(name=name, description=description, logo=logo, username=username,email=email,password=password, artistNumber=artist_number)
+            artist.save()
 
-            return HttpResponseRedirect('/index/')
+            url = request.GET.get('next', 'index')
+            return redirect(url)
 
-    else:
-        formulario = ArtistForm()
-
-
-    context =  {'formulario':formulario}
-    return render(request, 'artistForm.html', context)
+        context =  {'form':form}
+        return render(request, 'artistForm.html', context)
 

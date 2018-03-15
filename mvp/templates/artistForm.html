@@ -5,7 +5,7 @@
 {% endblock %}
 {% block contenido %}
 	<form id='formulario' method='post' action=''>{% csrf_token %}
-		<table>{{formulario}}</table>
+		{{artist_form.as_p}}
 		<p><input type='submit' value='Register'/></p>
 	</form>
 {% endblock %}

@@ -27,7 +27,7 @@ def nuevoVenue(request):
             newGeo = subformulario.save()
             newVenue.geolocation = newGeo
             newVenue.save()
-            return HttpResponseRedirect(reverse('principal.views.inicio'))
+            return redirect("/artinbar")
     else:
         formulario = VenueForm(request.POST, prefix='Ven')
         subformulario = GeolocationForm(request.POST, prefix='Geo')

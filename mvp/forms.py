@@ -21,6 +21,6 @@ class ArtistForm(forms.ModelForm):
     class Meta:
         model = Artist
         #exclude = []
-        fields = ['name', 'username', 'password', 'email', 'logo', 'artistNumber']
+        fields = ['name', 'username', 'password', 'email', 'logo', 'description', 'artistNumber']
 
 

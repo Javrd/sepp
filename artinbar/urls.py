@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mvp import views
+from mvp.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.indexRedir, name='index'),
-    path('artinbar', views.index, name='index'),
+    path('offerList/', offerList, name='offerList'),
+    path('', indexRedir, name='index'),
+    path('artinbar', index, name='index'),
+    path('offerForm/', offerForm, name='offerForm')
 ]

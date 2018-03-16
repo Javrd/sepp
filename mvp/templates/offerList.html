@@ -1,0 +1,23 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Ofertas{% endblock %}
+{% block content %}
+<div class="container">
+    {% if offer_list %}
+<h1>Ofertas</h1>
+    
+    {% for offer in offer_list %}
+        <a>
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ offer.name }}</div>
+                <div class="panel-body"> {{ offer.description }}, {{ offer.offeredAmount }}, {{ offer.date }}</div>
+            </div>
+        </a>
+    {% endfor %}
+    
+{% else %}
+    <p>No hay listas disponibles.</p>
+{% endif %}
+
+</div>
+{% endblock %}

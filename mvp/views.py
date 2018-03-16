@@ -22,11 +22,9 @@ def login(request):
         return redirect("/artinbar")
     if request.method=='POST':
         formulario=AuthenticationForm(data = request.POST)
-        print(formulario.errors)
-        username = formulario.cleaned_data.get('username')
-        password = formulario.cleaned_data.get('password')
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(username=username, password=password)
-        print(username +"........."+password)
         if user is not None and user.is_active:
             auth_login(request, user)
             return redirect("/artinbar")

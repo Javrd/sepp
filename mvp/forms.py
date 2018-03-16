@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import *
+from .models import Offer
 from django.utils.translation import gettext_lazy as _
 
 

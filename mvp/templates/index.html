@@ -8,8 +8,8 @@
 <div class="wrapper">
 
     <!--header section-->
-    <section class="colored-section hero-header" id="home" style="background-image: url(../static/img/slide1.jpg)">
-        <div class="container">
+    <section class="colored-section hero-header" id="home" style="background-image: url(../static/img/slide1.jpg);display: flex;flex-direction: column">
+        <div class="container" >
             <div class="row">
                 <div class="col-md-8 offset-md-2">
                     <div class="brand">
@@ -17,19 +17,43 @@
                         <p class="lead mb-5">
                             Duis commodo ex eiusmod qui irure pariatur occaecat ex.
                         </p>
-                        <a href="#features" class="btn btn-outline-white btn-round btn-md page-scroll">
+                        <a href="#" class="btn btn-outline-white btn-round btn-md page-scroll">
                             <em class="ion-play"></em> Registro de Artista
                         </a>
                         <br>
-                        <a href="#features" class="btn btn-outline-white btn-round btn-md page-scroll">
+                        <a href="#" class="btn btn-outline-white btn-round btn-md page-scroll">
                             <em class="ion-play"></em> Registro de Local
                         </a>
                     </div>
                 </div>
+            </div>            
+        </div>
+        <div class="row align-items-center justify-content-center flex-grow: 1;" style="height:100%">
+            <div class="col-6 text-center">
+                    <i id="#goBottom" class="fa fa-angle-double-down fa-5x" aria-hidden="true"></i>
             </div>
         </div>
     </section>
-
 </div> 
 
+<script>
+    window.onload = function(){
+        anime({
+            targets: '.btn',
+            opacity: 1,
+            easing: 'easeInOutQuad',
+            duration: 800,
+            delay: function(el, i, l) {
+                return (i * 500)+100;
+            }
+        });
+        anime({
+            targets: '.fa',
+            opacity: 1,
+            translateY: 30,
+            easing: 'easeInOutQuad',
+            delay: 1500
+        });
+    }
+</script>
 {% endblock %}

@@ -16,3 +16,16 @@
 .btn-xs {
     margin: 0px;
 }
+
+.btn-outline-white {
+    opacity: 0;
+    background-color: rgba(21, 22, 22, 0.4);
+}
+
+.fa-angle-double-down {
+    opacity: 0;
+}
+
+.wrapper {
+    overflow-x: hidden;
+}

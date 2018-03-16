@@ -58,7 +58,7 @@ class registerArtistView(View):
             logo = form_data.get("logo")
             artist_number = form_data.get("artistNumber")
             artist = Artist.objects.create_user(name=name, description=description, logo=logo, username=username,email=email,password=password, artistNumber=artist_number)
-            artist.save()
+
 
             url = request.GET.get('next', 'index')
             return redirect(url)

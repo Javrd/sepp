@@ -23,6 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.indexRedir, name='index'),
     path('artinbar', views.index, name='index'),
-    # url('newVenue/', nuevoVenue),
+    url('newVenue/', nuevoVenue),
     url(r'^register_artist$', registerArtistView.as_view(), name='register_artist'),
 ]

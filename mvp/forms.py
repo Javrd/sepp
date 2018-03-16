@@ -15,19 +15,12 @@ class GeolocationForm(ModelForm):
         model = Geolocation
         fields = ['latitude', 'longitude']
 
-'''
-class ArtistForm(UserCreationForm):
-    class Meta:
-        model = Artist
-        fields = ['name', 'email', 'username', 'logo', 'description', 'artistNumber']
 
-
-'''
 class ArtistForm(forms.ModelForm):
 
     class Meta:
         model = Artist
         #exclude = []
-        fields = ['name',  'username', 'password', 'email', 'logo', 'artistNumber']
+        fields = ['name', 'username', 'password', 'email', 'logo', 'artistNumber']
 
 

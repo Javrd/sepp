@@ -8,10 +8,13 @@ from django.template import loader
 from django.shortcuts import redirect
 
 # Create your views here.
+
+
 def offerList(request):
     offer_list = get_list_or_404(Offer)
     context = {'offer_list': offer_list}
     return render(request, './offerList.html', context)
+
 
 def offerForm(request):
     if request.method == 'POST':
@@ -23,6 +26,7 @@ def offerForm(request):
         form = OfferForm()
 
     return render(request, './offerForm.html', {'form': form})
+
 
 def indexRedir(request):
     return redirect("/artinbar")

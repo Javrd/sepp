@@ -33,10 +33,11 @@ def importArtists():
             artisId = line[5]
             print(line)
 
-            new = Artist.objects.create(username=nombre, email=email, password=nombre,
+            new = Artist.objects.create(username=nombre, email=email,
                                         name=nombre, description=description,
                                         logo=logo, artistNumber=integrantes,
                                         id=artisId)
+            new.set_password(nombre)
             new.save()
 
 
@@ -59,12 +60,12 @@ def importVenues():
             geo = geo.split('/')
             geos = Geolocation.objects.create(
                 latitude=float(geo[0]), longitude=float(geo[1]))
-            new = Venue.objects.create(username=nombre, email=email, password=nombre,
+            new = Venue.objects.create(username=nombre, email=email,
                                        name=nombre, description=description,
                                        logo=logo, geolocation=geos,
                                        address=address, capacity=capacity,
                                        id=venueId)
-
+            new.set_password(nombre)
             new.save()
 
 

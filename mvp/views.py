@@ -1,4 +1,4 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login  as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -28,7 +28,7 @@ def login(request):
         user = authenticate(username=username, password=password)
         print(username +"........."+password)
         if user is not None and user.is_active:
-            login(request, user)
+            auth_login(request, user)
             return redirect("/artinbar")
         else:
             context = {'formulario': formulario}

@@ -2,22 +2,40 @@
 
 {% block title %}Ofertas{% endblock %}
 {% block content %}
-<div class="container">
-    {% if offer_list %}
-<h1>Ofertas</h1>
-    
-    {% for offer in offer_list %}
-        <a>
-            <div class="panel panel-default">
-                <div class="panel-heading">{{ offer.name }}</div>
-                <div class="panel-body"> {{ offer.description }}, {{ offer.offeredAmount }}, {{ offer.date }}</div>
+<div class="colored-section bg-inverse">
+    <section class="container fullPage">
+        <br>
+        <h2>Ofertas</h2>
+        {% if offer_list %}           
+            <div class="offer-list">   
+                {% for offer in offer_list %}
+                        <div class="card">
+                            <div class="lead font-weight-bold card-header">
+                                <div class="row"> 
+                                    {{ offer.name }}                                        
+                                </div>    
+                                <div class="row">
+                                    <button class="btn btn-xs btn-primary">Contact</button>
+                                </div>                           
+                            </div>
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-8">{{ offer.date }}</div>
+                                    <div class="col-4 text-right">{{ offer.offeredAmount }}€</div>
+                                </div>
+                                <br>
+                                <div>
+                                    {{ offer.description }}
+                                </div>
+                            </div>
+                        </div>
+                        <br>                                
+                    {% endfor %}
+                    
+            {% else %}
+                <p>No hay listas disponibles.</p>
             </div>
-        </a>
-    {% endfor %}
-    
-{% else %}
-    <p>No hay listas disponibles.</p>
-{% endif %}
-
+        {% endif %}
+    </section>
 </div>
 {% endblock %}

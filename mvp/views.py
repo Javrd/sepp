@@ -1,3 +1,6 @@
+from django.contrib.auth import login  as auth_login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import OfferForm
@@ -35,3 +38,22 @@ def indexRedir(request):
 def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render({}, request))
+
+def login(request):
+    if request.user.is_authenticated:
+        return redirect("/artinbar")
+    if request.method=='POST':
+        formulario=AuthenticationForm(data = request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None and user.is_active:
+            auth_login(request, user)
+            return redirect("/artinbar")
+        else:
+            context = {'formulario': formulario}
+            return render(request, 'login.html', context)
+    else:
+        formulario = AuthenticationForm()
+    context = {'formulario': formulario}
+    return render(request,'login.html',context)

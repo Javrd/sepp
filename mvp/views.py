@@ -28,6 +28,7 @@ def formulario_oferta(request):
 
     return render(request, './formulario_oferta.html', {'form': form})
 
+
 def indexRedir(request):
     return redirect("/artinbar")
 

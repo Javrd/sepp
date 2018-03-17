@@ -1,13 +1,59 @@
 {% extends "common/masterpage.html" %} 
 
-{% block title %}Sample index{% endblock %} 
+{% block title %}Art in Bar - Inicio{% endblock %} 
 
 
 {% block content %} 
 
-<div class="container">
-    <h1>Sample view extending masterpage</h1>
-    <img src="https://image.flaticon.com/icons/svg/194/194978.svg" />
+<div class="wrapper">
+
+    <!--header section-->
+    <section class="colored-section hero-header" id="home" style="background-image: url(../static/img/slide1.jpg);display: flex;flex-direction: column">
+        <div class="container" >
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="brand">
+                        <h1 class="heading-light">Art in Bar</h1>
+                        <p class="lead mb-5">
+                            Duis commodo ex eiusmod qui irure pariatur occaecat ex.
+                        </p>
+                        <a href="#" class="btn btn-outline-white btn-round btn-md page-scroll">
+                            <em class="ion-play"></em> Registro de Artista
+                        </a>
+                        <br>
+                        <a href="#" class="btn btn-outline-white btn-round btn-md page-scroll">
+                            <em class="ion-play"></em> Registro de Local
+                        </a>
+                    </div>
+                </div>
+            </div>            
+        </div>
+        <div class="row align-items-center justify-content-center flex-grow: 1;" style="height:100%">
+            <div class="col-6 text-center">
+                    <i id="#goBottom" class="fa fa-angle-double-down fa-5x" aria-hidden="true"></i>
+            </div>
+        </div>
+    </section>
 </div> 
 
+<script>
+    window.onload = function(){
+        anime({
+            targets: '.btn',
+            opacity: 1,
+            easing: 'easeInOutQuad',
+            duration: 800,
+            delay: function(el, i, l) {
+                return (i * 500)+100;
+            }
+        });
+        anime({
+            targets: '.fa',
+            opacity: 1,
+            translateY: 30,
+            easing: 'easeInOutQuad',
+            delay: 1500
+        });
+    }
+</script>
 {% endblock %}

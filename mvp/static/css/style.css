@@ -13,8 +13,9 @@
     padding: 10px;
 }
 
-.btn-xs {
+.btn-sm {
     margin: 0px;
+    margin-top: 5px;
 }
 
 .btn-outline-white {

@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-<<<<<<< HEAD
 from mvp.views import *
 
 urlpatterns = [
@@ -23,18 +22,6 @@ urlpatterns = [
     path('offerList/', offerList, name='offerList'),
     path('', indexRedir, name='index'),
     path('artinbar', index, name='index'),
-    path('offerForm/', offerForm, name='offerForm')
+    path('offerForm/', offerForm, name='offerForm'),
+    path('login', login, name='login'),
 ]
-=======
-from django.contrib.auth.views import logout
-
-from mvp import views
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.indexRedir, name='index'),
-    path('artinbar', views.index, name='index'),
-    path('login', views.login, name='login'),
-    path('logout', logout, {'next_page': '/artinbar'}, name='logout')
-]
->>>>>>> develop

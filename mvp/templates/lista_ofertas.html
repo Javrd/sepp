@@ -18,6 +18,10 @@
 {% else %}
     <p>No hay listas disponibles.</p>
 {% endif %}
-
+    {% if user.is_authenticated %}
+    <div>
+        <a href="{% url 'formulario_oferta' %}">Nueva oferta</a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

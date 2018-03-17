@@ -1,0 +1,13 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Ofertas{% endblock %}
+{% block content %}
+<form action="/formulario_oferta/" method="post">
+    {% csrf_token %}
+    <div>Nombre: {{form.name }}</div>
+    <div>Descripción: {{form.description }}</div>
+    <div>Cantidad ofrecida: {{form.offeredAmount }}</div>
+    <div>Fecha: {{form.date }}</div>
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}

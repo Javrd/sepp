@@ -8,7 +8,6 @@ django.setup()
 from mvp.models import Artist
 from mvp.models import Venue
 from mvp.models import User
-from mvp.models import Account
 from mvp.models import Geolocation
 from mvp.models import Message
 from mvp.models import Photo
@@ -34,10 +33,11 @@ def importArtists():
             artisId = line[5]
             print(line)
 
-            acc = Account.objects.create_user(nombre, email, nombre)
-            new = Artist.objects.create(name=nombre, description=description,
+            new = Artist.objects.create(username=nombre, email=email,
+                                        name=nombre, description=description,
                                         logo=logo, artistNumber=integrantes,
-                                        account=acc, id=artisId)
+                                        id=artisId)
+            new.set_password(nombre)
             new.save()
 
 
@@ -58,14 +58,14 @@ def importVenues():
             venueId = line[7]
             print(line)
             geo = geo.split('/')
-            acc = Account.objects.create_user(nombre, email, nombre)
             geos = Geolocation.objects.create(
                 latitude=float(geo[0]), longitude=float(geo[1]))
-            new = Venue.objects.create(name=nombre, description=description,
+            new = Venue.objects.create(username=nombre, email=email,
+                                       name=nombre, description=description,
                                        logo=logo, geolocation=geos,
                                        address=address, capacity=capacity,
-                                       account=acc, id=venueId)
-
+                                       id=venueId)
+            new.set_password(nombre)
             new.save()
 
 
@@ -198,7 +198,6 @@ def importPayments():
 
 
 """Delete all data from database"""
-Account.objects.all().delete()
 Artist.objects.all().delete()
 Venue.objects.all().delete()
 Message.objects.all().delete()

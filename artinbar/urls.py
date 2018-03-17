@@ -15,12 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mvp.views import *
+from django.contrib.auth.views import logout
+from mvp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('offerList/', offerList, name='offerList'),
-    path('', indexRedir, name='index'),
-    path('artinbar', index, name='index'),
-    path('offerForm/', offerForm, name='offerForm')
+    path('lista_ofertas/',  views.lista_ofertas, name='lista_ofertas'),
+    path('',  views.indexRedir, name='index'),
+    path('artinbar',  views.index, name='index'),
+    path('formulario_oferta/',  views.formulario_oferta, name='formulario_oferta'),
+    path('logout', logout, {'next_page': '/artinbar'}, name='logout'),
+    path('login', views.login, name='login')
 ]
+

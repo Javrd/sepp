@@ -9,34 +9,11 @@
         {% if offer_list %}           
             <div class="offer-list">   
                 {% for offer in offer_list %}
-                        <div class="card">
-                            <div class="lead font-weight-bold card-header">
-                                <div class="row text-capitalize"> 
-                                    {{ offer.name }}                                        
-                                </div>    
-                                <div class="row">
-                                    <div class="col-8" style="padding: 0px;">
-                                            <button class="btn btn-sm btn-primary" href="/venue/{{ offer.venue.id }}">Contact</button>
-                                    </div>
-                                    <div class="col-4 text-right">{{ offer.offeredAmount }}€</div>
-                                </div>                           
-                            </div>
-                            <div class="card-block">
-                                <div>
-                                    {{ offer.date }}
-                                </div>
-                                <br>
-                                <div>
-                                    {{ offer.description }}
-                                </div>
-                            </div>
-                        </div>
-                        <br>                                
-                    {% endfor %}
-                    
+                    {% include "offerCard.html" %}
+                {% endfor %} 
+            </div>                   
             {% else %}
-                <p>No hay listas disponibles.</p>
-            </div>
+                <p>No hay listas disponibles.</p>            
         {% endif %}
     </section>
 </div>

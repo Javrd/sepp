@@ -1,4 +1,4 @@
-from django.contrib.auth import login  as auth_login, authenticate
+from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -39,11 +39,12 @@ def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render({}, request))
 
+
 def login(request):
     if request.user.is_authenticated:
         return redirect("/artinbar")
-    if request.method=='POST':
-        formulario=AuthenticationForm(data = request.POST)
+    if request.method == 'POST':
+        formulario = AuthenticationForm(data=request.POST)
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -56,4 +57,4 @@ def login(request):
     else:
         formulario = AuthenticationForm()
     context = {'formulario': formulario}
-    return render(request,'login.html',context)
+    return render(request, 'login.html', context)

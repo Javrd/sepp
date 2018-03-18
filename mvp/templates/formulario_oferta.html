@@ -1,0 +1,55 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Crear oferta{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+
+<div class="colored-section bg-inverse" style="z-index: -1;">
+    <section class="container fullPage" style="z-index: 1;">
+        <br>
+        <h2>Crear una oferta</h2>
+
+        <form class="form-group" action="/formulario_oferta/" method="post">
+
+            {% with WIDGET_ERROR_CLASS='form-control-danger' %}
+            {% csrf_token %}
+
+            {{ form.name.errors }}
+            <label for="{{ form.name.id_for_label }}">Título:</label>
+            {% render_field form.name class+="form-control" placeholder="¿Cómo se llama tu oferta?" %}
+            <br>
+
+            {{ form.description.errors }}
+            <label for="{{ form.description.id_for_label }}">Descripción:</label>
+            <textarea class="form-control" name="description" required id="id_description" placeholder="Explica a los artistas qué estás buscando"></textarea>
+            <br>
+
+            {{ form.offeredAmount.errors }}
+            <label for="{{ form.offeredAmount.id_for_label }}">Precio ofrecido:</label>            
+            <div class="input-group">
+                <input class="form-control" name="offeredAmount" placeholder="Cantidad en Euros" type="number">
+                <span class="input-group-btn">
+                    <spam class="btn btn-primary"><em class="fa fa-euro"></em></spam>
+                </span>
+            </div>        
+            <br>
+
+            {{ form.date.errors }}
+            <label for="{{ form.date.id_for_label }}">Fecha:</label>
+            <input class="form-control" name="date" required id="datepicker" placeholder="Selecciona fecha" type="text">
+            <br>
+            
+            <div class="text-center">
+                <input type="submit" class="btn btn-round btn-primary" value="Submit" />
+            </div>
+            {% endwith %}
+        </form>
+    </section>
+</div>
+
+<div class="fixed-bottom" style="z-index: 0;">
+    <img src="../static/img/crowd.png" class="img-fluid" />
+</div>
+
+{% endblock %}

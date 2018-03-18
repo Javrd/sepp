@@ -1,0 +1,41 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Ofertas{% endblock %}
+{% block content %}
+<div class="colored-section bg-inverse">
+    <section class="container fullPage">
+        <br>
+        <h2>Ofertas</h2>
+        {% if offer_list %}           
+            <div class="offer-list">   
+                {% for offer in offer_list %}
+                        <div class="card">
+                            <div class="lead font-weight-bold card-header">
+                                <div class="row"> 
+                                    {{ offer.name }}                                        
+                                </div>    
+                                <div class="row">
+                                    <button class="btn btn-xs btn-primary">Contact</button>
+                                </div>                           
+                            </div>
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-8">{{ offer.date }}</div>
+                                    <div class="col-4 text-right">{{ offer.offeredAmount }}€</div>
+                                </div>
+                                <br>
+                                <div>
+                                    {{ offer.description }}
+                                </div>
+                            </div>
+                        </div>
+                        <br>                                
+                    {% endfor %}
+                    
+            {% else %}
+                <p>No hay listas disponibles.</p>
+            </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

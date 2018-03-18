@@ -41,7 +41,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link page-scroll" href="/lista_ofertas">Ofertas</a>
-                    {% if user.is_authenticated %}
+                    {% if perms.mvp.venue %}
                         </li>
                         <li class="nav-item">
                             <a class="nav-link page-scroll" href="/formulario_oferta">Crear ofertas</a>

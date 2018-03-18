@@ -1,20 +1,22 @@
-from django.contrib.auth import login  as auth_login, authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.template import loader
+
 from .forms import *
 from .models import *
-from django.http import HttpResponse
-from django.template import loader
-from django.shortcuts import redirect
+
 
 # Create your views here.
 def lista_ofertas(request):
     offer_list = Offer.objects.all()
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
-
+    
+@permission_required('mvp.venue')
 def formulario_oferta(request):
     if request.method == 'POST':
         form = OfferForm(request.user, request.POST)
@@ -55,4 +57,3 @@ def login(request):
         formulario = AuthenticationForm()
     context = {'formulario': formulario}
     return render(request,'login.html',context)
-

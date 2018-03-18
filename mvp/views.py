@@ -16,7 +16,7 @@ def lista_ofertas(request):
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
     
-@permission_required('mvp.venue')
+@permission_required('mvp.venue', login_url="/login")
 def formulario_oferta(request):
     if request.method == 'POST':
         form = OfferForm(request.user, request.POST)

@@ -1,9 +1,11 @@
+from datetime import datetime
+
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import get_list_or_404, redirect, render
 from django.template import loader
 
 from .forms import *
@@ -57,3 +59,15 @@ def login(request):
         formulario = AuthenticationForm()
     context = {'formulario': formulario}
     return render(request,'login.html',context)
+
+def chatMessages(request):
+    chat_messages = get_list_or_404(Message)
+    context = {'chat_messages': chat_messages}
+    return render(request, './chatMessages.html', context)
+
+def chatForm(request):
+    if request.method == 'POST':
+        form = Message(request.POST)
+        form.timeStamp = datetime.now()
+        form.save()
+        return HttpResponseRedirect('/chat/')

@@ -268,3 +268,6 @@ select.form-control:not([size]):not([multiple]) {
 .border-bottom{
     border-bottom: 1px solid #DEE5E5 !important;
 }
+#chat-typer{
+    position: absolute; bottom: 0px;
+}

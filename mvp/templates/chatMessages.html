@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Art in Bar{% endblock %}</title>
+    <meta name="description" content="Art in Bar" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Bootstrap 4-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <!--icons-->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--vendors-->
+    <link rel="stylesheet" href="static/js/vendors/daterangepicker/daterangepicker.css" />
+    <!--custom css-->
+    <link rel="stylesheet" href="../static/css/components.css" />
+    <link rel="stylesheet" href="../static/css/colors.css" />
+    <link rel="stylesheet" href="../static/css/demo.css" />
+    <link rel="stylesheet" href="../static/css/style.css" />
+</head>
+
+<div class="chat-container">
+    <div id="chat-body" class="panel panel-default">
+        <div class="panel-heading">Chat Box</div>
+        <div id="msg-list-div" class="panel-body">
+            <ul id="msg-list" class="list-group">
+                {% for message in chat_messages %}
+                    {% if message.sender == principal %}
+                        <li class="text-right list-group-item">{{ message.text }}</li>
+                    {% else %}
+                        <li class="text-left list-group-item">{{ message.text }}</li>
+                    {% endif %}
+                {% empty %}
+                    <li class="text-right list-group-item">No messages yet!</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <form id="chat-form" method="post" action="'message:post" data-spy="affix" data-offset-bottom="10">
+            {% csrf_token %}
+            <div id="chat-typer" class="input-group">
+                <input type="text" id="chat-msg" name="chat-msg" class="form-control"/>
+                <span class="input-group-btn">
+                <input class="btn btn-default" id="send" type="submit" value="Send"/>
+            </span>
+            </div>
+        </form> 
+</div>

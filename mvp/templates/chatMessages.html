@@ -20,6 +20,22 @@
     <link rel="stylesheet" href="../static/css/colors.css" />
     <link rel="stylesheet" href="../static/css/demo.css" />
     <link rel="stylesheet" href="../static/css/style.css" />
+
+    {% comment %} <script>
+        function sync_messages() {
+            $.ajax({
+                type: 'POST',
+                data: {id:window.chat_room_id},
+                url:'/chat/sync/',
+                dataType: 'json',
+                success: function (json) {
+                    last_received = json.last_message_id;
+                }
+            });
+        
+            setTimeout("get_messages()", 2000);
+        }
+    </script> {% endcomment %}
 </head>
 
 <div class="chat-container">
@@ -39,10 +55,12 @@
             </ul>
         </div>
 
-        <form id="chat-form" method="post" action="'message:post" data-spy="affix" data-offset-bottom="10">
+        <form id="chat-form" method="post" action="/chatForm" data-spy="affix" data-offset-bottom="10">
             {% csrf_token %}
             <div id="chat-typer" class="input-group">
-                <input type="text" id="chat-msg" name="chat-msg" class="form-control"/>
+                <input type="hidden" name="sender" value="{{user}}"/>
+                <input type="hidden" name="receiver" value="{{user}}"/>
+                <input type="text" id="text" name="text" class="text"/>
                 <span class="input-group-btn">
                 <input class="btn btn-default" id="send" type="submit" value="Send"/>
             </span>

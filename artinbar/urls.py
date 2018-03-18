@@ -27,5 +27,7 @@ urlpatterns = [
     path('artinbar', index, name='index'),
     path('offerForm/', offerForm, name='offerForm'),
     path('login', views.login, name='login'),
-    path('logout', logout, {'next_page': '/artinbar'}, name='logout')
+    path('logout', logout, {'next_page': '/artinbar'}, name='logout'),
+    path('chat/', chatMessages, name='chat'),
+    path('chatForm', chatForm, name='chatForm')
 ]

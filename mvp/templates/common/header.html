@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-
+{% load static%}
 <head>
     <meta charset="utf-8">
     <title>{% block title %}Art in Bar{% endblock %}</title>
@@ -14,12 +14,12 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!--vendors-->
-    <link rel="stylesheet" href="static/js/vendors/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="{% static "/js/vendors/daterangepicker/daterangepicker.css" %}"/>
     <!--custom css-->
-    <link rel="stylesheet" href="../static/css/components.css" />
-    <link rel="stylesheet" href="../static/css/colors.css" />
-    <link rel="stylesheet" href="../static/css/demo.css" />
-    <link rel="stylesheet" href="../static/css/style.css" />
+    <link rel="stylesheet" href="{% static "/css/components.css" %}"/>
+    <link rel="stylesheet" href="{% static "/css/colors.css" %}"/>
+    <link rel="stylesheet" href="{% static "/css/demo.css" %}"/>
+    <link rel="stylesheet" href="{% static "/css/style.css" %}"/>
 </head>
 
 <body>
@@ -32,7 +32,7 @@
         </button>
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="../static/img/logo.png" class="nav-brand-logo" />
+                <img src="{% static "/img/logo.png" %}" class="nav-brand-logo" />
             </a>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav ml-auto">

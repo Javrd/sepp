@@ -1,6 +1,6 @@
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_list_or_404, redirect, render
@@ -59,10 +59,24 @@ def login(request):
     context = {'formulario': formulario}
     return render(request,'login.html',context)
 
-def chatMessages(request):
-    chat_messages = get_list_or_404(Message)
-    context = {'chat_messages': chat_messages}
-    return render(request, './chatMessages.html', context)
+@login_required(login_url='/login')
+def chat(request, user_id=None):
+    
+    principal = request.user
+    if not user_id:
+        contacts = (User.objects.filter(receivers__in=[principal]) | User.objects.filter(senders__in=[principal])).distinct()
+        return render(request,'contacts.html', {'contacts':contacts})
+    
+    else:
+        if request.method == 'POST':
+            contact = User.objects.get(id=user_id)
+            form = request.POST
+            Message.objects.create(sender=principal, receiver=contact, timeStamp=datetime.now(), text=form['text'])
+            
+        contact = User.objects.get(id=user_id)
+        messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(receiver=contact, sender=principal)
+                
+        return render(request,'chat.html',{'messages':messages, 'contact':contact})
 
 def chatForm(request):
     if request.method == 'POST':

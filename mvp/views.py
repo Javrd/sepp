@@ -57,3 +57,6 @@ def login(request):
         formulario = AuthenticationForm()
     context = {'formulario': formulario}
     return render(request,'login.html',context)
+
+def artistProfile(request):
+    return render(request, 'artistProfile.html', {})

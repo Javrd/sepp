@@ -24,4 +24,5 @@ urlpatterns = [
     path('artinbar', index, name='index'),
     path('offerForm/', offerForm, name='offerForm'),
     path('login', login, name='login'),
+    path('artistProfile', artistProfile, name='artistProfile'),
 ]

@@ -1,11 +1,7 @@
 ##performance:name,description,date,public,artistId,VenueId,performanceId
-performance1,this is a description,2018-5-28,True,101,201,801
-performance2,this is a description,2018-5-22,True,101,201,802
-performance3,this is a description,2018-5-23,True,101,201,803
-performance4,this is a description,2018-5-24,True,101,201,804
-performance5,this is a description,2018-5-25,True,101,201,805
-performance6,this is a description,2018-5-26,True,101,201,806
-performance7,this is a description,2018-5-27,True,101,201,807
-performance8,this is a description,2018-6-28,False,101,202,808
-performance9,this is a description,2018-7-28,False,102,202,809
-performance10,this is a description,2018-6-5,False,103,203,810
+Actuacion de Bon Jovi,Actuacion del grupo de rock Bon Jovi en el bar La SemiCorchea,2018-1-26,True,101,201,801
+Actuacion de The Who,Actuacion del grupo de rock The Who en el bar La SemiCorchea,2018-1-27,True,102,201,802
+Actuacion de Johnny Cash,Actuacion del cantautor de country Johnny Cash en el bar El Piano,2018-2-24,True,107,202,803
+Actuacion de Dani Rovira,Actuacion del cómico español Dani Rovira en el bar La Carcajada,2018-3-3,True,102,203,804
+Actuacion de Hora Chanante,Actuacion del grupo cómico español Hora Chanante en el bar Comedia,2018-3-9,True,103,204,805
+Actuacion de Juan Tamariz,Actuacion del mago español Juan Tamariz en el bar La Chistera,2018-3-17,True,108,205,806

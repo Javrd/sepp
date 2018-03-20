@@ -15,19 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-<<<<<<< HEAD
-from mvp.views import *
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('offerList/', offerList, name='offerList'),
-    path('', indexRedir, name='index'),
-    path('artinbar', index, name='index'),
-    path('offerForm/', offerForm, name='offerForm'),
-    path('login', login, name='login'),
-    path('artistProfile', artistProfile, name='artistProfile'),
-]
-=======
 from django.contrib.auth.views import logout
 from mvp import views
 
@@ -38,7 +25,7 @@ urlpatterns = [
     path('artinbar',  views.index, name='index'),
     path('formulario_oferta/',  views.formulario_oferta, name='formulario_oferta'),
     path('logout', logout, {'next_page': '/artinbar'}, name='logout'),
-    path('login', views.login, name='login')
+    path('login', views.login, name='login'),
+    path('artistProfile', artistProfile, name='artistProfile'),
 ]
 
->>>>>>> develop

@@ -16,10 +16,21 @@ from mvp.models import Media
 from mvp.models import Offer
 from mvp.models import Performance
 from mvp.models import Payment
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Permission
+
+
+def createPermissions():
+    ct = ContentType.objects.get(app_label='mvp', model='user')
+    new = Permission.objects.create(codename='artist', name='Can View Artist', content_type=ct)
+    new.save()
+    new = Permission.objects.create(codename='venue', name='Can View Venue', content_type=ct)
+    new.save()
 
 
 def importArtists():
     """Import artist from artists.csv to database."""
+    permission = Permission.objects.get(codename='artist')
     with open('mvp/data/artists.csv') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
@@ -38,11 +49,13 @@ def importArtists():
                                         logo=logo, artistNumber=integrantes,
                                         id=artisId)
             new.set_password(nombre)
+            new.user_permissions.add(permission)
             new.save()
 
 
 def importVenues():
     """Import venues from venues.csv to database."""
+    permission = Permission.objects.get(codename='venue')
     with open('mvp/data/venues.csv') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
@@ -66,6 +79,7 @@ def importVenues():
                                        address=address, capacity=capacity,
                                        id=venueId)
             new.set_password(nombre)
+            new.user_permissions.add(permission)
             new.save()
 
 
@@ -210,6 +224,7 @@ Payment.objects.all().delete()
 
 
 """Import new data"""
+createPermissions()
 importArtists()
 importVenues()
 importMessages()

@@ -33,3 +33,12 @@ You could also open and run this scipt from mysql-workbench.
 ```
 python manage.py runserver
 ```
+
+## Database for testing
+Must grant permissions to test_aib_db to aib_db manager.
+```
+grant select, insert, update, delete, create, drop, references, index, alter, 
+create temporary tables, lock tables, create view, create routine,
+ alter routine, execute, trigger, show view 
+on `test_aib_db`.* to 'aib-manager'@'%';
+```

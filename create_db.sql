@@ -7,3 +7,7 @@ grant select, insert, update, delete, create, drop, references, index, alter,
 create temporary tables, lock tables, create view, create routine,
  alter routine, execute, trigger, show view 
 on `aib_db`.* to 'aib-manager'@'%';
+grant select, insert, update, delete, create, drop, references, index, alter, 
+create temporary tables, lock tables, create view, create routine,
+ alter routine, execute, trigger, show view 
+on `test_aib_db`.* to 'aib-manager'@'%';

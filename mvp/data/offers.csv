@@ -1,10 +1,7 @@
-##offer:name,description,date,venueId,offerId
-offer1,This is a description,200,2018-4-20,201,701
-offer2,This is a description,200,2018-4-21,201,702
-offer3,This is a description,200,2018-5-22,201,703
-offer4,This is a description,200,2018-5-23,201,704
-offer5,This is a description,200,2018-6-24,201,705
-offer6,This is a description,200,2018-6-25,201,706
-offer7,This is a description,200,2018-5-26,201,707
-offer8,This is a description,200,2018-5-27,201,708
-offer9,This is a description,200,2018-4-22,202,709
+##offer:name,description,offeredAmount,date,venueId,offerId
+Oferta para grupo de Rock,Oferta para actuacion de un grupo de Rock para el proximo viernes 26/01,300,2018-1-26,201,701
+Oferta para grupo de Rock,Oferta para actuacion de un grupo de Rock para el proximo sabado 27/01,350,2018-1-27,201,702
+Oferta para grupo de Country,Oferta para actuacion de un grupo de Country para el proximo sabado 24/02,450,2018-2-24,202,703
+Oferta para Comico,Oferta para actuacion de un comico para que haga un monologo para el proximo sabado 03/03,600,2018-3-3,203,704
+Oferta para grupo de Comedia,Oferta para actuacion de un grupo comico para el proximo viernes 09/03,400,2018-3-9,204,705
+Oferta para Mago,Oferta para actuacion de un mago para el proximo sabado 17/03,400,2018-3-17,205,706

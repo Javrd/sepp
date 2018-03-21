@@ -1,10 +1,11 @@
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template import loader
+
 from .forms import *
 from .models import *
 

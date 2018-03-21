@@ -1,34 +1,34 @@
-from django.contrib.auth import login as auth_login, authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from .forms import OfferForm
-from .models import Offer
-from django.shortcuts import get_list_or_404
-from django.http import HttpResponse
+from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
 from django.template import loader
-from django.shortcuts import redirect
+from .forms import *
+from .models import *
+
 
 # Create your views here.
-
-
-def offerList(request):
-    offer_list = get_list_or_404(Offer)
+def lista_ofertas(request):
+    offer_list = Offer.objects.all()
     context = {'offer_list': offer_list}
-    return render(request, './offerList.html', context)
+    return render(request, './lista_ofertas.html', context)
 
 
-def offerForm(request):
+@permission_required('mvp.venue', login_url="/login")
+def formulario_oferta(request):
     if request.method == 'POST':
-        form = OfferForm(request.POST)
+        form = OfferForm(request.user, request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/offerList/')
+            offer = form.save(commit=False)
+            offer.venue = Venue.objects.get(id=request.user.id)
+            offer.save()
+            return HttpResponseRedirect('/lista_ofertas/')
     else:
-        form = OfferForm()
+        form = OfferForm(request.user)
 
-    return render(request, './offerForm.html', {'form': form})
+    return render(request, './formulario_oferta.html', {'form': form})
 
 
 def indexRedir(request):
@@ -58,3 +58,7 @@ def login(request):
         formulario = AuthenticationForm()
     context = {'formulario': formulario}
     return render(request, 'login.html', context)
+
+
+def artistProfile(request):
+    return render(request, 'artistProfile.html', {})

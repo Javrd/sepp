@@ -10,7 +10,7 @@
         <br>
         <h2>Crear una oferta</h2>
 
-        <form class="form-group" action="/offerForm/" method="post">
+        <form class="form-group" action="/formulario_oferta/" method="post">
 
             {% with WIDGET_ERROR_CLASS='form-control-danger' %}
             {% csrf_token %}
@@ -30,7 +30,7 @@
             <div class="input-group">
                 <input class="form-control" name="offeredAmount" placeholder="Cantidad en Euros" type="number">
                 <span class="input-group-btn">
-                    <button class="btn btn-primary"><em class="fa fa-euro"></em></button>
+                    <spam class="btn btn-primary"><em class="fa fa-euro"></em></spam>
                 </span>
             </div>        
             <br>
@@ -40,13 +40,8 @@
             <input class="form-control" name="date" required id="datepicker" placeholder="Selecciona fecha" type="text">
             <br>
             
-            {{ form.venue.errors }}
-            <label for="{{ form.venue.id_for_label }}">(debug)Local: </label>
-            {% render_field form.venue class+="form-control" %}
-            <br>
-            
             <div class="text-center">
-                <input type="submit" class="btn btn-round btn-primary" value="Submit" />
+                <input type="submit" class="btn btn-round btn-primary" value="Crear" />
             </div>
             {% endwith %}
         </form>

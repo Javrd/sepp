@@ -1,8 +1,34 @@
 ##Message:date,text,senderId,receiverId,messageId
-2018-2-2  1:33PM,Lorem ipsum dolor sit amet,101,201,301
-2018-2-2  1:35PM,Lorem ipsum dolor sit amet,201,101,302
-2018-2-2  1:36PM,Lorem ipsum dolor sit amet,201,101,303
-2018-2-2  1:37PM,Lorem ipsum dolor sit amet,101,201,304
-2018-2-2  1:38PM,Lorem ipsum dolor sit amet,105,206,305
-2018-2-2  1:39PM,Lorem ipsum dolor sit amet,105,206,306
-2018-2-2  1:40PM,Lorem ipsum dolor sit amet,105,206,307
+2018-1-20  1:33PM,Hola soy Bon Jovi y estoy interesado en la oferta del proximo Viernes 26/01.,101,201,301
+2018-1-20  1:35PM,Buenos días gracias por contactar con bar La SemiCorchea. Me pasare por su perfil para ver que haces.,201,101,302
+2018-1-20  1:36PM,Me ha encantado el tema que tienes colgado la actuación es tuya.,201,101,303
+2018-1-20  1:41PM,Me parece estupendo! Este fin de semana nos vemos muchas gracias!,101,201,304
+2018-1-20  1:43PM,Gracias a ti! esperamos tener un agradable evento.,201,101,305
+2018-1-17  5:37PM,Hola! somos el grupo de The Who y estariamos interesados en tocar en su local.,104,201,306
+2018-1-17  5:38PM,Buenas tardes! Gracias por contactar con bar La SemiCorchea. Me pasare por su perfil para ver que tocais.,201,104,307
+2018-1-17  5:40PM,Perfecto! pongase en contacto con nosotros lo antes posible por favor.,104,201,308
+2018-1-17  5:42PM,Estupendo tema ¡enhorabuena! Si quereis podeis tocar el Sábado 27/01.,201,104,309
+2018-1-17  5:43PM,Sería una fecha estupenda!,104,201,310
+2018-1-17  5:44PM,Perfecto! estariamos dispuestos en pagarle 350 euros.,201,104,311
+2018-1-17  5:48PM,Genial! Muchas gracias ¡saludos!,104,201,312
+2018-2-17  7:37PM,Hola! somos el grupo de Extremoduro y estamos interesados en tocar en su local el sabado 24/02.,105,202,313
+2018-2-17  7:38PM,Buenas tardes! Gracias por contactar con bar El Piano. Me pasare por su perfil para ver que tocais.,202,105,314
+2018-2-17  7:40PM,De acuerdo! pongase en contacto con nosotros lo antes posible por favor.,105,202,315
+2018-2-17  7:42PM,Buenas! El estilo que tocais no es lo que buscamos muchas gracias! Saludos.,202,105,316
+2018-2-17  7:43PM,De acuerdo muchas gracias!,105,202,317
+2018-2-17  8:37PM,Hola! soy el cantautor Johnny Cash y estoy interesado en tocar en su local.,107,202,318
+2018-2-17  8:38PM,Buenas tardes! Gracias por contactar con bar El Piano. Me pasare por su perfil para ver que tocas.,202,107,319
+2018-2-17  8:42PM,Buenas! Nos ha encantado su repertorio! tenemos local libre el sabado 24/02 y estariamos dispuestos a pagar 450 euros.,202,107,320
+2018-2-17  8:43PM,De acuerdo! muchas gracias!,107,202,321
+2018-2-18  7:37PM,Hola! soy el comico Dani Rovira y estoy interesado en actuar en su local el proximo sabado 03/03.,102,203,322
+2018-2-18  8:38PM,Buenas tardes! Gracias por contactar con bar La Carcajada. Me pasare por su perfil para ver tu repertorio.,203,102,323
+2018-2-18  8:42PM,Buenas! Nos ha encantado su repertorio y estariamos dispuestos a pagarte los 600 euros.,203,102,324
+2018-2-1  8:43PM,De acuerdo! muchas gracias!,102,203,325
+2018-2-17  3:37PM,Hola! somos el grupo comico Hora Chanante y estamos interesados en actuar en su local el proximo viernes 9/03.,103,204,326
+2018-2-17  3:38PM,Buenas tardes! Gracias por contactar con bar Comedia. Me pasare por su perfil para ver tu repertorio.,204,103,327
+2018-2-17  3:42PM,Buenas! Nos ha encantado su repertorio y estariamos dispuestos a pagarte los 400 euros.,204,103,328
+2018-2-17  3:43PM,De acuerdo! muchas gracias!,103,204,329
+2018-3-12  7:37PM,Hola! soy el mago Juan Tamariz y estoy interesado en actuar en su local el sabado 17/03.,108,205,330
+2018-3-12  8:38PM,Buenas tardes! Gracias por contactar con bar La Chistera. Me pasare por su perfil para ver tu repertorio.,205,108,331
+2018-3-12  8:42PM,Buenas! Nos ha encantado su repertorio y estariamos dispuestos a pagarte los 400 euros.,205,108,332
+2018-3-12  8:43PM,De acuerdo! muchas gracias!,108,205,333

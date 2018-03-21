@@ -1,0 +1,32 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Local{% endblock %}
+{% block content %}
+    <div>
+        <div>{{local.name}}</div>
+        <div>{{local.logo}}</div>
+
+        <!--Bio-->
+        <div>{{local.description}}</div>
+        
+
+        <!--Gallery-->
+        <div>
+            <ol>
+                {% for foto in fotos %}
+                    <li>{{foto.url}}</li>
+                {% endfor %}
+            </ol>
+        </div>
+
+
+        <!--Geolocation-->
+        <div>
+            latitud: {{geolocalizacion.latitude}}
+            longitud: {{geolocalizacion.longitude}}
+        </div>
+
+        <!--Contact-->
+        <div>[boton chat]</div>
+    </div>
+{% endblock %}

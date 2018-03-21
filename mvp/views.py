@@ -1,9 +1,9 @@
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
 
 from .forms import *
@@ -57,3 +57,19 @@ def login(request):
         formulario = AuthenticationForm()
     context = {'formulario': formulario}
     return render(request,'login.html',context)
+
+def vista_artista(request, id_artista):
+    artista = get_object_or_404(Artist, pk=id_artista)
+    fotos = Photo.objects.filter(user=artista)
+    multimedia = Media.objects.filter(artist=artista)
+
+    context = {'artista': artista, 'fotos': fotos, 'multimedia': multimedia}
+    return render(request, './vista_artista.html', context)
+
+def vista_local(request, id_local):
+    local = get_object_or_404(Venue, pk=id_local)
+    fotos = Photo.objects.filter(user=local)
+    geolocalizacion = Geolocation.objects.get(venue=local)
+
+    context = {'local': local, 'fotos': fotos, 'geolocalizacion': geolocalizacion}
+    return render(request, './vista_local.html', context)

@@ -16,7 +16,8 @@ def lista_ofertas(request):
     offer_list = Offer.objects.all()
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
-    
+
+
 @permission_required('mvp.venue', login_url="/login")
 def formulario_oferta(request):
     if request.method == 'POST':
@@ -40,11 +41,12 @@ def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render({}, request))
 
+
 def login(request):
     if request.user.is_authenticated:
         return redirect("/artinbar")
-    if request.method=='POST':
-        formulario=AuthenticationForm(data = request.POST)
+    if request.method == 'POST':
+        formulario = AuthenticationForm(data=request.POST)
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -57,7 +59,26 @@ def login(request):
     else:
         formulario = AuthenticationForm()
     context = {'formulario': formulario}
-    return render(request,'login.html',context)
+    return render(request, 'login.html', context)
+
+
+def vista_artista(request, id_artista):
+    artista = get_object_or_404(Artist, pk=id_artista)
+    fotos = Photo.objects.filter(user=artista)
+    multimedia = Media.objects.filter(artist=artista)
+
+    context = {'artista': artista, 'fotos': fotos, 'multimedia': multimedia}
+    return render(request, './profile.html', context)
+
+
+def vista_local(request, id_local):
+    local = get_object_or_404(Venue, pk=id_local)
+    fotos = Photo.objects.filter(user=local)
+    geolocalizacion = Geolocation.objects.get(venue=local)
+
+    context = {'local': local, 'fotos': fotos,
+               'geolocalizacion': geolocalizacion}
+    return render(request, './profile.html', context)
 
 @login_required(login_url='/login')
 def chat(request, user_id=None):
@@ -102,4 +123,4 @@ def chat_sync(request, user_id=None):
             data['id'] = msg[0].id
         else:
             data['id'] = -1
-        return JsonResponse(data)   
+        return JsonResponse(data)

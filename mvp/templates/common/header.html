@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!--vendors-->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <link rel="stylesheet" href="{% static "/js/vendors/daterangepicker/daterangepicker.css" %}"/>
     <!--custom css-->
     <link rel="stylesheet" href="{% static "/css/components.css" %}"/>
@@ -25,13 +26,13 @@
 <body>
 
     <!--header-->
-    <nav class="navbar navbar-toggleable-md fixed-top navbar-transparent sticky-navigation-alt">
+    <nav class="navbar navbar-toggleable-md fixed-top bg-inverse">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
             aria-expanded="false" aria-label="Toggle navigation">
             <span class="ion-grid"></span>
         </button>
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/artinbar">
                 <img src="{% static "/img/logo.png" %}" class="nav-brand-logo" />
             </a>
             <div class="collapse navbar-collapse" id="navbarCollapse">

@@ -1,0 +1,27 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Contactos{% endblock %}
+{% block content %}
+
+<div class="colored-section bg-inverse">
+        <section class="container fullPage">
+            <br>
+            {% if contacts %}
+                {% for contact in contacts %}          
+                <div class="card">
+                    <div class="lead font-weight-bold card-header">
+                        <div class="row"> 
+                            <a href='/chat/{{ contact.id }}'>{{contact.name}}</a>
+                        </div>                                                  
+                    </div>                                                  
+                </div>                                                  
+                {% endfor %}
+                                
+            {% else %}
+                <p>No hay contactos disponibles.</p>
+            {% endif %}
+
+    </section>
+</div>
+
+{% endblock %}

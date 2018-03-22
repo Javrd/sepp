@@ -1,10 +1,11 @@
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import permission_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_list_or_404, redirect, render
 from django.template import loader
+from datetime import datetime
 
 from .forms import *
 from .models import *
@@ -57,3 +58,48 @@ def login(request):
         formulario = AuthenticationForm()
     context = {'formulario': formulario}
     return render(request,'login.html',context)
+
+@login_required(login_url='/login')
+def chat(request, user_id=None):
+    
+    principal = request.user
+    if not user_id:
+        contacts = (User.objects.filter(receivers__in=[principal]) | User.objects.filter(senders__in=[principal])).distinct()
+        return render(request,'contacts.html', {'contacts':contacts})
+    
+    else:
+        contact = User.objects.get(id=user_id)
+
+        if request.method == 'POST':
+            form = request.POST
+            msg = Message.objects.create(sender=principal, receiver=contact, timeStamp=datetime.now(), text=form['text'])
+            data = {}
+            data['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
+            data['text'] = msg.text
+            return JsonResponse(data)   
+
+        messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(receiver=contact, sender=principal).order_by('timeStamp')
+        last_contact_message = Message.objects.filter(receiver=principal, sender=contact).order_by('-timeStamp')
+        if last_contact_message:
+            last_contact_message = last_contact_message[0].id
+        else:
+            last_contact_message = -1    
+        return render(request,'chat.html',{'messages':messages, 'contact':contact, 'last_contact_message':last_contact_message})
+
+
+
+@login_required(login_url='/login')
+def chat_sync(request, user_id=None):
+    if request.method == 'POST':
+        principal = request.user
+        contact = User.objects.get(id=user_id)
+        form = request.POST
+        msg = Message.objects.filter(receiver=principal, sender=contact).order_by('-timeStamp')
+        data = {}
+        if msg:
+            data['date'] = msg[0].timeStamp.strftime("%d/%m/%Y %H:%m")
+            data['text'] = msg[0].text
+            data['id'] = msg[0].id
+        else:
+            data['id'] = -1
+        return JsonResponse(data)   

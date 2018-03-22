@@ -36,15 +36,6 @@
                     src="https://maps.google.com/maps?q='+{{geolocalizacion.latitude}}+','+{{geolocalizacion.longitude}}+'&hl=es;z=14&amp;output=embed"
                     >
                 </iframe>
-                <br />
-                <small>
-                    <a 
-                        href="https://maps.google.com/maps?q='+{{geolocalizacion.latitude}}+','+{{geolocalizacion.longitude}}+'&hl=es;z=14&amp;output=embed"  
-                        target="_blank"
-                        >
-                            See map bigger
-                    </a>
-                </small>
             </div>
             <div class="tab-pane fade" id="photos" role="tabpanel">
                 {% for foto in fotos %}
@@ -54,7 +45,7 @@
             </div>
             <div class="tab-pane fade" id="contact" role="tabpanel">
                 <p>¡Contacta con {{local.name}} para iniciar el chat y preparar un nuevo evento!</p>
-                <button href="chat/{{local.id}}" class="btn btn-primary btn-lg">Contactar ahora</button>
+                <a href="/chat/{{local.id}}" class="btn btn-primary btn-lg">Contactar ahora</a>
             </div>
         </div>
     </div>

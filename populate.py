@@ -212,6 +212,7 @@ def importPayments():
 
 
 """Delete all data from database"""
+Permission.objects.all().delete()
 Artist.objects.all().delete()
 Venue.objects.all().delete()
 Message.objects.all().delete()

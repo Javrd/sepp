@@ -268,6 +268,20 @@ select.form-control:not([size]):not([multiple]) {
 .border-bottom{
     border-bottom: 1px solid #DEE5E5 !important;
 }
+
+/*----------------------------------------------
+* Chat
+----------------------------------------------*/
+
+
+.chat-window{
+    max-height: 60vh ;
+}
+
+.chat-text{
+    width: 100%
+}
+
 #chat-typer{
-    position: absolute; bottom: 0px;
+    margin-top: 10px; 
 }

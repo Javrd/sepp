@@ -27,5 +27,6 @@ urlpatterns = [
     path('logout', logout, {'next_page': '/artinbar'}, name='logout'),
     path('login', views.login, name='login'),
     path('chat/', views.chat, name='chat'),
-    path('chat/<user_id>/', views.chat, name='chat')
+    path('chat/<user_id>/', views.chat, name='chat'),
+    path('chat/<user_id>/sync', views.chat_sync, name='chat_sync')
 ]

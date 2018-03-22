@@ -41,11 +41,17 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link page-scroll" href="/lista_ofertas">Ofertas</a>
+                    </li>
                     {% if perms.mvp.venue %}
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link page-scroll" href="/formulario_oferta">Crear ofertas</a>
                         </li>
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                            <a class="nav-link page-scroll" href="/chat">Chat</a>
+                    </li>
                     {% endif %}
                     <li class="nav-item">
                         {% if not user.is_authenticated %}

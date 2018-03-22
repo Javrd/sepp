@@ -1,0 +1,36 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Artista{% endblock %}
+{% block content %}
+    <div>
+        <div>{{artista.name}}</div>
+        <div>{{artista.logo}}</div>
+
+        <!--Bio-->
+        <div>{{artista.artistNumber}}</div>
+        <div>{{artista.description}}</div>
+        
+
+        <!--Gallery-->
+        <div>
+            <ol>
+                {% for foto in fotos %}
+                    <li>{{foto.url}}</li>
+                {% endfor %}
+            </ol>
+        </div>
+
+
+        <!--Media-->
+        <div>
+            <ol>
+                {% for media in multimedia %}
+                    <li>{{media.url}}</li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        <!--Contact-->
+        <div>[boton chat]</div>
+    </div>
+{% endblock %}

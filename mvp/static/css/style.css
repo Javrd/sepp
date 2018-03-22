@@ -40,12 +40,9 @@
     margin-top: 76px;
     height: calc(40vh - 76px);
     margin-bottom: 0px;
-<<<<<<< HEAD
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-=======
->>>>>>> 00510a7c3c1c239b25a6d10a8471ab0ff9f81236
 }
 
 .profileData>.nav {
@@ -53,7 +50,6 @@
     background-color: aliceblue;
 }
 
-<<<<<<< HEAD
 .profileData {
     min-height: 60vh;
 }
@@ -64,8 +60,6 @@
     background-color: #242627ab;
 }
 
-=======
->>>>>>> 00510a7c3c1c239b25a6d10a8471ab0ff9f81236
 .nav-pills>.nav-item>.nav-link:hover {
     background-color: rgba(200, 200, 200, 0.2);
 }

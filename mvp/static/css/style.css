@@ -31,16 +31,33 @@
     overflow-x: hidden;
 }
 
+.jumbotron {
+    padding-bottom: 0px !important;
+}
+
 .profileBanner {
     background-size: cover;
     margin-top: 76px;
     height: calc(40vh - 76px);
     margin-bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .profileData>.nav {
     overflow-x: scroll;
     background-color: aliceblue;
+}
+
+.profileData {
+    min-height: 60vh;
+}
+
+.profileTitle {
+    margin: 0px;
+    padding: 15px;
+    background-color: #242627ab;
 }
 
 .nav-pills>.nav-item>.nav-link:hover {

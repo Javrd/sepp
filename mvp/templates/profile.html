@@ -3,9 +3,9 @@
 {% block title %}Perfil{% endblock %}
 {% block content %}
 <div class="colored-section bg-inverse">
-    <div class="jumbotron jumbotron-fluid profileBanner" style="background-image: url('http://wallpaperswide.com/download/white_monkey-wallpaper-1920x1080.jpg');">
-        <div class="container">
-            <h1 class="display-6">El Monotron</h1>
+    <div class="jumbotron jumbotron-fluid profileBanner" style="background-image: url('{{local.logo}}');">
+        <div class="container profileTitle">
+            <h1 class="display-6" style="margin-bottom: 0px">{{local.name}}</h1>
         </div>
     </div>
     <div class="profileData bg-inverse">
@@ -14,34 +14,48 @@
                 <a class="nav-link active" href="#home" role="tab" data-toggle="tab">Resumen</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#media" role="tab" data-toggle="tab">Media</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="#photos" role="tab" data-toggle="tab">Fotos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#contacto" role="tab" data-toggle="tab">Contacto</a>
+                <a class="nav-link" href="#contact" role="tab" data-toggle="tab">Contacto</a>
             </li>
         </ul>
         <br>
-        <div class="container tab-pane fade active show" id="home" role="tabpanel">
-            <p>
-                
-            </p>
-        </div>
-        <div class="container tab-pane fade" id="media" role="tabpanel">
-            <p>
+        <div class="tab-content container">
+            <div class="tab-pane fade active show" id="home" role="tabpanel">
+                <p>
+                    {{local.description}}
                 </p>
-        </div>
-        <div class="container tab-pane fade" id="photos" role="tabpanel">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis nisi ut libero luctus accumsan. Phasellus dolor ipsum, consequat vel cursus ac, cursus sit amet dui. Nam vel nisl posuere, euismod purus et, ullamcorper ante. Sed id lorem ligula. Integer tempor, nunc ut vestibulum gravida, ligula massa mollis augue, sed efficitur diam urna non mi. Suspendisse maximus, massa consectetur placerat tristique, mi metus cursus justo, convallis varius ante lectus sit amet orci. Mauris tempus aliquet nunc, eu convallis ligula dictum nec. Etiam condimentum sollicitudin nibh, sed congue magna sodales sed. Cras pharetra tellus ipsum, sed venenatis orci tincidunt et. Mauris lectus nisl, maximus eu massa vel, laoreet accumsan magna. Etiam ac elementum velit. Sed ex leo, imperdiet at pretium eu, hendrerit id risus. Phasellus id consectetur ex. Donec egestas tristique odio et tincidunt. Suspendisse vel elementum mauris.
-            </p>
-        </div>
-        <div class="container tab-pane fade" id="contact" role="tabpanel">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis nisi ut libero luctus accumsan. Phasellus dolor ipsum, consequat vel cursus ac, cursus sit amet dui. Nam vel nisl posuere, euismod purus et, ullamcorper ante. Sed id lorem ligula. Integer tempor, nunc ut vestibulum gravida, ligula massa mollis augue, sed efficitur diam urna non mi. Suspendisse maximus, massa consectetur placerat tristique, mi metus cursus justo, convallis varius ante lectus sit amet orci. Mauris tempus aliquet nunc, eu convallis ligula dictum nec. Etiam condimentum sollicitudin nibh, sed congue magna sodales sed. Cras pharetra tellus ipsum, sed venenatis orci tincidunt et. Mauris lectus nisl, maximus eu massa vel, laoreet accumsan magna. Etiam ac elementum velit. Sed ex leo, imperdiet at pretium eu, hendrerit id risus. Phasellus id consectetur ex. Donec egestas tristique odio et tincidunt. Suspendisse vel elementum mauris.
-            </p>
+                <iframe 
+                    width="300" 
+                    height="170" 
+                    frameborder="0" 
+                    scrolling="no" 
+                    marginheight="0" 
+                    marginwidth="0" 
+                    src="https://maps.google.com/maps?q={{geolocalizacion.latitude}},{{geolocalizacion.longitude}}&hl=es;z=14&amp;output=embed"
+                    >
+                </iframe>
+                <br />
+                <small>
+                    <a 
+                        href="https://maps.google.com/maps?q={{geolocalizacion.latitude}},{{geolocalizacion.longitude}}&hl=es;z=14&amp;output=embed"  
+                        target="_blank"
+                        >
+                            Ampliar mapa
+                    </a>
+                </small>
+            </div>
+            <div class="tab-pane fade" id="photos" role="tabpanel">
+                {% for foto in fotos %}
+                    <img class="img-fluid" src="{{foto.url}}" />
+                    <br><br>
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="contact" role="tabpanel">
+                <p>¡Contacta con {{artista.name}} para iniciar el chat y preparar un nuevo evento!</p>
+                <button href="chat/{{local.id}}" class="btn btn-primary btn-lg">Contactar ahora</button>
+            </div>
         </div>
     </div>
 </div>

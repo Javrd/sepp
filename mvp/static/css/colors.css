@@ -869,7 +869,7 @@ body.modal-open,
     color: #FFFFFF; 
 }
 .colored-section .card .card-block p, .colored-section .tab-content .tab-pane p{
-    color: #292b2c !important;
+    color: #FFFFFF !important;
 }
 .colored-section .nav-pills .nav-item .nav-link{
     color: #fff;

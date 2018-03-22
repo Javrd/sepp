@@ -38,18 +38,9 @@
     margin-bottom: 0px;
 }
 
-.profileData {
-    height: 60vh;
-    overflow-y: hidden;
-}
-
 .profileData>.nav {
     overflow-x: scroll;
     background-color: aliceblue;
-}
-
-.profileData>.container {
-    overflow-y: scroll;
 }
 
 .nav-pills>.nav-item>.nav-link:hover {

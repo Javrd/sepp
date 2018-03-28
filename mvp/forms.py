@@ -17,7 +17,12 @@ class OfferForm(ModelForm):
 class VenueProfileForm(ModelForm):
     class Meta:
         model = Venue
-        fields = ['id', 'name', 'email', 'logo', 'description', 'address', 'capacity']
+        fields = ['name', 'email', 'logo', 'description', 'address', 'capacity']
+
+class ArtistProfileForm(ModelForm):
+    class Meta:
+        model = Artist
+        fields = ['name', 'email', 'logo', 'description', 'artistNumber']
 
 class GeolocationForm(ModelForm):
     class Meta:

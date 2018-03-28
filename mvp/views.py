@@ -60,6 +60,46 @@ def formulario_perfil_venue(request):
     context = {'venueForm': venueForm, 'geoForm': geoForm, 'photoFormSet': photoFormSet}
     return render(request, './formulario_perfil_local.html', context)
 
+@permission_required('mvp.artist', login_url="/login")
+def formulario_perfil_artist(request):
+    artist = Artist.objects.get(id=request.user.id)
+    formSetPhoto = modelformset_factory(Photo, fields=('url','id',), )
+    formSetTag = modelformset_factory(Tag, fields=('name','id',), )
+    formSetMedia = modelformset_factory(Media, fields=('url','id',), )
+    if request.method=='POST':
+        artistForm = ArtistProfileForm(request.POST, instance=artist, prefix='Art')
+        photoFormSet = formSetPhoto(request.POST, request.FILES, prefix='Photo', )
+        tagFormSet = formSetTag(request.POST, request.FILES, prefix='Tag', )
+        mediaFormSet = formSetMedia(request.POST, request.FILES, prefix='Media', )
+        for media in mediaFormSet:
+            print(media)
+        if (artistForm.is_valid() and photoFormSet.is_valid() and tagFormSet.is_valid() 
+            and mediaFormSet.is_valid()):
+            artistForm.save()
+            photos = photoFormSet.save(commit=False)
+            for photo in photos:
+                photo.user = request.user
+                photo.save()
+            tags = tagFormSet.save(commit=False)
+            for tag in tags:
+                tag.artist_id = request.user.id
+                tag.save()
+            medias = mediaFormSet.save(commit=False)
+            for media in medias:
+                media.artist_id = request.user.id
+                media.save()
+            return HttpResponseRedirect("/vista_artista/"+str(request.user.id))
+    else:
+        
+        artistForm = ArtistProfileForm(instance=artist, prefix='Art')
+        photoFormSet = formSetPhoto(queryset=Photo.objects.filter(user_id=request.user.id), prefix='Photo')
+        tagFormSet = formSetTag(queryset=Tag.objects.filter(artist_id=request.user.id), prefix='Tag')
+        mediaFormSet = formSetMedia(queryset=Media.objects.filter(artist_id=request.user.id), prefix='Media')
+
+    context = {'artistForm': artistForm, 'photoFormSet': photoFormSet, 'tagFormSet': tagFormSet,
+        'mediaFormSet': mediaFormSet}
+    return render(request, './formulario_perfil_artista.html', context)
+
 def indexRedir(request):
     return redirect("/artinbar")
 

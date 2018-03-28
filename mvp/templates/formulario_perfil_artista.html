@@ -1,0 +1,49 @@
+{% extends "common/masterpage.html" %}
+{% block title %}Editar Local{% endblock %}
+{% block content %}
+<section class="container fullPage">
+    <form class="form-group" action="/editar_artista" method="post">
+        {% csrf_token %}
+        <div>Perfil</div>
+        <div>Nombre: {{artistForm.name}}</div>
+        <div>Email: {{artistForm.email}}</div>
+        <div>Logo: {{artistForm.logo}}</div>
+        <div>Descripcion: {{artistForm.description}}</div>
+        <div>Número de integrantes: {{artistForm.artistNumber}}</div>
+        <br/>
+        <div>
+            {{ photoFormSet.management_form }}
+            {% for form in photoFormSet %}
+                {{ form.id }}
+                <div>Foto: {{ form.url }}</div>
+                </ul>
+            {% endfor %}
+        </div>
+        <div>
+            {{ tagFormSet.management_form }}
+            {% for form in tagFormSet %}
+                {{ form.id }}
+                <div>Etiqueta: {{ form.name }}</div>
+                </ul>
+            {% endfor %}
+        </div>
+        <div>
+            {{ mediaFormSet.management_form }}
+            {% for form in mediaFormSet %}
+                {{ form.id }}
+                <div>Multimedia: {{ form.url }}</div>
+                </ul>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center">
+                <input type="submit" class="btn btn-round btn-primary" value="Editar" />
+            </div>
+    </form>
+
+    {{artistForm.errors}}
+    <br/>photo:{{photoFormSet.errors}}
+    <br/>tag:{{tagFormSet.errors}}
+    <br/>media:{{mediaFormSet.errors}}
+</section>
+{% endblock %}

@@ -15,18 +15,18 @@
         <div>Geolocalización</div>
         <div>Latitud: {{geoForm.latitude}}</div>
         <div>Longitud: {{geoForm.longitude}}</div>
-        <div class="text-center">
-            <input type="submit" class="btn btn-round btn-primary" value="Editar" />
+        <div>
+            {{ photoFormSet.management_form }}
+            {% for form in photoFormSet %}
+                {{ form.id }}
+                <div>Foto: {{ form.url }}</div>
+                </ul>
+            {% endfor %}
         </div>
-        {{ photoFormSet.management_form }}
-        {% for form in photoFormSet %}
-            {{ form.id }}
-            <div>Foto: {{ form.url }}</div>
-            </ul>
-        {% endfor %}
+
+        <div class="text-center">
+                <input type="submit" class="btn btn-round btn-primary" value="Editar" />
+            </div>
     </form>
-    {{venueForm.errors}}
-    {{geoForm.errors}}
-    {{photoFormSet.errors}}
 </section>
 {% endblock %}

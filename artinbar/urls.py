@@ -31,5 +31,6 @@ urlpatterns = [
     path('chat/', views.chat, name='chat'),
     path('chat/<user_id>/', views.chat, name='chat'),
     path('chat/<user_id>/sync', views.chat_sync, name='chat_sync'),
-    path('editar_local', views.formulario_perfil_venue, name='formulario_perfil_venue')
+    path('editar_local', views.formulario_perfil_venue, name='formulario_perfil_venue'),
+    path('editar_artista', views.formulario_perfil_artist, name='formulario_perfil_artist')
 ]

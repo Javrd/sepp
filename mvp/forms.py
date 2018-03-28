@@ -1,7 +1,6 @@
 from django.forms import ModelForm
-from .models import Offer
+from .models import *
 from django.utils.translation import gettext_lazy as _
-
 
 class OfferForm(ModelForm):
     class Meta:
@@ -14,3 +13,13 @@ class OfferForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(OfferForm, self).__init__(*args, **kwargs)
         self.venue = user
+
+class VenueProfileForm(ModelForm):
+    class Meta:
+        model = Venue
+        fields = ['id', 'name', 'email', 'logo', 'description', 'address', 'capacity']
+
+class GeolocationForm(ModelForm):
+    class Meta:
+        model = Geolocation
+        fields = ['latitude', 'longitude']

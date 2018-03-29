@@ -1,8 +1,6 @@
 ##Venue:name,email,description,logo,geolocation,address,capactity,venuesId
-Venue1,Venue1@email.com,this is a description,urlexample,11.0/5.0,address1,5,201
-Venue2,Venue2@email.com,this is a description,urlexample,55.0/5.0,address2,5,202
-Venue3,Venue3@email.com,this is a description,urlexample,56.0/5.0,address3,5,203
-Venue4,Venue4@email.com,this is a description,urlexample,65.0/5.0,address4,5,204
-Venue5,Venue5@email.com,this is a description,urlexample,82.0/5.0,address5,5,205
-Venue7,Venue7@email.com,this is a description,urlexample,55.0/5.0,address6,5,206
-Venue6,Venue6@email.com,this is a description,urlexample,25.0/5.0,address6,5,207
+La SemiCorchea,la_semicorchea@qmail.com,Esta es la descripción del bar de música en directo La SemiCorchea,https://png.pngtree.com/element_origin_min_pic/17/01/07/8ca565efc02b1b0a3294c566438b865d.jpg,50.0/2.0,Calle Guatemala 35,200,201
+El Piano,el_piano@qmail.com,Esta es la descripción del bar de música en directo El Piano,https://i.pinimg.com/originals/cf/4b/91/cf4b912518d06c25b52010fa5f5abd4f.png,35.0/21.0,Calle La Tecla 20,150,202
+La Carcajada,la_carcajada@qmail.com,Esta es la descripción del bar de espectáculos en directo La Carcajada,http://www.fullblog.com.ar/blogs/argentavis/1269714062767856.jpg,25.0/21.0,Calle Chorrada 23,60,203
+Comedia,comedia@qmail.com,Esta es la descripción del bar de espectáculos en directo Comedia,http://fotologimg.s3.amazonaws.com/photo/27/20/120/ju_tiago/1240775466257_f.jpg,10.0/21.0,Calle Comediante 11,70,204
+La Chistera,la_chistera@qmail.com,Esta es la descripción del bar de espectáculos de mágia en directo La Chistera,https://t4.ftcdn.net/jpg/01/40/62/15/240_F_140621506_bHQkLf3akfveFCVVi4PZ5qS7DQtaGfkh.jpg,10.0/21.0,Calle Varita 13,55,205

@@ -1,13 +1,16 @@
-from django.contrib.auth.forms import *
 from django.forms import ModelForm
-from .models import Venue, Artist, Geolocation
-from django import forms
+from .models import Offer
+from django.utils.translation import gettext_lazy as _
 
 
-class VenueForm(UserCreationForm):
+class OfferForm(ModelForm):
     class Meta:
-        model = Venue
-        fields = ['name', 'email', 'username', 'logo', 'description', 'address', 'capacity']
+        model = Offer
+        fields = ['name', 'description', 'offeredAmount', 'date']
+        labels = {
+            'name': _('Nombre'), 'description': _('Descripción'),
+            'offeredAmount': _('Cantidad ofrecida'), 'date': _('Fecha'),
+        }
 
 class GeolocationForm(ModelForm):
 
@@ -24,3 +27,7 @@ class ArtistForm(forms.ModelForm):
         fields = ['name', 'username', 'password', 'email', 'logo', 'description', 'artistNumber']
 
 
+        
+    def __init__(self, user, *args, **kwargs):
+        super(OfferForm, self).__init__(*args, **kwargs)
+        self.venue = user

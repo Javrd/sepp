@@ -1,0 +1,20 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Ofertas{% endblock %}
+{% block content %}
+<div class="colored-section bg-inverse">
+    <section class="container fullPage">
+        <br>
+        <h2>Ofertas</h2>
+        {% if offer_list %}           
+            <div class="offer-list">   
+                {% for offer in offer_list %}
+                    {% include "offerCard.html" %}
+                {% endfor %} 
+            </div>  
+            {% else %}
+                <p>No hay listas disponibles.</p>            
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

@@ -15,14 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import url
-from mvp.views import *
+from django.contrib.auth.views import logout
 from mvp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.indexRedir, name='index'),
-    path('artinbar', views.index, name='index'),
-    url('newVenue/', nuevoVenue),
-    url(r'^register_artist$', registerArtistView.as_view(), name='register_artist'),
+    path('lista_ofertas/',  views.lista_ofertas, name='lista_ofertas'),
+    path('',  views.indexRedir, name='index'),
+    path('artinbar',  views.index, name='index'),
+    path('formulario_oferta/',  views.formulario_oferta, name='formulario_oferta'),
+    path('logout', logout, {'next_page': '/artinbar'}, name='logout'),
+    path('login', views.login, name='login'),
+    path('vista_artista/<int:id_artista>/',
+         views.vista_artista, name='vista_artista'),
+    path('vista_local/<int:id_local>/', views.vista_local, name='vista_local'),
+    path('chat/', views.chat, name='chat'),
+    path('chat/<user_id>/', views.chat, name='chat'),
+    path('chat/<user_id>/sync', views.chat_sync, name='chat_sync')
 ]

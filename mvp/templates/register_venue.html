@@ -1,0 +1,13 @@
+<title>Locales</title>
+{% block titulo %}Nuevo local{% endblock %}
+{% block encabezado %}
+	<h1>Registrarse como un nuevo local</h1>
+{% endblock %}
+{% block contenido %}
+	<form id='formulario' method='post' action=''>{% csrf_token %}
+		{{venue_form.as_p}}
+        {{geo_form.as_p}}
+		<p><input type='submit' value='Register'/></p>
+	</form>
+{% endblock %}
+

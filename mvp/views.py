@@ -49,21 +49,6 @@ def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render({}, request))
 
-
-def nuevoVenue(request):
-    if request.method=='POST':
-        formulario = VenueForm(request.POST, prefix='Ven')
-        subformulario = GeolocationForm(request.POST, prefix='Geo')
-        if formulario.is_valid() and subformulario.is_valid():
-            newVenue = formulario.save()
-            newGeo = subformulario.save()
-            newVenue.geolocation = newGeo
-            newVenue.save()
-            return redirect("/artinbar")
-        else:
-            formulario = AuthenticationForm()
-            context = {'formulario': formulario}
-            return render(request, 'login.html', context)
 def login(request):
     if request.user.is_authenticated:
         return redirect("/artinbar")
@@ -78,14 +63,59 @@ def login(request):
         else:
             context = {'formulario': formulario}
             return render(request, 'login.html', context)
+    else:
+        formulario = AuthenticationForm()
+    context = {'formulario': formulario}
+    return render(request, 'login.html', context)
 
-class registerArtistView(View):
+'''
+def register_venue(request):
+    if request.method=='POST':
+        formulario = VenueForm(request.POST, prefix='Ven')
+        subformulario = GeolocationForm(request.POST, prefix='Geo')
+        if formulario.is_valid() and subformulario.is_valid():
+            newVenue = formulario.save()
+            newGeo = subformulario.save()
+            newVenue.geolocation = newGeo
+            newVenue.save()
+            return redirect("/artinbar")
+        else:
+            formulario = VenueForm(request.POST, prefix='Ven')
+            subformulario = GeolocationForm(request.POST, prefix='Geo')
+        context = {'formulario': formulario, 'subformulario': subformulario}
+        return render(request, 'venueForm.html', context)
+'''
+
+class register_venue(View):
+
+    def get(self, request):
+        form = VenueForm()
+        sub_form = GeolocationForm()
+
+        context = {'venue_form': form, 'geo_form': sub_form}
+        return render(request, 'register_venue.html', context)
+
+    def post(self, request):
+        form = VenueForm(request.POST)
+        sub_form = GeolocationForm(request.POST)
+        if form.is_valid() and sub_form.is_valid():
+            newVenue = form.save()
+            newGeo = sub_form.save()
+            newVenue.geolocation = newGeo
+            newVenue.save()
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
+        context = {'venue_form': form, 'geo_form': sub_form}
+        return render(request, 'register_venue.html', context)
+
+class register_artist(View):
 
     def get(self, request):
         form = ArtistForm()
         context = {'artist_form':form}
 
-        return render(request, 'artistForm.html', context)
+        return render(request, 'register_artist.html', context)
 
     def post(self, request):
 
@@ -106,8 +136,8 @@ class registerArtistView(View):
             url = request.GET.get('next', 'index')
             return redirect(url)
 
-        context =  {'form':form}
-        return render(request, 'artistForm.html', context)
+        context =  {'artist_form':form}
+        return render(request, 'register_artist.html', context)
 
 def vista_artista(request, id_artista):
     artista = get_object_or_404(Artist, pk=id_artista)

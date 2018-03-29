@@ -31,5 +31,8 @@ urlpatterns = [
     path('vista_local/<int:id_local>/', views.vista_local, name='vista_local'),
     path('chat/', views.chat, name='chat'),
     path('chat/<user_id>/', views.chat, name='chat'),
-    path('chat/<user_id>/sync', views.chat_sync, name='chat_sync')
+    path('chat/<user_id>/sync', views.chat_sync, name='chat_sync'),
+    path('', views.indexRedir, name='index'),
+    path('registerVenue', views.register_venue.as_view(), name='register_venue'),
+    path('registerArtist', views.register_artist.as_view(), name='register_artist'),
 ]

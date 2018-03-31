@@ -30,12 +30,12 @@ class VenueForm(UserCreationForm):
         model = Venue
         fields = ['name', 'email', 'username', 'logo', 'description', 'address', 'capacity']
 
-class ArtistForm(forms.ModelForm):
+class ArtistForm(UserCreationForm):
 
     class Meta:
         model = Artist
-        #exclude = []
-        fields = ['name', 'username', 'password', 'email', 'logo', 'description', 'artistNumber']
+        fields = ['name', 'username', 'email', 'logo', 'description', 'artistNumber']
+
 
 
 

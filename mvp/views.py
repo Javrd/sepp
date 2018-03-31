@@ -68,23 +68,6 @@ def login(request):
     context = {'formulario': formulario}
     return render(request, 'login.html', context)
 
-'''
-def register_venue(request):
-    if request.method=='POST':
-        formulario = VenueForm(request.POST, prefix='Ven')
-        subformulario = GeolocationForm(request.POST, prefix='Geo')
-        if formulario.is_valid() and subformulario.is_valid():
-            newVenue = formulario.save()
-            newGeo = subformulario.save()
-            newVenue.geolocation = newGeo
-            newVenue.save()
-            return redirect("/artinbar")
-        else:
-            formulario = VenueForm(request.POST, prefix='Ven')
-            subformulario = GeolocationForm(request.POST, prefix='Geo')
-        context = {'formulario': formulario, 'subformulario': subformulario}
-        return render(request, 'venueForm.html', context)
-'''
 
 class register_venue(View):
 
@@ -99,15 +82,16 @@ class register_venue(View):
         form = VenueForm(request.POST)
         sub_form = GeolocationForm(request.POST)
         if form.is_valid() and sub_form.is_valid():
-            newVenue = form.save()
-            newGeo = sub_form.save()
-            newVenue.geolocation = newGeo
-            newVenue.save()
+            new_venue = form.save()
+            new_geo = sub_form.save()
+            new_venue.geolocation = new_geo
+            new_venue.save()
             url = request.GET.get('next', 'index')
             return redirect(url)
 
         context = {'venue_form': form, 'geo_form': sub_form}
         return render(request, 'register_venue.html', context)
+
 
 class register_artist(View):
 
@@ -122,22 +106,15 @@ class register_artist(View):
         form = ArtistForm(request.POST)
         if form.is_valid():
 
-            form_data = form.cleaned_data
-            name = form_data.get("name")
-            description = form_data.get("description")
-            email = form_data.get("email")
-            username = form_data.get("username")
-            password = form_data.get("password")
-            logo = form_data.get("logo")
-            artist_number = form_data.get("artistNumber")
-            artist = Artist.objects.create_user(name=name, description=description, logo=logo, username=username,email=email,password=password, artistNumber=artist_number)
-
+            new_artist = form.save()
+            new_artist.save()
 
             url = request.GET.get('next', 'index')
             return redirect(url)
 
         context =  {'artist_form':form}
         return render(request, 'register_artist.html', context)
+
 
 def vista_artista(request, id_artista):
     artista = get_object_or_404(Artist, pk=id_artista)

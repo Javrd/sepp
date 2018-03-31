@@ -1,12 +1,67 @@
-<title>Artistas</title>
-{% block titulo %}Nuevo artista{% endblock %}
-{% block encabezado %}
-	<h1>Registrarse como un nuevo artista</h1>
-{% endblock %}
-{% block contenido %}
-	<form id='formulario' method='post' action=''>{% csrf_token %}
-		{{artist_form.as_p}}
-		<p><input type='submit' value='Register'/></p>
-	</form>
+{% extends "common/masterpage.html" %}
+
+{% block title %}Registro de Artista{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+
+<div class="colored-section bg-inverse" style="z-index: -1;">
+    <section class="container fullPage" style="z-index: 1;">
+        <br>
+        <h2>Registro de Artista</h2>
+
+        <form class="form-group" action="/registerVenue/" method="post">
+
+            {% with WIDGET_ERROR_CLASS='form-control-danger' %}
+            {% csrf_token %}
+
+			{{ form.username.errors }}
+            <label for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
+            {% render_field form.name class+="form-control" placeholder="Nombre para autenticarte en el sistema" %}
+			<br>
+			
+			{{ form.password.errors }}
+            <label for="{{ form.password.id_for_label }}">Contraseña:</label>
+            {% render_field form.name class+="form-control" placeholder="Contraseña para autenticarte en el sistema" %}
+			<br>
+			
+			{{ form.email.errors }}
+            <label for="{{ form.email.id_for_label }}">Email:</label>
+            {% render_field form.name class+="form-control" placeholder="Correo electrónico" %}
+            <br>
+
+            {{ form.name.errors }}
+            <label for="{{ form.name.id_for_label }}">Nombre:</label>
+            {% render_field form.name class+="form-control" placeholder="¿Cual es el nombre artístico o del grupo?" %}
+			<br>
+
+            {{ form.description.errors }}
+            <label for="{{ form.description.id_for_label }}">Descripción:</label>
+            <textarea class="form-control" name="description" required id="id_description" placeholder="Explica brevemente tus espectáculos"></textarea>
+			<br>
+			
+			{{ form.logo.errors }}
+            <label for="{{ form.logo.id_for_label }}">Logo:</label>
+            {% render_field form.name class+="form-control" placeholder="Url del logo o foto de perfil" %}
+            <br>
+
+            {{ form.artistNumber.errors }}
+            <label for="{{ form.artistNumber.id_for_label }}">Número de componentes:</label>            
+            <div class="input-group">
+                <input class="form-control" name="artistNumber" placeholder="¿Cuantas personas componen el grupo?" type="number">
+            </div>        
+            <br>
+            <div class="text-center">
+                <input type="submit" class="btn btn-round btn-primary" value="Crear" />
+            </div>
+            {% endwith %}
+        </form>
+    </section>
+</div>
+
+<div class="fixed-bottom" style="z-index: 0;">
+    <img src="../static/img/crowd.png" class="img-fluid" />
+</div>
+	
 {% endblock %}
 

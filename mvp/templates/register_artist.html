@@ -10,29 +10,29 @@
         <br>
         <h2>Registro de Artista</h2>
 
-        <form class="form-group" action="/registerVenue/" method="post">
+        <form class="form-group" action="registerArtist" method="post">
 
             {% with WIDGET_ERROR_CLASS='form-control-danger' %}
             {% csrf_token %}
 
 			{{ form.username.errors }}
             <label for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
-            {% render_field form.name class+="form-control" placeholder="Nombre para autenticarte en el sistema" %}
+            <input class="form-control" name="username" required id="id_username" placeholder="Nombre para autenticarte en el sistema"></input>
 			<br>
 			
 			{{ form.password.errors }}
             <label for="{{ form.password.id_for_label }}">Contraseña:</label>
-            {% render_field form.name class+="form-control" placeholder="Contraseña para autenticarte en el sistema" %}
+            <input class="form-control" name="password" required id="id_password" placeholder="Contraseña para autenticarte en el sistema"></input>
 			<br>
 			
 			{{ form.email.errors }}
             <label for="{{ form.email.id_for_label }}">Email:</label>
-            {% render_field form.name class+="form-control" placeholder="Correo electrónico" %}
+            <input class="form-control" name="email" required id="id_email" placeholder="Correo Electrónico"></input>
             <br>
 
             {{ form.name.errors }}
             <label for="{{ form.name.id_for_label }}">Nombre:</label>
-            {% render_field form.name class+="form-control" placeholder="¿Cual es el nombre artístico o del grupo?" %}
+            <input class="form-control" name="name" required id="id_name" placeholder="¿Cual es el nombre artístico o del grupo?"></input>
 			<br>
 
             {{ form.description.errors }}
@@ -42,7 +42,7 @@
 			
 			{{ form.logo.errors }}
             <label for="{{ form.logo.id_for_label }}">Logo:</label>
-            {% render_field form.name class+="form-control" placeholder="Url del logo o foto de perfil" %}
+            <input class="form-control" name="logo" required id="id_logo" placeholder="Url del logo o foto de perfil"></input>
             <br>
 
             {{ form.artistNumber.errors }}
@@ -52,7 +52,7 @@
             </div>        
             <br>
             <div class="text-center">
-                <input type="submit" class="btn btn-round btn-primary" value="Crear" />
+                <input type="submit" class="btn btn-round btn-primary" value="Registro" />
             </div>
             {% endwith %}
         </form>

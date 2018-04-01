@@ -10,7 +10,7 @@
         <br>
         <h2>Registro de Artista</h2>
 
-        <form class="form-group" action="registerArtist" method="post">
+        <form class="form-group" action="" method="post">
 
             {% with WIDGET_ERROR_CLASS='form-control-danger' %}
             {% csrf_token %}
@@ -20,9 +20,21 @@
             <input class="form-control" name="username" required id="id_username" placeholder="Nombre para autenticarte en el sistema"></input>
 			<br>
 			
-			{{ form.password.errors }}
-            <label for="{{ form.password.id_for_label }}">Contraseña:</label>
-            <input class="form-control" name="password" required id="id_password" placeholder="Contraseña para autenticarte en el sistema"></input>
+			{{ form.password1.errors }}
+            <label for="{{ form.password1.id_for_label }}">Contraseña:</label>
+            <input type="password" class="form-control" name="password1" required id="id_password1" placeholder="Contraseña para autenticarte en el sistema"></input>
+			<span class="helptext">
+				<ul>
+					<li>Tu contraseña no puede ser similar al resto de tu información</li>
+					<li>Tu contraseña debe tener al menos 8 caracteres</li>
+					<li>Tu contraseña no puede ser de uso común</li>
+					<li>Tu contraseña no puede estar compuesta solo por numeros</li>
+				</ul>
+			</span>
+			<br>
+            {{ form.password2.errors }}
+            <label for="{{ form.password2.id_for_label }}">Confirmación de contraseña:</label>
+            <input type="password" class="form-control" name="password2" required id="id_password2" placeholder=""></input>
 			<br>
 			
 			{{ form.email.errors }}

@@ -42,7 +42,17 @@ def formulario_perfil_venue(request):
         venueForm = VenueProfileForm(request.POST, instance=venue, prefix='Ven')
         geoForm = GeolocationForm(request.POST, instance=geoloc,prefix='Geo')
         photoFormSet = formSet(request.POST, request.FILES, )
-        if venueForm.is_valid() and geoForm.is_valid() and photoFormSet.is_valid():
+
+        if 'deletePhoto' in request.POST:
+            idPhoto = request.POST.get('photoToDelete')
+            if(idPhoto != None):
+                photo = Photo.objects.get(id=idPhoto)
+                if(photo.user == request.user):
+                    photo.delete()
+                    photoFormSet = formSet(queryset=Photo.objects.filter(user_id=request.user.id))
+
+        elif ('edit' in request.POST and venueForm.is_valid() and geoForm.is_valid() 
+            and photoFormSet.is_valid()):
             newVenue = venueForm.save(commit=False)
             newVenue.geolocation = geoForm.save(commit=False)
             newVenue.save()
@@ -65,16 +75,36 @@ def formulario_perfil_artist(request):
     artist = Artist.objects.get(id=request.user.id)
     formSetPhoto = modelformset_factory(Photo, fields=('url','id',), )
     formSetTag = modelformset_factory(Tag, fields=('name','id',), )
-    formSetMedia = modelformset_factory(Media, fields=('url','id',), )
+    formSetMedia = modelformset_factory(Media, fields=('url','id',), )    
     if request.method=='POST':
         artistForm = ArtistProfileForm(request.POST, instance=artist, prefix='Art')
         photoFormSet = formSetPhoto(request.POST, request.FILES, prefix='Photo', )
         tagFormSet = formSetTag(request.POST, request.FILES, prefix='Tag', )
         mediaFormSet = formSetMedia(request.POST, request.FILES, prefix='Media', )
-        for media in mediaFormSet:
-            print(media)
-        if (artistForm.is_valid() and photoFormSet.is_valid() and tagFormSet.is_valid() 
-            and mediaFormSet.is_valid()):
+
+        if 'deletePhoto' in request.POST:
+            idPhoto = request.POST.get('photoToDelete')
+            if(idPhoto != None):
+                photo = Photo.objects.get(id=idPhoto)
+                if(photo.user == request.user):
+                    photo.delete()
+                    photoFormSet = formSetPhoto(queryset=Photo.objects.filter(user_id=request.user.id), prefix='Photo')
+        elif 'deleteTag' in request.POST:
+            idTag = request.POST.get('tagToDelete')
+            if(idTag != None):
+                tag = Tag.objects.get(id=idTag)
+                if(tag.artist_id == request.user.id):
+                    tag.delete()
+                    tagFormSet = formSetTag(queryset=Tag.objects.filter(artist_id=request.user.id), prefix='Tag')
+        elif 'deleteMedia' in request.POST:
+            idMedia = request.POST.get('mediaToDelete')
+            if(idMedia != None):
+                media = Media.objects.get(id=idMedia)
+                if(media.artist_id == request.user.id):
+                    media.delete()
+                    mediaFormSet = formSetMedia(queryset=Media.objects.filter(artist_id=request.user.id), prefix='Media')
+        elif ('edit' in request.POST and artistForm.is_valid() and photoFormSet.is_valid() 
+            and tagFormSet.is_valid() and mediaFormSet.is_valid()):
             artistForm.save()
             photos = photoFormSet.save(commit=False)
             for photo in photos:

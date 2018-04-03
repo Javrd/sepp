@@ -15,35 +15,43 @@
             {{ photoFormSet.management_form }}
             {% for form in photoFormSet %}
                 {{ form.id }}
-                <div>Foto: {{ form.url }}</div>
-                </ul>
-            {% endfor %}
+                <div> Foto: {{ form.url }}
+                    {% if form.id.value != None and form.id.value != "" %}
+                        <input type="radio" name="photoToDelete" value='{{ form.id.value }}'/>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <input type="submit" name="deletePhoto" value='Borrar foto seleccionada' />
         </div>
         <div>
             {{ tagFormSet.management_form }}
             {% for form in tagFormSet %}
                 {{ form.id }}
-                <div>Etiqueta: {{ form.name }}</div>
-                </ul>
-            {% endfor %}
+                <div>Etiqueta: {{ form.name }}
+                    {% if form.id.value != None and form.id.value != "" %}
+                        <input type="radio" name="tagToDelete" value='{{ form.id.value }}'/>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <input type="submit" name="deleteTag" value='Borrar etiqueta seleccionada' />
         </div>
         <div>
             {{ mediaFormSet.management_form }}
             {% for form in mediaFormSet %}
                 {{ form.id }}
-                <div>Multimedia: {{ form.url }}</div>
-                </ul>
-            {% endfor %}
+                <div>Multimedia: {{ form.url }}
+                    {% if form.id.value != None and form.id.value != "" %}
+                        <input type="radio" name="mediaToDelete" value='{{ form.id.value }}'/>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <input type="submit" name="deleteMedia" value='Borrar media seleccionada' />
         </div>
         
         <div class="text-center">
-                <input type="submit" class="btn btn-round btn-primary" value="Editar" />
+                <input type="submit" class="btn btn-round btn-primary" name="edit" value="Editar" />
             </div>
     </form>
-
-    {{artistForm.errors}}
-    <br/>photo:{{photoFormSet.errors}}
-    <br/>tag:{{tagFormSet.errors}}
-    <br/>media:{{mediaFormSet.errors}}
+    
 </section>
 {% endblock %}

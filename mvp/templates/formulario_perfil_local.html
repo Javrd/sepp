@@ -19,14 +19,18 @@
             {{ photoFormSet.management_form }}
             {% for form in photoFormSet %}
                 {{ form.id }}
-                <div>Foto: {{ form.url }}</div>
-                </ul>
+                <div> Foto: {{ form.url }}
+                    {% if form.id.value != None and form.id.value != "" %}
+                        <input type="radio" name="photoToDelete" value='{{ form.id.value }}'/>
+                    {% endif %}
+                </div>
             {% endfor %}
+            <input type="submit" name="deletePhoto" value='Borrar foto seleccionada' />
         </div>
 
         <div class="text-center">
-                <input type="submit" class="btn btn-round btn-primary" value="Editar" />
-            </div>
+            <input type="submit" name="edit" class="btn btn-round btn-primary" value="Editar" />
+        </div>
     </form>
 </section>
 {% endblock %}

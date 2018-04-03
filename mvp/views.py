@@ -63,7 +63,12 @@ def login(request):
 def chat(request, user_id=None):
 
     principal = request.user
+    print(user_id)
+    print(principal.id)
     if not user_id:
+        contacts = (User.objects.filter(receivers__in=[principal]) | User.objects.filter(senders__in=[principal])).distinct()
+        return render(request,'contacts.html', {'contacts':contacts})
+    elif user_id == str(principal.id):
         contacts = (User.objects.filter(receivers__in=[principal]) | User.objects.filter(senders__in=[principal])).distinct()
         return render(request,'contacts.html', {'contacts':contacts})
 

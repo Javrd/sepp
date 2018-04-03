@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, redirect, render
 from django.template import loader
 from datetime import datetime
-
+import re
 from .forms import *
 from .models import *
 
@@ -16,7 +16,7 @@ def lista_ofertas(request):
     offer_list = Offer.objects.all()
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
-    
+
 @permission_required('mvp.venue', login_url="/login")
 def formulario_oferta(request):
     if request.method == 'POST':
@@ -61,12 +61,12 @@ def login(request):
 
 @login_required(login_url='/login')
 def chat(request, user_id=None):
-    
+
     principal = request.user
     if not user_id:
         contacts = (User.objects.filter(receivers__in=[principal]) | User.objects.filter(senders__in=[principal])).distinct()
         return render(request,'contacts.html', {'contacts':contacts})
-    
+
     else:
         contact = User.objects.get(id=user_id)
 
@@ -76,14 +76,14 @@ def chat(request, user_id=None):
             data = {}
             data['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
             data['text'] = msg.text
-            return JsonResponse(data)   
+            return JsonResponse(data)
 
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(receiver=contact, sender=principal).order_by('timeStamp')
         last_contact_message = Message.objects.filter(receiver=principal, sender=contact).order_by('-timeStamp')
         if last_contact_message:
             last_contact_message = last_contact_message[0].id
         else:
-            last_contact_message = -1    
+            last_contact_message = -1
         return render(request,'chat.html',{'messages':messages, 'contact':contact, 'last_contact_message':last_contact_message})
 
 
@@ -98,8 +98,8 @@ def chat_sync(request, user_id=None):
         data = {}
         if msg:
             data['date'] = msg[0].timeStamp.strftime("%d/%m/%Y %H:%m")
-            data['text'] = msg[0].text
+            data['text'] = re.escape(msg[0].text)
             data['id'] = msg[0].id
         else:
             data['id'] = -1
-        return JsonResponse(data)   
+        return JsonResponse(data)

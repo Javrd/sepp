@@ -14,6 +14,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
 from django.template import loader
 from datetime import datetime
+from django.contrib.auth.models import Permission
 
 from .forms import *
 from .models import *
@@ -85,6 +86,8 @@ class register_venue(View):
             new_venue = form.save()
             new_geo = sub_form.save()
             new_venue.geolocation = new_geo
+            permission = Permission.objects.get(codename='venue')
+            new_venue.user_permissions.add(permission)
             new_venue.save()
             url = request.GET.get('next', 'index')
             return redirect(url)
@@ -107,6 +110,8 @@ class register_artist(View):
         if form.is_valid():
 
             new_artist = form.save()
+            permission = Permission.objects.get(codename='artist')
+            new_artist.user_permissions.add(permission)
             new_artist.save()
 
             url = request.GET.get('next', 'index')

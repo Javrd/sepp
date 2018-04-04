@@ -26,6 +26,9 @@ urlpatterns = [
     path('formulario_oferta/',  views.formulario_oferta, name='formulario_oferta'),
     path('logout', logout, {'next_page': '/artinbar'}, name='logout'),
     path('login', views.login, name='login'),
+    path('vista_artista/<int:id_artista>/',
+         views.vista_artista, name='vista_artista'),
+    path('vista_local/<int:id_local>/', views.vista_local, name='vista_local'),
     path('chat/', views.chat, name='chat'),
     path('chat/<user_id>/', views.chat, name='chat'),
     path('chat/<user_id>/sync', views.chat_sync, name='chat_sync')

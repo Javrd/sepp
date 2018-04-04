@@ -6,9 +6,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, redirect, render
 from django.template import loader
 from datetime import datetime
-import re
 from .forms import *
 from .models import *
+import re
 
 
 # Create your views here.
@@ -63,8 +63,7 @@ def login(request):
 def chat(request, user_id=None):
 
     principal = request.user
-    print(user_id)
-    print(principal.id)
+
     if not user_id:
         contacts = (User.objects.filter(receivers__in=[principal]) | User.objects.filter(senders__in=[principal])).distinct()
         return render(request,'contacts.html', {'contacts':contacts})
@@ -82,7 +81,7 @@ def chat(request, user_id=None):
             data['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
             data['text'] = msg.text
             return JsonResponse(data)
-
+                        
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(receiver=contact, sender=principal).order_by('timeStamp')
         last_contact_message = Message.objects.filter(receiver=principal, sender=contact).order_by('-timeStamp')
         if last_contact_message:

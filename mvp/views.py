@@ -6,9 +6,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
 from django.template import loader
 from datetime import datetime
-
 from .forms import *
 from .models import *
+import re
 
 
 # Create your views here.
@@ -16,7 +16,6 @@ def lista_ofertas(request):
     offer_list = Offer.objects.all()
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
-
 
 @permission_required('mvp.venue', login_url="/login")
 def formulario_oferta(request):
@@ -85,6 +84,7 @@ def vista_local(request, id_local):
 def chat(request, user_id=None):
 
     principal = request.user
+
     if not user_id:
         contacts = (User.objects.filter(receivers__in=[principal]) | User.objects.filter(
             senders__in=[principal])).distinct()
@@ -124,7 +124,7 @@ def chat_sync(request, user_id=None):
         data = {}
         if msg:
             data['date'] = msg[0].timeStamp.strftime("%d/%m/%Y %H:%m")
-            data['text'] = msg[0].text
+            data['text'] = re.escape(msg[0].text)
             data['id'] = msg[0].id
         else:
             data['id'] = -1

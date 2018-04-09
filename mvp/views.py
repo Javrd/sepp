@@ -10,6 +10,7 @@ from django.forms import modelformset_factory
 
 from .forms import *
 from .models import *
+import re
 
 
 # Create your views here.
@@ -17,7 +18,6 @@ def lista_ofertas(request):
     offer_list = Offer.objects.all()
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
-
 
 @permission_required('mvp.venue', login_url="/login")
 def formulario_oferta(request):
@@ -182,6 +182,7 @@ def vista_local(request, id_local):
 def chat(request, user_id=None):
 
     principal = request.user
+
     if not user_id:
         contacts = (User.objects.filter(receivers__in=[principal]) | User.objects.filter(
             senders__in=[principal])).distinct()
@@ -216,13 +217,16 @@ def chat_sync(request, user_id=None):
         principal = request.user
         contact = User.objects.get(id=user_id)
         form = request.POST
-        msg = Message.objects.filter(
+        messages = Message.objects.filter(
             receiver=principal, sender=contact).order_by('-timeStamp')
-        data = {}
-        if msg:
-            data['date'] = msg[0].timeStamp.strftime("%d/%m/%Y %H:%m")
-            data['text'] = msg[0].text
-            data['id'] = msg[0].id
-        else:
-            data['id'] = -1
-        return JsonResponse(data)
+        data = []
+        list = {'list': data}
+        for i,msg in enumerate(messages):
+            if (form["lastMessageId"] == msg.id):
+                break
+            data.append({})
+            data[i]['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
+            data[i]['text'] = msg.text
+            data[i]['id'] = msg.id
+        data.reverse()
+        return JsonResponse(list)

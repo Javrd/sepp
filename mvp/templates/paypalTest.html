@@ -1,0 +1,74 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Paypal payment test{% endblock %}
+{% block content %}
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+<div class="colored-section bg-inverse">
+        <section class="container fullPage">
+    <h1>Realizando un pago como {{user.name}} a {{venue.name}}</h1>
+    <form class="form-group" action="/payment" method="post">
+        {% with WIDGET_ERROR_CLASS='form-control-danger' %}
+        {% csrf_token %}
+        
+        <input type="hidden" name="payer" value="{{user.id}}"/>        
+        
+        <label for="payee">Destinatario (email): </label>
+        <br>
+        <input type="email" class="form-control" name="payee" id="payee" value="artist1@artinbar.com"/>  
+        <br>
+
+        <label for="amount">Precio ofrecido:</label>            
+        <div class="input-group">
+            <input class="form-control" name="amount" id="amount" placeholder="Cantidad en Euros" type="number">
+            <span class="input-group-btn">
+                <spam class="btn btn-primary"><em class="fa fa-euro"></em></spam>
+            </span>
+        </div>        
+        <br>
+
+        <div id="paypal-button"></div>
+        {% endwith %}
+    </form>    
+    </section>
+</div>
+
+<script>
+    var CREATE_PAYMENT_URL  = 'http://localhost:8000/payment';
+    var EXECUTE_PAYMENT_URL = 'http://localhost:8000/executePayment';
+
+    paypal.Button.render({
+
+        env: 'sandbox', // Or 'sandbox'
+
+        commit: true, // Show a 'Pay Now' button
+
+        payment: function() {
+            return paypal.request.post(CREATE_PAYMENT_URL,{
+                payee: $('#payee').val(),
+                amount: $('#amount').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }).then(function(data) {
+                return data.id;
+            });
+        },
+
+        onAuthorize: function(data) {
+            return paypal.request.post(EXECUTE_PAYMENT_URL, {
+                paymentID: data.paymentID,
+                payerID:   data.payerID,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }).then(function(data) {
+                if (data == 'OK'){
+                    alert('Pago confirmado correctamente');
+                } else if (data == 'ERROR'){
+                    alert('Pago no confirmado')
+                } else{
+                    alert('Error en el pago')
+                }
+            });
+        }
+
+    }, '#paypal-button');
+</script>
+{% endblock %}

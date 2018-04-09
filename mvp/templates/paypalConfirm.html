@@ -4,33 +4,10 @@
 {% block content %}
 <div class="colored-section bg-inverse">
         <section class="container fullPage">
-    <h1>Realizando un pago como {{user.name}} a {{venue.name}}</h1>
-    <form class="form-group" action="/payment" method="post">
-        {% with WIDGET_ERROR_CLASS='form-control-danger' %}
-        {% csrf_token %}
-        
-        <input type="hidden" name="payer" value="{{user.id}}"/>        
-        
-        <label for="payee">Destinatario (email): </label>
-        <br>
-        <input type="email" class="form-control" name="payee" value="artist1@artinbar.com"/>  
-        <br>
+    <h1>TODO</h1>
+    
+    {{payment.id}}
 
-        <label for="amount">Precio ofrecido:</label>            
-        <div class="input-group">
-            <input class="form-control" name="amount" id="amount" placeholder="Cantidad en Euros" type="number">
-            <span class="input-group-btn">
-                <spam class="btn btn-primary"><em class="fa fa-euro"></em></spam>
-            </span>
-        </div>        
-        <br>
-
-
-        <div class="text-center">
-            <input type="submit" class="btn btn-round btn-primary"/>
-        </div>
-        {% endwith %}
-    </form>
     </section>
 </div>
 {% endblock %}

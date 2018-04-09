@@ -60,7 +60,7 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }).then(function(data) {
                 if (data == 'OK'){
-                    alert('Pago confirmado correctamente');
+                    $(location).attr('href','/paymentConfirmation');
                 } else if (data == 'ERROR'){
                     alert('Pago no confirmado')
                 } else{

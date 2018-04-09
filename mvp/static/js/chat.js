@@ -46,5 +46,5 @@ function sync_messages(lastMessage){
                 }
             }
         })
-    }, 500);
+    }, 2000);
 }

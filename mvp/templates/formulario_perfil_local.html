@@ -1,0 +1,36 @@
+{% extends "common/masterpage.html" %}
+{% block title %}Editar Local{% endblock %}
+{% block content %}
+<section class="container fullPage">
+    <form class="form-group" action="/editar_local" method="post">
+        {% csrf_token %}
+        <div>Perfil</div>
+        <div>Nombre: {{venueForm.name}}</div>
+        <div>Email: {{venueForm.email}}</div>
+        <div>Logo: {{venueForm.logo}}</div>
+        <div>Descripcion: {{venueForm.description}}</div>
+        <div>Dirección: {{venueForm.address}}</div>
+        <div>Aforo: {{venueForm.capacity}}</div>
+        <br/>
+        <div>Geolocalización</div>
+        <div>Latitud: {{geoForm.latitude}}</div>
+        <div>Longitud: {{geoForm.longitude}}</div>
+        <div>
+            {{ photoFormSet.management_form }}
+            {% for form in photoFormSet %}
+                {{ form.id }}
+                <div> Foto: {{ form.url }}
+                    {% if form.id.value != None and form.id.value != "" %}
+                        <input type="radio" name="photoToDelete" value='{{ form.id.value }}'/>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <input type="submit" name="deletePhoto" value='Borrar foto seleccionada' />
+        </div>
+
+        <div class="text-center">
+            <input type="submit" name="edit" class="btn btn-round btn-primary" value="Editar" />
+        </div>
+    </form>
+</section>
+{% endblock %}

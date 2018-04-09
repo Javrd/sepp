@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
 from django.template import loader
 from datetime import datetime
+from django.forms import modelformset_factory
 
 from .forms import *
 from .models import *
@@ -32,6 +33,102 @@ def formulario_oferta(request):
 
     return render(request, './formulario_oferta.html', {'form': form})
 
+@permission_required('mvp.venue', login_url="/login")
+def formulario_perfil_venue(request):
+    venue = Venue.objects.get(id=request.user.id)
+    geoloc = Geolocation.objects.get(venue=request.user.id)
+    formSet = modelformset_factory(Photo, fields=('url','id',), )
+    if request.method=='POST':
+        venueForm = VenueProfileForm(request.POST, instance=venue, prefix='Ven')
+        geoForm = GeolocationForm(request.POST, instance=geoloc,prefix='Geo')
+        photoFormSet = formSet(request.POST, request.FILES, )
+
+        if 'deletePhoto' in request.POST:
+            idPhoto = request.POST.get('photoToDelete')
+            if(idPhoto != None):
+                photo = Photo.objects.get(id=idPhoto)
+                if(photo.user == request.user):
+                    photo.delete()
+                    photoFormSet = formSet(queryset=Photo.objects.filter(user_id=request.user.id))
+
+        elif ('edit' in request.POST and venueForm.is_valid() and geoForm.is_valid() 
+            and photoFormSet.is_valid()):
+            newVenue = venueForm.save(commit=False)
+            newVenue.geolocation = geoForm.save(commit=False)
+            newVenue.save()
+            photos = photoFormSet.save(commit=False)
+            for photo in photos:
+                photo.user = request.user
+                photo.save()
+            return HttpResponseRedirect("/vista_local/"+str(request.user.id))
+    else:
+        
+        venueForm = VenueProfileForm(instance=venue, prefix='Ven')
+        geoForm = GeolocationForm(instance=geoloc, prefix='Geo')
+        photoFormSet = formSet(queryset=Photo.objects.filter(user_id=request.user.id))
+
+    context = {'venueForm': venueForm, 'geoForm': geoForm, 'photoFormSet': photoFormSet}
+    return render(request, './formulario_perfil_local.html', context)
+
+@permission_required('mvp.artist', login_url="/login")
+def formulario_perfil_artist(request):
+    artist = Artist.objects.get(id=request.user.id)
+    formSetPhoto = modelformset_factory(Photo, fields=('url','id',), )
+    formSetTag = modelformset_factory(Tag, fields=('name','id',), )
+    formSetMedia = modelformset_factory(Media, fields=('url','id',), )    
+    if request.method=='POST':
+        artistForm = ArtistProfileForm(request.POST, instance=artist, prefix='Art')
+        photoFormSet = formSetPhoto(request.POST, request.FILES, prefix='Photo', )
+        tagFormSet = formSetTag(request.POST, request.FILES, prefix='Tag', )
+        mediaFormSet = formSetMedia(request.POST, request.FILES, prefix='Media', )
+
+        if 'deletePhoto' in request.POST:
+            idPhoto = request.POST.get('photoToDelete')
+            if(idPhoto != None):
+                photo = Photo.objects.get(id=idPhoto)
+                if(photo.user == request.user):
+                    photo.delete()
+                    photoFormSet = formSetPhoto(queryset=Photo.objects.filter(user_id=request.user.id), prefix='Photo')
+        elif 'deleteTag' in request.POST:
+            idTag = request.POST.get('tagToDelete')
+            if(idTag != None):
+                tag = Tag.objects.get(id=idTag)
+                if(tag.artist_id == request.user.id):
+                    tag.delete()
+                    tagFormSet = formSetTag(queryset=Tag.objects.filter(artist_id=request.user.id), prefix='Tag')
+        elif 'deleteMedia' in request.POST:
+            idMedia = request.POST.get('mediaToDelete')
+            if(idMedia != None):
+                media = Media.objects.get(id=idMedia)
+                if(media.artist_id == request.user.id):
+                    media.delete()
+                    mediaFormSet = formSetMedia(queryset=Media.objects.filter(artist_id=request.user.id), prefix='Media')
+        elif ('edit' in request.POST and artistForm.is_valid() and photoFormSet.is_valid() 
+            and tagFormSet.is_valid() and mediaFormSet.is_valid()):
+            artistForm.save()
+            photos = photoFormSet.save(commit=False)
+            for photo in photos:
+                photo.user = request.user
+                photo.save()
+            tags = tagFormSet.save(commit=False)
+            for tag in tags:
+                tag.artist_id = request.user.id
+                tag.save()
+            medias = mediaFormSet.save(commit=False)
+            for media in medias:
+                media.artist_id = request.user.id
+                media.save()
+            return HttpResponseRedirect("/vista_artista/"+str(request.user.id))
+    else:
+        
+        artistForm = ArtistProfileForm(instance=artist, prefix='Art')
+        photoFormSet = formSetPhoto(queryset=Photo.objects.filter(user_id=request.user.id), prefix='Photo')
+        tagFormSet = formSetTag(queryset=Tag.objects.filter(artist_id=request.user.id), prefix='Tag')
+        mediaFormSet = formSetMedia(queryset=Media.objects.filter(artist_id=request.user.id), prefix='Media')
+
+    context = {'artistForm': artistForm, 'photoFormSet': photoFormSet, 'tagFormSet': tagFormSet,
+        'mediaFormSet': mediaFormSet}
+    return render(request, './formulario_perfil_artista.html', context)
 
 def indexRedir(request):
     return redirect("/artinbar")

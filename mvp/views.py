@@ -119,13 +119,16 @@ def chat_sync(request, user_id=None):
         principal = request.user
         contact = User.objects.get(id=user_id)
         form = request.POST
-        msg = Message.objects.filter(
+        messages = Message.objects.filter(
             receiver=principal, sender=contact).order_by('-timeStamp')
-        data = {}
-        if msg:
-            data['date'] = msg[0].timeStamp.strftime("%d/%m/%Y %H:%m")
-            data['text'] = re.escape(msg[0].text)
-            data['id'] = msg[0].id
-        else:
-            data['id'] = -1
-        return JsonResponse(data)
+        data = []
+        list = {'list': data}
+        for i,msg in enumerate(messages):
+            if (form["lastMessageId"] == msg.id):
+                break
+            data.append({})
+            data[i]['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
+            data[i]['text'] = msg.text
+            data[i]['id'] = msg.id
+        data.reverse()
+        return JsonResponse(list)

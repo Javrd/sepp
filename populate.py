@@ -212,6 +212,7 @@ def importPayments():
 
 
 """Delete all data from database"""
+Geolocation.objects.all().delete()
 Permission.objects.all().delete()
 Artist.objects.all().delete()
 Venue.objects.all().delete()

@@ -15,14 +15,17 @@
             {% with WIDGET_ERROR_CLASS='form-control-danger' %}
             {% csrf_token %}
 
-			{{ form.username.errors }}
-            <label for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
-            <input class="form-control" name="username" required id="id_username" placeholder="Nombre para autenticarte en el sistema"></input>
+
+            {{ artist_form.username.errors }}
+            <label for="{{ artist_form.username.id_for_label }}">Nombre de usuario: </label>
+              {% render_field artist_form.username class+="form-control" placeholder="Nombre para autenticarte en el sistema" %}
+{#            <input class="form-control" name="username" required id="id_username" placeholder="Nombre para autenticarte en el sistema" ></input>#}
 			<br>
-			
-			{{ form.password1.errors }}
-            <label for="{{ form.password1.id_for_label }}">Contraseña:</label>
-            <input type="password" class="form-control" name="password1" required id="id_password1" placeholder="Contraseña para autenticarte en el sistema"></input>
+
+			{{ artist_form.password1.errors }}
+            <label for="{{ artist_form.password1.id_for_label }}">Contraseña:</label>
+            {% render_field artist_form.password1 class+="form-control" placeholder="Contraseña para autenticarte en el sistema" %}
+{#            <input type="password" class="form-control" name="password1" required id="id_password1" placeholder="Contraseña para autenticarte en el sistema"></input>#}
 			<span class="helptext">
 				<ul>
 					<li>Tu contraseña no puede ser similar al resto de tu información</li>
@@ -32,35 +35,41 @@
 				</ul>
 			</span>
 			<br>
-            {{ form.password2.errors }}
-            <label for="{{ form.password2.id_for_label }}">Confirmación de contraseña:</label>
-            <input type="password" class="form-control" name="password2" required id="id_password2" placeholder=""></input>
+            {{ artist_form.password2.errors }}
+            <label for="{{ artist_form.password2.id_for_label }}">Confirmación de contraseña:</label>
+            {% render_field artist_form.password2 class+="form-control" placeholder="Confirme la contraseña" %}
+{#            <input type="password" class="form-control" name="password2" required id="id_password2" placeholder=""></input>#}
 			<br>
 			
-			{{ form.email.errors }}
-            <label for="{{ form.email.id_for_label }}">Email:</label>
-            <input class="form-control" name="email" required id="id_email" placeholder="Correo Electrónico"></input>
+			{{ artist_form.email.errors }}
+            <label for="{{ artist_form.email.id_for_label }}">Email:</label>
+            {% render_field artist_form.email class+="form-control" placeholder="Correo Electrónico" %}
+{#            <input class="form-control" name="email" required id="id_email" placeholder="Correo Electrónico"></input>#}
             <br>
 
-            {{ form.name.errors }}
-            <label for="{{ form.name.id_for_label }}">Nombre:</label>
-            <input class="form-control" name="name" required id="id_name" placeholder="¿Cual es el nombre artístico o del grupo?"></input>
+            {{ artist_form.name.errors }}
+            <label for="{{ artist_form.name.id_for_label }}">Nombre:</label>
+            {% render_field artist_form.name class+="form-control" placeholder="¿Cual es el nombre artístico o del grupo?" %}
+{#            <input class="form-control" name="name" required id="id_name" placeholder="¿Cual es el nombre artístico o del grupo?"></input>#}
 			<br>
 
-            {{ form.description.errors }}
-            <label for="{{ form.description.id_for_label }}">Descripción:</label>
-            <textarea class="form-control" name="description" required id="id_description" placeholder="Explica brevemente tus espectáculos"></textarea>
+            {{ artist_form.description.errors }}
+            <label for="{{ artist_form.description.id_for_label }}">Descripción:</label>
+            {% render_field artist_form.description class+="form-control" placeholder="Explica brevemente tus espectáculos" %}
+{#            <textarea class="form-control" name="description" required id="id_description" placeholder="Explica brevemente tus espectáculos"></textarea>#}
 			<br>
 			
-			{{ form.logo.errors }}
-            <label for="{{ form.logo.id_for_label }}">Logo:</label>
-            <input class="form-control" name="logo" required id="id_logo" placeholder="Url del logo o foto de perfil"></input>
+			{{ artist_form.logo.errors }}
+            <label for="{{ artist_form.logo.id_for_label }}">Logo:</label>
+            {% render_field  artist_form.logo class+="form-control" placeholder="Url del logo o foto de perfil" %}
+{#            <input class="form-control" name="logo" required id="id_logo" placeholder="Url del logo o foto de perfil"></input>#}
             <br>
 
-            {{ form.artistNumber.errors }}
-            <label for="{{ form.artistNumber.id_for_label }}">Número de componentes:</label>            
+            {{ artist_form.artistNumber.errors }}
+            <label for="{{ artist_form.artistNumber.id_for_label }}">Número de componentes:</label>
             <div class="input-group">
-                <input class="form-control" name="artistNumber" placeholder="¿Cuantas personas componen el grupo?" type="number">
+                {% render_field  artist_form.artistNumber class+="form-control" placeholder="¿Cuantas personas componen el grupo?" %}
+{#                <input class="form-control" name="artistNumber" placeholder="¿Cuantas personas componen el grupo?" type="number">#}
             </div>        
             <br>
             <div class="text-center">

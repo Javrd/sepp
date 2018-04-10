@@ -56,6 +56,13 @@ class test_register_artist(TestCase):
                                      'artistNumber': 8})
         self.assertFalse(form7.is_valid())
 
+    def test_negative5(self):
+        form8 = ArtistForm(data={'email': "artist_test4@test.com", 'password1': "password_test45", 'password2': "password_test4",
+                                     'name': "name_test4", 'username': "username_test5",
+                                     'logo': "https://www.logotest4.com", 'description': "description_test4",
+                                     'artistNumber': 8})
+        self.assertFalse(form8.is_valid())
+
 
 
 

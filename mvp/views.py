@@ -72,7 +72,12 @@ def login(request):
 
 class register_venue(View):
 
+
     def get(self, request):
+        if request.user.is_authenticated:
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
         form = VenueForm()
         sub_form = GeolocationForm()
 
@@ -99,6 +104,10 @@ class register_venue(View):
 class register_artist(View):
 
     def get(self, request):
+        if request.user.is_authenticated:
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
         form = ArtistForm()
         context = {'artist_form':form}
 

@@ -65,14 +65,16 @@
             {% with WIDGET_ERROR_CLASS='form-control-danger' %}
             {% csrf_token %}
 
-			{{ form.username.errors }}
-            <label for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
-            <input class="form-control" name="username" required id="id_username" placeholder="Nombre para autenticarte en el sistema"></input>
+			{{ venue_form.username.errors }}
+            <label for="{{ venue_form.username.id_for_label }}">Nombre de usuario:</label>
+            {% render_field venue_form.username class+="form-control" placeholder="Nombre para autenticarte en el sistema" %}
+{#            <input class="form-control" name="username" required id="id_username" placeholder="Nombre para autenticarte en el sistema"></input>#}
 			<br>
 			
-			{{ form.password1.errors }}
-            <label for="{{ form.password1.id_for_label }}">Contraseña:</label>
-            <input type="password" class="form-control" name="password1" required id="id_password1" placeholder="Contraseña para autenticarte en el sistema"></input>
+			{{ venue_form.password1.errors }}
+            <label for="{{ venue_form.password1.id_for_label }}">Contraseña:</label>
+            {% render_field venue_form.password1 class+="form-control" placeholder="Contraseña para autenticarte en el sistema" %}
+{#            <input type="password" class="form-control" name="password1" required id="id_password1" placeholder="Contraseña para autenticarte en el sistema"></input>#}
 			<span class="helptext">
 				<ul>
 					<li>Tu contraseña no puede ser similar al resto de tu información</li>
@@ -82,40 +84,47 @@
 				</ul>
 			</span>
 			<br>
-            {{ form.password2.errors }}
-            <label for="{{ form.password2.id_for_label }}">Confirmación de contraseña:</label>
-            <input type="password" class="form-control" name="password2" required id="id_password2" placeholder=""></input>
+            {{ venue_form.password2.errors }}
+            <label for="{{ venue_form.password2.id_for_label }}">Confirmación de contraseña:</label>
+            {% render_field venue_form.password2 class+="form-control" placeholder="Confirme la contraseña" %}
+{#            <input type="password" class="form-control" name="password2" required id="id_password2" placeholder=""></input>#}
 			<br>
 			
-			{{ form.email.errors }}
-            <label for="{{ form.email.id_for_label }}">Email:</label>
-            <input class="form-control" name="email" required id="id_email" placeholder="Correo Electrónico"></input>
+			{{ venue_form.email.errors }}
+            <label for="{{ venue_form.email.id_for_label }}">Email:</label>
+            {% render_field venue_form.email class+="form-control" placeholder="Correo Electrónico" %}
+{#            <input class="form-control" name="email" required id="id_email" placeholder="Correo Electrónico"></input>#}
             <br>
 
-            {{ form.name.errors }}
-            <label for="{{ form.name.id_for_label }}">Nombre:</label>
-            <input class="form-control" name="name" required id="id_name" placeholder="¿Cual es el nombre del local?"></input>
+            {{ venue_form.name.errors }}
+            <label for="{{ venue_form.name.id_for_label }}">Nombre:</label>
+            {% render_field venue_form.name class+="form-control" placeholder="¿Cual es el nombre del local?" %}
+{#            <input class="form-control" name="name" required id="id_name" placeholder="¿Cual es el nombre del local?"></input>#}
 			<br>
 
-            {{ form.description.errors }}
-            <label for="{{ form.description.id_for_label }}">Descripción:</label>
-            <textarea class="form-control" name="description" required id="id_description" placeholder="Cuéntanos un poco sobre tu local"></textarea>
+            {{ venue_form.description.errors }}
+            <label for="{{ venue_form.description.id_for_label }}">Descripción:</label>
+            {% render_field venue_form.description class+="form-control" placeholder="Cuéntanos un poco sobre tu local" %}
+{#            <textarea class="form-control" name="description" required id="id_description" placeholder="Cuéntanos un poco sobre tu local"></textarea>#}
 			<br>
 			
-			{{ form.logo.errors }}
-            <label for="{{ form.logo.id_for_label }}">Logo:</label>
-            <input class="form-control" name="logo" required id="id_logo" placeholder="Url del logo o foto de perfil"></input>
+			{{ venue_form.logo.errors }}
+            <label for="{{ venue_form.logo.id_for_label }}">Logo:</label>
+            {% render_field venue_form.logo class+="form-control" placeholder="Url del logo o foto de perfil" %}
+{#            <input class="form-control" name="logo" required id="id_logo" placeholder="Url del logo o foto de perfil"></input>#}
 			<br>
 
-            {{ form.capacity.errors }}
-            <label for="{{ form.capacity.id_for_label }}">Capacidad:</label>            
+            {{ venue_form.capacity.errors }}
+            <label for="{{ venue_form.capacity.id_for_label }}">Capacidad:</label>
             <div class="input-group">
-                <input class="form-control" name="capacity" placeholder="¿Cuantas personas caben en tu local?" type="number">
+                {% render_field venue_form.capacity class+="form-control" placeholder="¿Cuantas personas caben en tu local?" %}
+{#                <input class="form-control" name="capacity" placeholder="¿Cuantas personas caben en tu local?" type="number">#}
             </div>        
 			<br>
-			{{ form.address.errors }}
-            <label for="{{ form.address.id_for_label }}">Dirección:</label>
-            <input class="form-control" name="address" required id="id_address" placeholder="Dinos donde se encuentra tu local"></input>
+			{{ venue_form.address.errors }}
+            <label for="{{ venue_form.address.id_for_label }}">Dirección:</label>
+            {% render_field venue_form.address class+="form-control" placeholder="Dinos donde se encuentra tu local" %}
+{#            <input class="form-control" name="address" required id="id_address" placeholder="Dinos donde se encuentra tu local"></input>#}
 			<br>
 
 			<input type="hidden" name="latitude" id="latitude" value="">

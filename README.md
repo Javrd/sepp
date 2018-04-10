@@ -74,4 +74,4 @@ It's important change some settings of django in a production environment, so we
 
 
 # <a name="Production-environment"></a>Production-environment
-The deployed system is at http://artinbar.com
+The deployed system is at http://artinbar.es

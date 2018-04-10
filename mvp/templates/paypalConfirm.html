@@ -2,12 +2,13 @@
 
 {% block title %}Paypal payment test{% endblock %}
 {% block content %}
+<br/>
+<br/>
 <div class="colored-section bg-inverse">
-        <section class="container fullPage">
-    <h1>TODO</h1>
-    
-    {{payment.id}}
-
+    <section class="container fullPage">
+        <h2>Se ha realizado correctamente el pago a: {{payment.transactions.shipping_address.recipient_name}} por un total de {{payment.transactions.amount.total}}€</h2>
+        <label>El id del pago es: {{payment.id}}</label>
+        <label>La hora del pago es: {{payment.create_time}}</label>
     </section>
 </div>
 {% endblock %}

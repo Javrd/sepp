@@ -134,11 +134,13 @@ def chat_sync(request, user_id=None):
 
 
 @login_required(login_url='/login')
-def paypal_test(request):
-    # TODO: Get payee dinamically, make the frontend
-    venue = get_object_or_404(Venue, pk=201)
+def paypal_test(request, contact_id):
+    try:
+        contact = get_object_or_404(Venue, pk=contact_id)
+    except:
+        contact = get_object_or_404(Artist, pk=contact_id)
     principal = request.user
-    context = {'venue': venue, 'user': principal}
+    context = {'contact': contact, 'user': principal}
     return render(request, './paypalTest.html', context)
 
 

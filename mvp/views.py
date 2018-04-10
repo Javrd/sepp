@@ -163,8 +163,10 @@ def vista_artista(request, id_artista):
     artista = get_object_or_404(Artist, pk=id_artista)
     fotos = Photo.objects.filter(user=artista)
     multimedia = Media.objects.filter(artist=artista)
+    tags = Tag.objects.filter(artist=artista)
 
-    context = {'artista': artista, 'fotos': fotos, 'multimedia': multimedia}
+    context = {'artista': artista, 'fotos': fotos, 'multimedia': multimedia,
+                'tags': tags}
     return render(request, './vista_artista.html', context)
 
 

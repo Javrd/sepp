@@ -32,7 +32,13 @@
                     {{artista.description}}
                 </p>
                 <p>
-                    {{artista.artistNumber}} artistas.
+                    Número de integrantes: {{artista.artistNumber}}
+                </p>
+                <p>
+                    Etiquetas: 
+                    {% for tag in tags %}
+                        <span>{{tag.name}}</span>
+                    {% endfor %}
                 </p>
             </div>
             <div class="tab-pane fade" id="media" role="tabpanel">

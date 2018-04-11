@@ -50,11 +50,18 @@
                         <li class="nav-item">
                             <a class="nav-link page-scroll" href="/vista_local/{{user.id}}">Mi Perfil</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link page-scroll" href="/editar_local">Editar Perfil</a>
+                        </li>
+                        
                     {% endif %}
 
                     {% if perms.mvp.artist %}
                         <li class="nav-item">
                             <a class="nav-link page-scroll" href="/vista_artista/{{user.id}}">Mi Perfil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link page-scroll" href="/editar_artista">Editar Perfil</a>
                         </li>
                     {% endif %}
 

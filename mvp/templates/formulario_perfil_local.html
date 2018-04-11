@@ -1,16 +1,34 @@
 {% extends "common/masterpage.html" %}
 {% block title %}Editar Local{% endblock %}
 {% block content %}
-<section class="container fullPage">
+<div class="colored-section bg-inverse" style="z-index: -1;">
+        <section class="container fullPage" style="z-index: 1;">
+                <br>
+                <h2>Perfil</h2>
     <form class="form-group" action="/editar_local" method="post">
+        {% with WIDGET_ERROR_CLASS='form-control-danger' %}
         {% csrf_token %}
-        <div>Perfil</div>
-        <div>Nombre: {{venueForm.name}}</div>
-        <div>Email: {{venueForm.email}}</div>
-        <div>Logo: {{venueForm.logo}}</div>
-        <div>Descripcion: {{venueForm.description}}</div>
-        <div>Dirección: {{venueForm.address}}</div>
-        <div>Aforo: {{venueForm.capacity}}</div>
+        {{ venueForm.name.errors }}
+        <label for="{{ venueForm.name.id_for_label }}">Nombre:</label>
+        {% render_field venueForm.name class+="form-control" %}
+        <br>
+        {{ venueForm.email.errors }}
+        <label for="{{ venueForm.email.id_for_label }}">Email:</label>
+        {% render_field venueForm.email class+="form-control" %}
+        <br>
+        {{ venueForm.logo.errors }}
+        <label for="{{ venueForm.logo.id_for_label }}">Logo:</label>
+        {% render_field venueForm.logo class+="form-control" %}
+        <br>
+        {{ venueForm.description.errors }}
+        <label for="{{ venueForm.description.id_for_label }}">Descripción:</label>
+        {% render_field venueForm.description class+="form-control" %}
+        <br>
+        {{ venueForm.capacity.errors }}
+        <label for="{{ venueForm.artistNcapacityumber.id_for_label }}">Capacidad:</label>
+        {% render_field venueForm.capacity class+="form-control" %}
+        <br>
+        <br/>
         <br/>
         <div>Geolocalización</div>
         <div>Latitud: {{geoForm.latitude}}</div>
@@ -31,6 +49,11 @@
         <div class="text-center">
             <input type="submit" name="edit" class="btn btn-round btn-primary" value="Editar" />
         </div>
+    {% endwith %}
     </form>
+    
 </section>
-{% endblock %}
+</div>
+<div class="fixed-bottom" style="z-index: 0;">
+        <img src="../static/img/crowd.png" class="img-fluid" />
+    </div>

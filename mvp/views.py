@@ -325,5 +325,4 @@ def payout(request):
 @login_required(login_url='/login')
 def paymentConfirmation(request):
     payment = request.session['payment']
-    # TODO: Hacer una vista guay que te muestre los detalles del pago y confirme que ha ido bien
     return render(request, './paypalConfirm.html', {'payment': payment})

@@ -6,9 +6,8 @@
 <br/>
 <div class="colored-section bg-inverse">
     <section class="container fullPage">
-        <h2>Se ha realizado correctamente el pago a: {{payment.transactions.shipping_address.recipient_name}} por un total de {{payment.transactions.amount.total}}€</h2>
-        <label>El id del pago es: {{payment.id}}</label>
-        <label>La hora del pago es: {{payment.create_time}}</label>
+        <h2>Se ha realizado correctamente el pago.</h2>
+        <label>Puede consultar la transacción en su cuenta de paypal con el id de pago: {{payment.id}}</label>
     </section>
 </div>
 {% endblock %}

@@ -26,8 +26,7 @@ urlpatterns = [
     path('formulario_oferta/',  views.formulario_oferta, name='formulario_oferta'),
     path('logout', logout, {'next_page': '/artinbar'}, name='logout'),
     path('login', views.login, name='login'),
-    path('vista_artista/<int:id_artista>/',
-         views.vista_artista, name='vista_artista'),
+    path('vista_artista/<int:id_artista>/',views.vista_artista, name='vista_artista'),
     path('vista_local/<int:id_local>/', views.vista_local, name='vista_local'),
     path('chat/', views.chat, name='chat'),
     path('chat/<user_id>/', views.chat, name='chat'),
@@ -35,4 +34,6 @@ urlpatterns = [
     path('', views.indexRedir, name='index'),
     path('registerVenue', views.register_venue.as_view(), name='register_venue'),
     path('registerArtist', views.register_artist.as_view(), name='register_artist'),
+    path('editar_local', views.formulario_perfil_venue, name='formulario_perfil_venue'),
+    path('editar_artista', views.formulario_perfil_artist, name='formulario_perfil_artist')
 ]

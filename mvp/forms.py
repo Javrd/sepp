@@ -3,7 +3,6 @@ from .models import *
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import *
 
-
 class OfferForm(ModelForm):
     class Meta:
         model = Offer
@@ -24,7 +23,6 @@ class GeolocationForm(ModelForm):
         fields = ['latitude', 'longitude']
 
 
-
 class VenueForm(UserCreationForm):
     class Meta:
         model = Venue
@@ -38,5 +36,16 @@ class ArtistForm(UserCreationForm):
 
 
 
+
+
+class VenueProfileForm(ModelForm):
+    class Meta:
+        model = Venue
+        fields = ['name', 'email', 'logo', 'description', 'address', 'capacity']
+
+class ArtistProfileForm(ModelForm):
+    class Meta:
+        model = Artist
+        fields = ['name', 'email', 'logo', 'description', 'artistNumber']
 
 

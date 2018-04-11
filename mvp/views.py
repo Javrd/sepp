@@ -6,12 +6,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
 from django.template import loader
 from datetime import datetime
-<<<<<<< HEAD
 from requests.auth import HTTPBasicAuth
 import requests
-=======
 from django.forms import modelformset_factory
->>>>>>> develop
 
 from .forms import *
 from .models import *

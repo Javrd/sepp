@@ -1,3 +1,11 @@
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from django.shortcuts import render, redirect
+from django.views.generic.base import View
+
+from .forms import *
+from .forms import ArtistForm
+from mvp.models import Artist
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import permission_required, login_required
@@ -8,8 +16,8 @@ from django.template import loader
 from datetime import datetime
 from requests.auth import HTTPBasicAuth
 import requests
+from django.contrib.auth.models import Permission
 from django.forms import modelformset_factory
-
 from .forms import *
 from .models import *
 import re
@@ -140,7 +148,6 @@ def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render({}, request))
 
-
 def login(request):
     if request.user.is_authenticated:
         return redirect("/artinbar")
@@ -159,6 +166,66 @@ def login(request):
         formulario = AuthenticationForm()
     context = {'formulario': formulario}
     return render(request, 'login.html', context)
+
+
+class register_venue(View):
+
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
+        form = VenueForm()
+        sub_form = GeolocationForm()
+
+        context = {'venue_form': form, 'geo_form': sub_form}
+        return render(request, 'register_venue.html', context)
+
+    def post(self, request):
+        form = VenueForm(request.POST)
+        sub_form = GeolocationForm(request.POST)
+        if form.is_valid() and sub_form.is_valid():
+            new_venue = form.save()
+            new_geo = sub_form.save()
+            new_venue.geolocation = new_geo
+            permission = Permission.objects.get(codename='venue')
+            new_venue.user_permissions.add(permission)
+            new_venue.save()
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
+        context = {'venue_form': form, 'geo_form': sub_form}
+        return render(request, 'register_venue.html', context)
+
+
+class register_artist(View):
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
+        form = ArtistForm()
+        context = {'artist_form':form}
+
+        return render(request, 'register_artist.html', context)
+
+    def post(self, request):
+
+        form = ArtistForm(request.POST)
+        if form.is_valid():
+
+            new_artist = form.save()
+            permission = Permission.objects.get(codename='artist')
+            new_artist.user_permissions.add(permission)
+            new_artist.save()
+
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
+        context =  {'artist_form':form}
+        return render(request, 'register_artist.html', context)
 
 
 def vista_artista(request, id_artista):

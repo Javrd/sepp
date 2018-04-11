@@ -1,7 +1,9 @@
 {% extends "common/masterpage.html" %}
-{% block title %}Editar Local{% endblock %}
+{% block title %}Editar Artista{% endblock %}
 {% block content %}
 {% load widget_tweaks %}
+
+
 <div class="colored-section bg-inverse" style="z-index: -1;">
     <section class="container fullPage" style="z-index: 1;">
         <br>
@@ -72,6 +74,8 @@
                 {% endfor %}
                 <input type="submit" name="deleteMedia" value='Borrar media seleccionada' />
         </div>
+
+        
         
         <div class="text-center">
                 <input type="submit" class="btn btn-round btn-primary" name="edit" value="Editar" />

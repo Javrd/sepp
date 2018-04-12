@@ -1,0 +1,13 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Paypal payment test{% endblock %}
+{% block content %}
+<br/>
+<br/>
+<div class="colored-section bg-inverse">
+    <section class="container fullPage">
+        <h2>Se ha realizado correctamente el pago.</h2>
+        <label>Puede consultar la transacción en su cuenta de paypal con el id de pago: {{payment.id}}</label>
+    </section>
+</div>
+{% endblock %}

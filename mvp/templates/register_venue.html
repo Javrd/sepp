@@ -1,0 +1,166 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Registro de Local{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+
+<script>	    
+	    var map;
+	    var marker;
+	    function initialize() {
+			var myLatlng = new google.maps.LatLng(40.680898,-8.684059);
+			var mapOptions = {
+			  zoom: 15,
+			  center: myLatlng
+			}
+	      map = new google.maps.Map(document.getElementById("map"), mapOptions);
+	    }
+	    google.maps.event.addDomListener(window, "load", initialize);
+	    
+	    function searchAddress() {
+	    	  var addressInput = document.getElementById('id_address').value;
+	    	  var geocoder = new google.maps.Geocoder();
+	    	  geocoder.geocode({address: addressInput}, function(results, status) {
+	    	    if (status == google.maps.GeocoderStatus.OK) {
+	    	      var myResult = results[0].geometry.location; // reference LatLng value
+	    	      var lati = myResult.lat();
+	    	      var longi = myResult.lng();
+				  createMarker(myResult); // call the function that adds the marker
+	    	      map.setCenter(myResult);
+	    	      map.setZoom(9);
+				  document.getElementById('latitude').value = lati;
+				  document.getElementById('longitude').value = longi;
+	    	    }else { // if status value is not equal to "google.maps.GeocoderStatus.OK"
+	    	        // warning message
+	    	        alert("The Geocode was not successful for the following reason: " + status);
+	    	      }
+	    	  });
+	    	}
+	    	function createMarker(latlng) {
+	    	   // If the user makes another search you must clear the marker variable
+	    	   if(marker != undefined && marker != ''){
+	    	    marker.setMap(null);
+	    	    marker = '';
+	    	   }
+	    	   marker = new google.maps.Marker({
+	    	      map: map,
+	    	      position: latlng
+	    	   });
+	    	}
+	    	
+	    	
+	    
+	    
+	    </script>
+
+
+<div class="colored-section bg-inverse" style="z-index: -1;">
+    <section class="container fullPage" style="z-index: 1;">
+        <br>
+        <h2>Registro de Local</h2>
+
+        <form class="form-group" action="" method="post">
+
+            {% with WIDGET_ERROR_CLASS='form-control-danger' %}
+            {% csrf_token %}
+
+			{{ venue_form.username.errors }}
+            <label for="{{ venue_form.username.id_for_label }}">Nombre de usuario:</label>
+            {% render_field venue_form.username class+="form-control" placeholder="Nombre para autenticarte en el sistema" %}
+{#            <input class="form-control" name="username" required id="id_username" placeholder="Nombre para autenticarte en el sistema"></input>#}
+			<br>
+			
+			{{ venue_form.password1.errors }}
+            <label for="{{ venue_form.password1.id_for_label }}">Contraseña:</label>
+            {% render_field venue_form.password1 class+="form-control" placeholder="Contraseña para autenticarte en el sistema" %}
+{#            <input type="password" class="form-control" name="password1" required id="id_password1" placeholder="Contraseña para autenticarte en el sistema"></input>#}
+			<span class="helptext">
+				<ul>
+					<li>Tu contraseña no puede ser similar al resto de tu información</li>
+					<li>Tu contraseña debe tener al menos 8 caracteres</li>
+					<li>Tu contraseña no puede ser de uso común</li>
+					<li>Tu contraseña no puede estar compuesta solo por numeros</li>
+				</ul>
+			</span>
+			<br>
+            {{ venue_form.password2.errors }}
+            <label for="{{ venue_form.password2.id_for_label }}">Confirmación de contraseña:</label>
+            {% render_field venue_form.password2 class+="form-control" placeholder="Confirme la contraseña" %}
+{#            <input type="password" class="form-control" name="password2" required id="id_password2" placeholder=""></input>#}
+			<br>
+			
+			{{ venue_form.email.errors }}
+            <label for="{{ venue_form.email.id_for_label }}">Email:</label>
+            {% render_field venue_form.email class+="form-control" placeholder="Correo Electrónico" %}
+{#            <input class="form-control" name="email" required id="id_email" placeholder="Correo Electrónico"></input>#}
+            <br>
+
+            {{ venue_form.name.errors }}
+            <label for="{{ venue_form.name.id_for_label }}">Nombre:</label>
+            {% render_field venue_form.name class+="form-control" placeholder="¿Cual es el nombre del local?" %}
+{#            <input class="form-control" name="name" required id="id_name" placeholder="¿Cual es el nombre del local?"></input>#}
+			<br>
+
+            {{ venue_form.description.errors }}
+            <label for="{{ venue_form.description.id_for_label }}">Descripción:</label>
+            {% render_field venue_form.description class+="form-control" placeholder="Cuéntanos un poco sobre tu local" %}
+{#            <textarea class="form-control" name="description" required id="id_description" placeholder="Cuéntanos un poco sobre tu local"></textarea>#}
+			<br>
+			
+			{{ venue_form.logo.errors }}
+            <label for="{{ venue_form.logo.id_for_label }}">Logo:</label>
+            {% render_field venue_form.logo class+="form-control" placeholder="Url del logo o foto de perfil" %}
+{#            <input class="form-control" name="logo" required id="id_logo" placeholder="Url del logo o foto de perfil"></input>#}
+			<br>
+
+            {{ venue_form.capacity.errors }}
+            <label for="{{ venue_form.capacity.id_for_label }}">Capacidad:</label>
+            <div class="input-group">
+                {% render_field venue_form.capacity class+="form-control" placeholder="¿Cuantas personas caben en tu local?" %}
+{#                <input class="form-control" name="capacity" placeholder="¿Cuantas personas caben en tu local?" type="number">#}
+            </div>        
+			<br>
+			{{ venue_form.address.errors }}
+            <label for="{{ venue_form.address.id_for_label }}">Dirección:</label>
+            {% render_field venue_form.address class+="form-control" placeholder="Dinos donde se encuentra tu local" %}
+{#            <input class="form-control" name="address" required id="id_address" placeholder="Dinos donde se encuentra tu local"></input>#}
+			<br>
+
+			<input type="hidden" name="latitude" id="latitude" value="">
+			<input type="hidden" name="longitude" id="longitude" value="">
+			
+
+
+			<div>
+				<button type="button" onclick="searchAddress();">Buscar dirección</button>
+			</div>
+				 
+					 <style>
+						#map{
+						   height: 170px;
+						   width: 300px;
+						 }
+					 </style>
+
+			<div id="map"></div><br>
+
+            <div class="text-center">
+                <input type="submit" class="btn btn-round btn-primary" value="Registro" />
+            </div>
+            {% endwith %}
+        </form>
+    </section>
+</div>
+
+<div class="fixed-bottom" style="z-index: 0;">
+    <img src="../static/img/crowd.png" class="img-fluid" />
+</div>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdGla1CET4Qscd4i_tnk7o1JTosQQvVZk&&callback=initialize">
+</script>
+
+{% endblock %}
+
+

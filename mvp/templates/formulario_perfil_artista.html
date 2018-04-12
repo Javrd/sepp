@@ -1,21 +1,46 @@
 {% extends "common/masterpage.html" %}
-{% block title %}Editar Local{% endblock %}
+{% block title %}Editar Artista{% endblock %}
 {% block content %}
-<section class="container fullPage">
+{% load widget_tweaks %}
+
+
+<div class="colored-section bg-inverse" style="z-index: -1;">
+    <section class="container fullPage" style="z-index: 1;">
+        <br>
+        <h2>Perfil</h2>
     <form class="form-group" action="/editar_artista" method="post">
+        {% with WIDGET_ERROR_CLASS='form-control-danger' %} 
         {% csrf_token %}
-        <div>Perfil</div>
-        <div>Nombre: {{artistForm.name}}</div>
-        <div>Email: {{artistForm.email}}</div>
-        <div>Logo: {{artistForm.logo}}</div>
-        <div>Descripcion: {{artistForm.description}}</div>
-        <div>Número de integrantes: {{artistForm.artistNumber}}</div>
+        
+        {{ artistForm.name.errors }}
+        <label for="{{ artistForm.name.id_for_label }}">Nombre:</label>
+        {% render_field artistForm.name class+="form-control" %}
+        <br>
+        {{ artistForm.email.errors }}
+        <label for="{{ artistForm.email.id_for_label }}">Email:</label>
+        {% render_field artistForm.email class+="form-control" %}
+        <br>
+        {{ artistForm.logo.errors }}
+        <label for="{{ artistForm.logo.id_for_label }}">Logo:</label>
+        {% render_field artistForm.logo class+="form-control" %}
+        <br>
+        {{ artistForm.description.errors }}
+        <label for="{{ artistForm.description.id_for_label }}">Descripción:</label>
+        {% render_field artistForm.description class+="form-control" %}
+        <br>
+        {{ artistForm.artistNumber.errors }}
+        <label for="{{ artistForm.artistNumber.id_for_label }}">Número de Integrantes:</label>
+        {% render_field artistForm.artistNumber class+="form-control" %}
+        <br>
         <br/>
+        <h3>Multimedia</h3>
         <div>
             {{ photoFormSet.management_form }}
+            <div>Fotos:</div>
             {% for form in photoFormSet %}
                 {{ form.id }}
-                <div> Foto: {{ form.url }}
+                <div>
+                    {{form.url}}
                     {% if form.id.value != None and form.id.value != "" %}
                         <input type="radio" name="photoToDelete" value='{{ form.id.value }}'/>
                     {% endif %}
@@ -25,9 +50,10 @@
         </div>
         <div>
             {{ tagFormSet.management_form }}
+            <div>Etiquetas:</div>
             {% for form in tagFormSet %}
                 {{ form.id }}
-                <div>Etiqueta: {{ form.name }}
+                <div>{{ form.name }}
                     {% if form.id.value != None and form.id.value != "" %}
                         <input type="radio" name="tagToDelete" value='{{ form.id.value }}'/>
                     {% endif %}
@@ -37,9 +63,10 @@
         </div>
         <div>
             {{ mediaFormSet.management_form }}
+            <div>Multimedia:</div>
             {% for form in mediaFormSet %}
                 {{ form.id }}
-                <div>Multimedia: {{ form.url }}
+                <div>{{ form.url }}
                     {% if form.id.value != None and form.id.value != "" %}
                         <input type="radio" name="mediaToDelete" value='{{ form.id.value }}'/>
                     {% endif %}
@@ -47,11 +74,19 @@
                 {% endfor %}
                 <input type="submit" name="deleteMedia" value='Borrar media seleccionada' />
         </div>
+
+        
         
         <div class="text-center">
                 <input type="submit" class="btn btn-round btn-primary" name="edit" value="Editar" />
             </div>
+            {% endwith %}
     </form>
     
 </section>
+</div>
+<div class="fixed-bottom" style="z-index: 0;">
+        <img src="../static/img/crowd.png" class="img-fluid" />
+    </div>
+
 {% endblock %}

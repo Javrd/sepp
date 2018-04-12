@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'm#=d20%yta%r!71d#r)m(jq_m(3a9yeowo1pq=zl22zjdy1dgr'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'm#=d20%yta%r!71d#r)m(jq_m(3a9yeowo1pq=zl22zjdy1dgr')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True')=='True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.getenv('DJANGO_HOST_NAME', '*')]
 
 
 # Application definition
@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'artinbar.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aib_db',
-        'USER': 'aib-manager',
-        'PASSWORD': 'pimiento#asao',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.getenv('MYSQL_DB', 'aib_db'),
+        'USER': os.getenv('MYSQL_USER', 'aib-manager'),
+        'PASSWORD': os.getenv('MYSQL_PWD', 'pimiento#asao'),
+        'HOST': os.getenv('MYSQL_HOST', 'localhost'),
+        'PORT': os.getenv('MYSQL_PORT', '3306'),
     }
 }
 
@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-es'
 
 TIME_ZONE = 'UTC'
 
@@ -124,4 +124,11 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+STATIC_ROOT = BASE_DIR+'/static/'
+
 STATIC_URL = '/static/'
+
+# HTTPS Config
+
+CSRF_COOKIE_SECURE = os.getenv('DEBUG', 'True')=='False'
+SESSION_COOKIE_SECURE = os.getenv('DEBUG', 'True')=='False'

@@ -17,6 +17,7 @@
                         <p class="lead mb-5">
                             Duis commodo ex eiusmod qui irure pariatur occaecat ex.
                         </p>
+                        {% if not user.is_authenticated %}
                         <a href="/registerArtist" class="btn btn-outline-white btn-round btn-md page-scroll">
                             <em class="ion-play"></em> Registro de Artista
                         </a>
@@ -24,6 +25,7 @@
                         <a href="/registerVenue" class="btn btn-outline-white btn-round btn-md page-scroll">
                             <em class="ion-play"></em> Registro de Local
                         </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>            

@@ -14,6 +14,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
 from django.template import loader
 from datetime import datetime
+from requests.auth import HTTPBasicAuth
+import requests
 from django.contrib.auth.models import Permission
 from django.forms import modelformset_factory
 from .forms import *
@@ -297,3 +299,198 @@ def chat_sync(request, user_id=None):
             data[i]['id'] = msg.id
         data.reverse()
         return JsonResponse(list)
+
+
+@login_required(login_url='/login')
+def paypal_test(request, contact_id):
+    try:
+        contact = get_object_or_404(Venue, pk=contact_id)
+    except:
+        contact = get_object_or_404(Artist, pk=contact_id)
+    principal = request.user
+    context = {'contact': contact, 'user': principal}
+    return render(request, './paypalTest.html', context)
+
+
+@login_required(login_url='/login')
+def payment(request):
+    print('============ Requesting access token ============')
+    payee = request.POST.get('payee')
+    request.session['payee'] = payee
+    amount = request.POST.get('amount')
+    url = 'https://api.sandbox.paypal.com/v1/oauth2/token'
+    headers = {
+        'accept': 'application/json',
+        'Accept-Language': 'en_US'
+    }
+    data = {
+        'grant_type': 'client_credentials'
+    }
+    paypalResponse = requests.post(url, data=data, headers=headers, auth=HTTPBasicAuth(
+        'AYsiuq3v0vkhTIZrJA-pMAC-NJFG4LUG0AOphhoU52D0YHP1WiXpZ1ENIV_tcks6qutqVn99ZjR38lWg', 'ELZ-zqNT0hsVDUA5fjgguhlMIJTNjvu0A7y0_LqeBg_gChO9Ndjpy4gW-gpWbOZWnehZFCOlnco7Av_h'))
+    json = paypalResponse.json()
+    accessToken = json['access_token']
+
+    print('Access Token obtained, expires in '+str(json['expires_in']))
+    print('Access Token: '+accessToken)
+
+    print('============ Creating payment ============')
+    print('Payee: '+payee)
+    print('Amount: '+amount)
+    fee = float(amount)*0.05  # TODO: Fee?
+    totalAmount = float(amount) + fee
+    print('Fee: '+str(fee))
+    print('Total amount: '+str(totalAmount))
+
+    bearerToken = 'Bearer '+accessToken
+
+    request.session['bearerToken'] = bearerToken
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': bearerToken
+    }
+
+    amount1 = {
+        'total': str(totalAmount),
+        'currency': 'EUR',
+        'details': {
+            'subtotal': str(amount),
+            'handling_fee': str(fee)
+        }
+    }
+
+    transaction1 = {
+        'amount': amount1,
+        'description': 'Pago a Art in Bar',
+        'payment_options': {
+            'allowed_payment_method': 'IMMEDIATE_PAY'
+        }
+    }
+
+    transactions = [transaction1]
+
+    data = {
+        'intent': 'sale',
+        'payer': {
+            'payment_method': 'paypal'
+        },
+        'transactions': transactions,
+        'note_to_payer': 'Puedes contactar con nosotros para cualquier duda en pagosartinbar@gmail.com',
+        'redirect_urls': {
+            'return_url': 'http://localhost:8000/artinbar',
+            'cancel_url': 'http://localhost:8000/artinbar'
+        }
+    }
+
+    saleUrl = 'https://api.sandbox.paypal.com/v1/payments/payment'
+
+    payment = requests.post(saleUrl, headers=headers, json=data).json()
+
+    if (payment['id'] is not None):
+        print('Payment id: '+payment['id'])
+        print('============ Payment created succesfully ============')
+
+    return JsonResponse(payment)
+
+
+def executePayment(request):
+    paymentId = request.POST.get('paymentID')
+    payerId = request.POST.get('payerID')
+    #print('============ Requesting access token ============')
+
+    #url = 'https://api.sandbox.paypal.com/v1/oauth2/token'
+    # headers = {
+    #    'accept': 'application/json',
+    #    'Accept-Language': 'en_US'
+    #}
+    # data = {
+    #    'grant_type': 'client_credentials'
+    #}
+    # paypalResponse = requests.post(url, data=data, headers=headers, auth=HTTPBasicAuth(
+    #    'AYsiuq3v0vkhTIZrJA-pMAC-NJFG4LUG0AOphhoU52D0YHP1WiXpZ1ENIV_tcks6qutqVn99ZjR38lWg', 'ELZ-zqNT0hsVDUA5fjgguhlMIJTNjvu0A7y0_LqeBg_gChO9Ndjpy4gW-gpWbOZWnehZFCOlnco7Av_h'))
+    #json = paypalResponse.json()
+    #accessToken = json['access_token']
+
+    #print('Access Token obtained, expires in '+str(json['expires_in']))
+    #print('Access Token: '+accessToken)
+
+    print('============ Building payment execution request ============')
+    print('Payment ID: '+paymentId)
+    print('Payer ID: '+payerId)
+
+    executeUri = 'https://api.sandbox.paypal.com/v1/payments/payment/'+paymentId+'/execute/'
+
+    bearerToken = request.session['bearerToken']
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': bearerToken
+    }
+
+    data = {
+        'payer_id': payerId
+    }
+
+    payment = requests.post(executeUri, headers=headers, json=data).json()
+
+    if (payment['state'] == 'approved'):
+        request.session['payment'] = payment
+        return payout(request)
+    else:
+        return HttpResponse('ERROR')
+
+
+def payout(request):
+    payment = request.session['payment']
+    bearerToken = request.session['bearerToken']
+    payee = request.session['payee']
+    amount = payment['transactions'][0]['amount']['details']['subtotal']
+    batchId = payment['id']
+    emailMessage = '¡Felicidades! Acabas de recibir un pago de '+amount + \
+        '€ a través de Art in Bar.'  # TODO: Currarse un poco el mensaje, poner datos
+
+    print('============ Creating payout ============')
+    print('Payee: '+payee)
+    print('Amount: '+amount)
+    print('Sender batch ID: '+batchId)
+
+    payoutsURI = 'https://api.sandbox.paypal.com/v1/payments/payouts'
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': bearerToken
+    }
+
+    data = {
+        'sender_batch_header': {
+            'sender_batch_id': batchId,
+            'email_subject': 'Pago de Art in Bar',
+            'email_message': emailMessage
+        },
+        'items': [
+            {
+                "recipient_type": "EMAIL",
+                "amount": {
+                    "value": amount,
+                    "currency": "EUR"
+                },
+                "note": "¡Gracias por usar Art in Bar!",
+                "sender_item_id": batchId,
+                "receiver": payee
+            }
+        ]
+    }
+
+    payout = requests.post(payoutsURI, headers=headers, json=data).json()
+
+    if (payout['batch_header']['batch_status'] == 'PENDING'):
+        print('============ Payout successfully processed ============')
+
+    return HttpResponse('OK')
+
+
+@login_required(login_url='/login')
+def paymentConfirmation(request):
+    payment = request.session['payment']
+    return render(request, './paypalConfirm.html', {'payment': payment})

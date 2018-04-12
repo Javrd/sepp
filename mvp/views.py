@@ -54,7 +54,7 @@ def formulario_perfil_venue(request):
         elif ('edit' in request.POST and venueForm.is_valid() and geoForm.is_valid() 
             and photoFormSet.is_valid()):
             newVenue = venueForm.save(commit=False)
-            newVenue.geolocation = geoForm.save(commit=False)
+            newVenue.geolocation = geoForm.save(commit=True)
             newVenue.save()
             photos = photoFormSet.save(commit=False)
             for photo in photos:

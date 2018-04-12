@@ -1,0 +1,10 @@
+.mypy_cache
+.vscode
+db
+.gitignore
+.git
+create_db.sql
+docker-compose.yml
+Dockerfile
+get.docker.sh
+README.md

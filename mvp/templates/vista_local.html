@@ -64,16 +64,14 @@
                 <p>
                     Aforo: {{local.capacity}}
                 </p>
-                <iframe
-                    width="300"
-                    height="170"
-                    frameborder="0"
-                    scrolling="no"
-                    marginheight="0"
-                    marginwidth="0"
-                    src="https://maps.google.com/maps?q='+{{geolocalizacion.latitude}}+','+{{geolocalizacion.longitude}}+'&hl=es;z=14&amp;output=embed"
-                    >
-                </iframe>
+                <style>
+                    #map{
+                       height: 170px;
+                       width: 300px;
+                     }
+                 </style>
+
+                <div id="map"></div><br>
             </div>
             <div class="tab-pane fade" id="photos" role="tabpanel">
                 {% for foto in fotos %}

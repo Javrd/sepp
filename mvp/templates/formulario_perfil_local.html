@@ -8,17 +8,18 @@
     var map;
     var marker;
     function initialize() {
-        var myLatlng = new google.maps.LatLng(40.680898,-8.684059);
+        var myLatlng = new google.maps.LatLng({{geoForm.latitude.value}},{{geoForm.longitude.value}});
         var mapOptions = {
           zoom: 15,
           center: myLatlng
         }
       map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      createMarker(myLatlng);
     }
     google.maps.event.addDomListener(window, "load", initialize);
     
     function searchAddress() {
-          var addressInput = document.getElementById('id_address').value;
+          var addressInput = document.getElementById('id_Ven-address').value;
           var geocoder = new google.maps.Geocoder();
           geocoder.geocode({address: addressInput}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
@@ -77,18 +78,18 @@
         {% render_field venueForm.description class+="form-control" %}
         <br>
         {{ venueForm.capacity.errors }}
-        <label for="{{ venueForm.artistNcapacityumber.id_for_label }}">Capacidad:</label>
+        <label for="{{ venueForm.capacity.id_for_label }}">Capacidad:</label>
         {% render_field venueForm.capacity class+="form-control" %}
         <br>
         <br/>
         <br/>
 
+        {{ venueForm.address.errors }}
+        <input class="form-control" name="Ven-address" id="id_Ven-address" value="{{ venueForm.address.value }}"/>
+            <br>
 
-        <input class="form-control" name="address" required id="id_address"/>
-			<br>
-
-			<input type="hidden" name="Geo-latitude" id="Geo-latitude" value="">
-			<input type="hidden" name="Geo-longitude" id="Geo-longitude" value="">
+			<input type="hidden" name="Geo-latitude" id="Geo-latitude" value="{{geoForm.latitude.value}}"/>
+			<input type="hidden" name="Geo-longitude" id="Geo-longitude" value="{{geoForm.longitude.value}}">
 			
 
 

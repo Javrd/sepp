@@ -42,13 +42,13 @@
                 </p>
             </div>
             <div class="tab-pane fade" id="media" role="tabpanel">
-                <p>
+                <div class="embed-responsive embed-responsive-16by9">
                     {% for media in multimedia %}
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe class="embed-responsive-item" src="{{media.url}}" allowfullscreen></iframe>
-                        </div>
+                                <iframe  class="embed-responsive-item"
+                                src="http://www.youtube.com/embed/{{media}}">
+                                </iframe>
                     {% endfor %}
-                </p>
+                </div>
             </div>
             <div class="tab-pane fade" id="photos" role="tabpanel">
                 {% for foto in fotos %}

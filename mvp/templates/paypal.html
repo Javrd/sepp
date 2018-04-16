@@ -1,21 +1,22 @@
 {% extends "common/masterpage.html" %}
 
-{% block title %}Paypal payment test{% endblock %}
+{% block title %}Art in bar - Payment{% endblock %}
 {% block content %}
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
 <div class="colored-section bg-inverse">
         <section class="container fullPage">
     <h1>Realizando un pago como {{user.name}} a {{contact.name}}</h1>
-    <form class="form-group" action="/payment" method="post">
+    <form class="form-group" action="/payment" id="paymentForm" method="post">
         {% with WIDGET_ERROR_CLASS='form-control-danger' %}
         {% csrf_token %}
         
-        <input type="hidden" name="payer" value="{{user.id}}"/>        
+        <input type="hidden" id="payer" name="payer" value="{{user.id}}"/>
+        <input type="hidden" id="payee" name="payee" value="{{contact.id}}"/>         
         
-        <label for="payee">Destinatario (email): </label>
+        <label for="payeeName">Destinatario: </label>
         <br>
-        <input type="email" class="form-control" name="payee"placeholder="Email del destinatario" id="payee" value="{{contact.email}}"/>  
+        <input type="text" class="form-control" disabled name="payeeName" id="payeeName" value="{{contact.name}}"/>  
         <br>
 
         <label for="amount">Precio ofrecido:</label>            
@@ -27,6 +28,31 @@
         </div>        
         <br>
 
+        <h3>Datos del evento:</h3>
+
+        <label for="performanceName">Nombre: </label>
+        <br>
+        <input type="text" class="form-control" name="performanceName" placeholder="Nombre del evento" id="performanceName"/>  
+        <br>
+
+        <label for="performanceDes">Descripción: </label>
+        <br>
+        <input type="textarea" class="form-control" name="performanceDes" placeholder="¡Describe vuestro evento!" id="performanceDes"/>  
+        <br>
+
+        <label for="performanceDate">Fecha: </label>
+        <br>
+        <input type="date" class="form-control" name="performanceDate" id="performanceDate"/>  
+        <br>
+
+        <label class="custom-control custom-checkbox d-block">
+            <input class="custom-control-input" checked="true" type="checkbox" name="performancePublic" id="performancePublic">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">¿Quieres anunciar el evento públicamente?</span>
+        </label> 
+        <br>
+
+        <br>
         <div id="paypal-button"></div>
         {% endwith %}
     </form>    
@@ -44,11 +70,17 @@
         commit: true, // Show a 'Pay Now' button
 
         payment: function() {
-            return paypal.request.post(CREATE_PAYMENT_URL,{
+            var data = {
                 payee: $('#payee').val(),
+                payer: $('#payer').val(),
                 amount: $('#amount').val(),
+                performanceName: $('#performanceName').val(),
+                performanceDes: $('#performanceDes').val(),
+                performanceDate: $('#performanceDate').val(),
+                performancePublic: $('#performancePublic').val(),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
-            }).then(function(data) {
+            }
+            return paypal.request.post(CREATE_PAYMENT_URL,data).then(function(data) {
                 return data.id;
             });
         },

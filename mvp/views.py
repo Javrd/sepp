@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import *
 from .forms import ArtistForm
@@ -16,6 +17,7 @@ from django.template import loader
 from datetime import datetime
 from requests.auth import HTTPBasicAuth
 import requests
+import datetime
 from django.contrib.auth.models import Permission
 from django.forms import modelformset_factory
 from .forms import *
@@ -325,22 +327,53 @@ def chat_sync(request, user_id=None):
 
 
 @login_required(login_url='/login')
-def paypal_test(request, contact_id):
+def paypal(request, contact_id):
     try:
         contact = get_object_or_404(Venue, pk=contact_id)
     except:
         contact = get_object_or_404(Artist, pk=contact_id)
     principal = request.user
     context = {'contact': contact, 'user': principal}
-    return render(request, './paypalTest.html', context)
+    return render(request, './paypal.html', context)
 
 
 @login_required(login_url='/login')
 def payment(request):
+
+    form = request.POST
+    payee = get_object_or_404(User, id=form['payee'])
+
+    try:
+        venue = Venue.objects.get(id=request.user.id).id
+        artist = Artist.objects.get(id=payee.id).id
+    except Model.DoesNotExist:
+        artist = Artist.objects.get(id=request.user.id).id
+        venue = Venue.objects.get(id=payee.id).id
+
+    serializedPerformance = {
+        'name': form['performanceName'],
+        'description': form['performanceDes'],
+        'date': form['performanceDate'],
+        'public': form['performancePublic'],
+        'artist': artist,
+        'venue': venue
+    }
+
+    print('============ Performance info: ============')
+
+    print('Name: '+serializedPerformance['name'])
+    print('Description: '+serializedPerformance['description'])
+    print('Date: '+serializedPerformance['date'])
+    print('Public: '+serializedPerformance['public'])
+    print('Artist: '+str(serializedPerformance['artist']))
+    print('Venue: '+str(serializedPerformance['venue']))
+
+    request.session['performance'] = serializedPerformance
+
     print('============ Requesting access token ============')
-    payee = request.POST.get('payee')
+    payee = payee.email
     request.session['payee'] = payee
-    amount = request.POST.get('amount')
+    amount = form['amount']
     url = 'https://api.sandbox.paypal.com/v1/oauth2/token'
     headers = {
         'accept': 'application/json',
@@ -509,6 +542,29 @@ def payout(request):
 
     if (payout['batch_header']['batch_status'] == 'PENDING'):
         print('============ Payout successfully processed ============')
+
+    serializedPerformance = request.session['performance']
+    performance = Performance()
+
+    performance.name = serializedPerformance['name']
+    performance.description = serializedPerformance['description']
+    performance.date = serializedPerformance['date']
+    performance.public = True if serializedPerformance['public'] is 'on' else False
+    performance.artist = Artist.objects.get(id=serializedPerformance['artist'])
+    performance.venue = Venue.objects.get(id=serializedPerformance['venue'])
+
+    performance.save()
+    print('============ Performance saved ============')
+
+    paymentObject = Payment()
+    paymentObject.amount = payment['transactions'][0]['amount']['total']
+    paymentObject.user = request.user
+    paymentObject.performance = performance
+    paymentObject.date = datetime.datetime.now()
+    paymentObject.paypalId = payment['id']
+
+    paymentObject.save()
+    print('============ Payment saved ============')
 
     return HttpResponse('OK')
 

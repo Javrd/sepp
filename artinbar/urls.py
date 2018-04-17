@@ -21,6 +21,8 @@ from mvp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('lista_ofertas/',  views.lista_ofertas, name='lista_ofertas'),
+    path('mis_ofertas/',  views.mis_ofertas, name='mis_ofertas'),
+    path('borrar_oferta/<offer_id>/',  views.borrar_oferta, name='borrar_oferta'),
     path('', views.indexRedir, name='index'),
     path('artinbar',  views.index, name='index'),
     path('formulario_oferta/',  views.formulario_oferta, name='formulario_oferta'),

@@ -48,4 +48,19 @@ class ArtistProfileForm(ModelForm):
         model = Artist
         fields = ['name', 'email', 'logo', 'description', 'artistNumber']
 
+class PhotoForm(ModelForm):
+    class Meta:
+        model = Photo
+        fields = ['url', 'id']
+
+class TagForm(ModelForm):
+    class Meta:
+        model = Tag
+        fields = ['name', 'id']
+
+class MediaForm(ModelForm):
+    class Meta:
+        model = Media
+        fields = ['url', 'id']
+
 

@@ -517,3 +517,26 @@ def payout(request):
 def paymentConfirmation(request):
     payment = request.session['payment']
     return render(request, './paypalConfirm.html', {'payment': payment})
+
+
+
+class formulario_feedback(View):
+
+    def get(self, request):
+
+        form = FeedbackForm()
+        context = {'feedback_form': form}
+
+        return render(request, 'feedback.html', context)
+
+    def post(self, request):
+
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
+        context = {'feedback_form': form}
+        return render(request, 'feedback.html', context)

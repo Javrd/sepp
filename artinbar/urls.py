@@ -39,5 +39,6 @@ urlpatterns = [
     path('registerVenue', views.register_venue.as_view(), name='register_venue'),
     path('registerArtist', views.register_artist.as_view(), name='register_artist'),
     path('editar_local', views.formulario_perfil_venue, name='formulario_perfil_venue'),
-    path('editar_artista', views.formulario_perfil_artist, name='formulario_perfil_artist')
+    path('editar_artista', views.formulario_perfil_artist, name='formulario_perfil_artist'),
+    path('feedback', views.formulario_feedback.as_view(), name='formulario_feedback')
 ]

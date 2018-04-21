@@ -163,7 +163,9 @@ def indexRedir(request):
 
 def index(request):
     template = loader.get_template('index.html')
-    return HttpResponse(template.render({}, request))
+    performance_list = Performance.objects.all()
+    context = {'performance_list': performance_list}
+    return HttpResponse(template.render(context, request))
 
 
 def login(request):

@@ -1,23 +1,16 @@
-<div class="card">
-    <div class="lead font-weight-bold card-header">
-        <div class="row text-capitalize"> 
-            {{ performance.name }}                                        
-        </div>    
-        <div class="row">
-            <div class="col-8" style="padding: 0px;">
-                    <a class="btn btn-sm btn-primary" href="/vista_local/{{ performance.venue.id }}">Local</a>
-            </div>
-        </div>                           
-    </div>
+
+    <div class="card" onclick="window.location='/vista_local/{{ performance.venue.id }}';">
     <div class="card-block">
         <div>
+            <p style="margin: 0px"><h4>{{ performance.name }}</h4></p>
             <p style="margin: 0px">{{ performance.date }}</p>
             <p style="margin: 0px">{{ performance.venue.name }}, {{ performance.venue.address }}</p>
-        </div>
+        
         <br>
-        <div>
-            {{ performance.description }}
+        <div></div>
+        <p style="margin: 0px">{{ performance.description }}</p>
         </div>
-    </div>
+        
+    </div> 
 </div>
 <br> 

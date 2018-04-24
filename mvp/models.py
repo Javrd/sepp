@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class User(AbstractUser):
     name = models.CharField(max_length=100)
@@ -16,7 +17,7 @@ class Artist(User):
 class Venue(User):
     geolocation = models.OneToOneField("Geolocation", on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=100, null=True)
-    capacity = models.IntegerField(null=True)
+    capacity = models.IntegerField(null=True, validators=[MinValueValidator(1)])
 
 
 class Photo(models.Model):
@@ -51,7 +52,7 @@ class Message(models.Model):
 class Offer(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500, null=True)
-    offeredAmount = models.FloatField(null=True)
+    offeredAmount = models.FloatField(null=True, validators=[MinValueValidator(1.0)])
     date = models.DateTimeField()
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name="offers")
 

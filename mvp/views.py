@@ -28,6 +28,10 @@ def lista_ofertas(request):
     offer_list = Offer.objects.all()
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
+def lista_artistas(request):
+    artist_list = Artist.objects.all()
+    context = {'artist_list': artist_list}
+    return render(request, './lista_artistas.html', context)
 
 @permission_required('mvp.venue', login_url="/login")
 def mis_ofertas(request):

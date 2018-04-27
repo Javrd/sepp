@@ -43,5 +43,7 @@ urlpatterns = [
     path('editar_local', views.formulario_perfil_venue, name='formulario_perfil_venue'),
     path('editar_artista', views.formulario_perfil_artist, name='formulario_perfil_artist'),
     path('vote', views.vote, name='vote'),
-    path('T&C', views.termsAndConditions, name='termsAndConditions')
+    path('T&C', views.termsAndConditions, name='termsAndConditions'),
+    path('lista_artistas/',  views.lista_artistas, name='lista_artistas')
+
 ]

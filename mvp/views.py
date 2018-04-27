@@ -32,6 +32,10 @@ def lista_artistas(request):
     artist_list = Artist.objects.all()
     context = {'artist_list': artist_list}
     return render(request, './lista_artistas.html', context)
+def lista_locales(request):
+    venue_list = Venue.objects.all()
+    context = {'venue_list': venue_list}
+    return render(request, './lista_venues.html', context)
 
 @permission_required('mvp.venue', login_url="/login")
 def mis_ofertas(request):

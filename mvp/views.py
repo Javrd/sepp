@@ -163,7 +163,9 @@ def indexRedir(request):
 
 def index(request):
     template = loader.get_template('index.html')
-    return HttpResponse(template.render({}, request))
+    performance_list = Performance.objects.all()
+    context = {'performance_list': performance_list}
+    return HttpResponse(template.render(context, request))
 
 
 def login(request):
@@ -520,3 +522,7 @@ def paymentConfirmation(request):
 
 def vote(request):
     return redirect('https://docs.google.com/forms/d/e/1FAIpQLSfqL7wY8eZ4NLD_Bd9Z_jbg4UOM6ceBIi54mV6ObW7irG711w/viewform?usp=sf_link')
+
+def termsAndConditions(request):
+
+    return render(request, './T&C.html')

@@ -1,23 +1,15 @@
-<div class="card">
-    <div class="lead font-weight-bold card-header">
-        <div class="row text-capitalize"> 
-            {{ offer.name }}                                        
-        </div>    
-        <div class="row">
-            <div class="col-8" style="padding: 0px;">
-                    <a class="btn btn-sm btn-primary" href="/vista_local/{{ offer.venue.id }}">Contactar</a>
-            </div>
-            <div class="col-4 text-right">{{ offer.offeredAmount }}€</div>
-        </div>                           
-    </div>
+<div class="card" onclick="window.location='/vista_local/{{ offer.venue.id }}';">
+                                                              
     <div class="card-block">
+            <h4>{{ offer.name }}  </h4>
+            <h4><p align="right">{{ offer.offeredAmount }}€</p></h4> 
         <div>
             {{ offer.date }}<br>
             {{ offer.venue.name }}, {{ offer.venue.address }}
         </div>
         <br>
         <div>
-            {{ offer.description }}
+                <p style="margin: 0px">{{ offer.description }}</p>
         </div>
     </div>
 </div>

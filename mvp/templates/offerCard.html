@@ -1,5 +1,8 @@
+{% if propias %}
+<div class="card">
+{% else %}
 <div class="card" onclick="window.location='/vista_local/{{ offer.venue.id }}';">
-                                                              
+{% endif %}                                                        
     <div class="card-block">
             <h4>{{ offer.name }}  </h4>
             {% if propias %}  

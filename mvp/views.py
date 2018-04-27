@@ -176,7 +176,9 @@ def indexRedir(request):
 
 def index(request):
     template = loader.get_template('index.html')
-    return HttpResponse(template.render({}, request))
+    performance_list = Performance.objects.all()
+    context = {'performance_list': performance_list}
+    return HttpResponse(template.render(context, request))
 
 
 def login(request):
@@ -530,3 +532,8 @@ def payout(request):
 def paymentConfirmation(request):
     payment = request.session['payment']
     return render(request, './paypalConfirm.html', {'payment': payment})
+
+
+def termsAndConditions(request):
+
+    return render(request, './T&C.html')

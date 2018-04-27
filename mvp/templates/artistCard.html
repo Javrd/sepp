@@ -1,7 +1,7 @@
 {% if propias %}
 <div class="card">
   {% else %}
-  <div class="card" onclick="window.location='/vista_local/{{ artist.venue.id }}';">
+  <div class="card" onclick="window.location='/vista_artista/{{ artist.id }}';">
     {% endif %}
     <div class="card-block">
       <h4>{{ artist.name }}  </h4>

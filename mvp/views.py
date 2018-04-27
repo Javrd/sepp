@@ -29,6 +29,19 @@ def lista_ofertas(request):
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
 
+@permission_required('mvp.venue', login_url="/login")
+def mis_ofertas(request):
+    offer_list = Offer.objects.filter(venue_id=request.user.id)
+    context = {'offer_list': offer_list, 'propias': True,}
+    return render(request, './lista_ofertas.html', context)
+
+@permission_required('mvp.venue', login_url="/login")
+def borrar_oferta(request, offer_id):
+    offer = Offer.objects.get(id=offer_id)
+    if(offer.venue.id==request.user.id):
+        offer.delete()
+    return redirect("/mis_ofertas")
+
 
 @permission_required('mvp.venue', login_url="/login")
 def formulario_oferta(request):
@@ -38,7 +51,7 @@ def formulario_oferta(request):
             offer = form.save(commit=False)
             offer.venue = Venue.objects.get(id=request.user.id)
             offer.save()
-            return HttpResponseRedirect('/lista_ofertas/')
+            return HttpResponseRedirect('/mis_ofertas/')
     else:
         form = OfferForm(request.user)
 

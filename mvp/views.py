@@ -51,7 +51,7 @@ def formulario_oferta(request):
             offer = form.save(commit=False)
             offer.venue = Venue.objects.get(id=request.user.id)
             offer.save()
-            return HttpResponseRedirect('/lista_ofertas/')
+            return HttpResponseRedirect('/mis_ofertas/')
     else:
         form = OfferForm(request.user)
 

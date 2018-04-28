@@ -25,7 +25,7 @@ import re
 
 # Create your views here.
 def lista_ofertas(request):
-    offer_list = Offer.objects.all()
+    offer_list = Offer.objects.all().order_by('-date')
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
 def lista_artistas(request):
@@ -39,7 +39,7 @@ def lista_locales(request):
 
 @permission_required('mvp.venue', login_url="/login")
 def mis_ofertas(request):
-    offer_list = Offer.objects.filter(venue_id=request.user.id)
+    offer_list = Offer.objects.filter(venue_id=request.user.id).order_by('-date')
     context = {'offer_list': offer_list, 'propias': True,}
     return render(request, './lista_ofertas.html', context)
 

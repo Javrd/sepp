@@ -10,4 +10,4 @@ done
 echo -e "\nmysql ready"
 python manage.py migrate
 python populate.py
-apache2ctl -D FOREGROUND
+daphne -b 0.0.0.0 -p 80 artinbar.asgi:application

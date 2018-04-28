@@ -4,3 +4,4 @@ django-widget-tweaks
 requests
 channels
 channels_redis
+whitenoise

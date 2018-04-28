@@ -13,7 +13,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
 from django.template import loader
-from datetime import datetime
 from requests.auth import HTTPBasicAuth
 import requests
 from django.contrib.auth.models import Permission

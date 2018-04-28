@@ -21,6 +21,8 @@ from mvp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('lista_ofertas/',  views.lista_ofertas, name='lista_ofertas'),
+    path('mis_ofertas/',  views.mis_ofertas, name='mis_ofertas'),
+    path('borrar_oferta/<offer_id>/',  views.borrar_oferta, name='borrar_oferta'),
     path('', views.indexRedir, name='index'),
     path('artinbar',  views.index, name='index'),
     path('formulario_oferta/',  views.formulario_oferta, name='formulario_oferta'),
@@ -38,5 +40,10 @@ urlpatterns = [
     path('registerVenue', views.register_venue.as_view(), name='register_venue'),
     path('registerArtist', views.register_artist.as_view(), name='register_artist'),
     path('editar_local', views.formulario_perfil_venue, name='formulario_perfil_venue'),
-    path('editar_artista', views.formulario_perfil_artist, name='formulario_perfil_artist')
+    path('editar_artista', views.formulario_perfil_artist, name='formulario_perfil_artist'),
+    path('vote', views.vote, name='vote'),
+    path('T&C', views.termsAndConditions, name='termsAndConditions'),
+    path('lista_artistas/',  views.lista_artistas, name='lista_artistas'),
+    path('lista_locales/',  views.lista_locales, name='lista_locales')
+
 ]

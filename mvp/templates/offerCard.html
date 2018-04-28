@@ -1,11 +1,18 @@
+{% if propias %}
+<div class="card">
+{% else %}
 <div class="card" onclick="window.location='/vista_local/{{ offer.venue.id }}';">
-                                                              
+{% endif %}                                                        
     <div class="card-block">
             <h4>{{ offer.name }}  </h4>
+            {% if propias %}  
+            <a class="btn btn-sm btn-secondary" href="/borrar_oferta/{{ offer.id }}">Borrar</a>
+            {% endif %}
             <h4><p align="right">{{ offer.offeredAmount }}€</p></h4> 
         <div>
             {{ offer.date }}<br>
             {{ offer.venue.name }}, {{ offer.venue.address }}
+            
         </div>
         <br>
         <div>

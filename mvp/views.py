@@ -30,25 +30,32 @@ def lista_ofertas(request):
     offer_list = Offer.objects.all().order_by('-date')
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
+
+
 def lista_artistas(request):
     artist_list = Artist.objects.all()
     context = {'artist_list': artist_list}
     return render(request, './lista_artistas.html', context)
+
+
 def lista_locales(request):
     venue_list = Venue.objects.all()
     context = {'venue_list': venue_list}
     return render(request, './lista_venues.html', context)
 
+
 @permission_required('mvp.venue', login_url="/login")
 def mis_ofertas(request):
-    offer_list = Offer.objects.filter(venue_id=request.user.id).order_by('-date')
-    context = {'offer_list': offer_list, 'propias': True,}
+    offer_list = Offer.objects.filter(
+        venue_id=request.user.id).order_by('-date')
+    context = {'offer_list': offer_list, 'propias': True, }
     return render(request, './lista_ofertas.html', context)
+
 
 @permission_required('mvp.venue', login_url="/login")
 def borrar_oferta(request, offer_id):
     offer = Offer.objects.get(id=offer_id)
-    if(offer.venue.id==request.user.id):
+    if(offer.venue.id == request.user.id):
         offer.delete()
     return redirect("/mis_ofertas")
 
@@ -369,7 +376,7 @@ def payment(request):
     try:
         venue = Venue.objects.get(id=request.user.id).id
         artist = Artist.objects.get(id=payee.id).id
-    except Model.DoesNotExist:
+    except:
         artist = Artist.objects.get(id=request.user.id).id
         venue = Venue.objects.get(id=payee.id).id
 
@@ -597,8 +604,10 @@ def paymentConfirmation(request):
     payment = request.session['payment']
     return render(request, './paypalConfirm.html', {'payment': payment})
 
+
 def vote(request):
     return redirect('https://docs.google.com/forms/d/e/1FAIpQLSfqL7wY8eZ4NLD_Bd9Z_jbg4UOM6ceBIi54mV6ObW7irG711w/viewform?usp=sf_link')
+
 
 def termsAndConditions(request):
 

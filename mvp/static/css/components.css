@@ -25,6 +25,7 @@ body, button, input, optgroup, select, textarea {
 
 .card{
     background-color: rgba(0,0,0,0.6);
+    z-index: 4;
 }
 
 .card:hover {

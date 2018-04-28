@@ -21,6 +21,8 @@ from django.forms import modelformset_factory
 from .forms import *
 from .models import *
 import re
+from django.utils.safestring import mark_safe
+import json
 
 
 # Create your views here.
@@ -274,7 +276,7 @@ def vista_local(request, id_local):
 
 @login_required(login_url='/login')
 def chat(request, user_id=None):
-
+    
     principal = request.user
 
     if not user_id:
@@ -284,26 +286,12 @@ def chat(request, user_id=None):
 
     else:
         contact = User.objects.get(id=user_id)
-
-        if request.method == 'POST':
-            form = request.POST
-            msg = Message.objects.create(
-                sender=principal, receiver=contact, timeStamp=datetime.now(), text=form['text'])
-            data = {}
-            data['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
-            data['text'] = msg.text
-            return JsonResponse(data)
-
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
-        last_contact_message = Message.objects.filter(
-            receiver=principal, sender=contact).order_by('-timeStamp')
-        if last_contact_message:
-            last_contact_message = last_contact_message[0].id
-        else:
-            last_contact_message = -1
-        return render(request, 'chat.html', {'messages': messages, 'contact': contact, 'last_contact_message': last_contact_message})
-
+        return render(request, './chat.html', {
+            'messages': messages, 
+            'contact': contact
+    })
 
 @login_required(login_url='/login')
 def chat_sync(request, user_id=None):

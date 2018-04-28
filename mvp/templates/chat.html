@@ -9,8 +9,8 @@
         <br>
         <h2><a href="/chat/"><</a>  {{contact.name}}</h2>
         <div id="chat" class ="pre-scrollable chat-window">
-        <div id="chat-panel" class="lead font-weight-bold card-header">
-        {% if messages %}
+            <div id="chat-panel" class="lead font-weight-bold card-header">
+            {% if messages %}
             {% for message in messages %}
                 <div class="row">
                     <div class="col"> 
@@ -22,24 +22,20 @@
                     </div>                     
                 </div>
             {% endfor %}
-        {% endif %}
-        </div>                                 
+            {% endif %}
+            </div>                                 
         </div>
-        <form id="chat-form" method="post" action="/chat/{{contact.id}}/" data-spy="affix" data-offset-bottom="10">
-            {% csrf_token %}
-            <div id="chat-typer" class="input-group">
-                <input type="text" id="text" name="text" class="text chat-text" autofocus/>
-                <input type="hidden" id="lastMessageId", name="lastMessageId", value="{{last_contact_message}}"/>
-                <span class="input-group-btn">
-                    <input class="btn btn-default" id="send" type="submit" value="Enviar"/>
-                </span>
-            </div>
-            <div>
+        <div id="chat-typer" class="input-group">
+            <input type="text" id="text" name="text" class="text chat-text" autofocus/>
+            <span class="input-group-btn">
+                <input class="btn btn-default" id="send" type="submit" value="Enviar"/>
+            </span>
+        </div>
+        <div>
             <span class="input-group-btn">
                 <input class="btn btn-round btn-primary" id="pago" type="button" value="Pagar" onclick="location.href = '/paypal_test/{{contact.id}}'" />
             </span>
-            </div>
-        </form> 
+        </div>
 
     </section>
 </div>
@@ -49,5 +45,5 @@
 
 {% block js %}
 <script src="{% static "/js/chat.js" %}"></script>
-<script>sync_messages({{last_contact_message}})</script>
+<script>loadChat({{user.id}}, {{contact.id}})</script>
 {% endblock %}

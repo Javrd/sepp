@@ -30,7 +30,6 @@ urlpatterns = [
     path('vista_local/<int:id_local>/', views.vista_local, name='vista_local'),
     path('chat/', views.chat, name='chat'),
     path('chat/<user_id>/', views.chat, name='chat'),
-    path('chat/<user_id>/sync', views.chat_sync, name='chat_sync'),
     path('paypal_test/<int:contact_id>', views.paypal_test, name='paypal_test'),
     path('payment', views.payment, name='payment'),
     path('executePayment', views.executePayment, name='executePayment'),

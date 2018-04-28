@@ -27,9 +27,30 @@ import re
 
 # Create your views here.
 def lista_ofertas(request):
-    offer_list = Offer.objects.all()
+    offer_list = Offer.objects.all().order_by('-date')
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
+def lista_artistas(request):
+    artist_list = Artist.objects.all()
+    context = {'artist_list': artist_list}
+    return render(request, './lista_artistas.html', context)
+def lista_locales(request):
+    venue_list = Venue.objects.all()
+    context = {'venue_list': venue_list}
+    return render(request, './lista_venues.html', context)
+
+@permission_required('mvp.venue', login_url="/login")
+def mis_ofertas(request):
+    offer_list = Offer.objects.filter(venue_id=request.user.id).order_by('-date')
+    context = {'offer_list': offer_list, 'propias': True,}
+    return render(request, './lista_ofertas.html', context)
+
+@permission_required('mvp.venue', login_url="/login")
+def borrar_oferta(request, offer_id):
+    offer = Offer.objects.get(id=offer_id)
+    if(offer.venue.id==request.user.id):
+        offer.delete()
+    return redirect("/mis_ofertas")
 
 
 @permission_required('mvp.venue', login_url="/login")
@@ -40,7 +61,7 @@ def formulario_oferta(request):
             offer = form.save(commit=False)
             offer.venue = Venue.objects.get(id=request.user.id)
             offer.save()
-            return HttpResponseRedirect('/lista_ofertas/')
+            return HttpResponseRedirect('/mis_ofertas/')
     else:
         form = OfferForm(request.user)
 
@@ -165,7 +186,9 @@ def indexRedir(request):
 
 def index(request):
     template = loader.get_template('index.html')
-    return HttpResponse(template.render({}, request))
+    performance_list = Performance.objects.all()
+    context = {'performance_list': performance_list}
+    return HttpResponse(template.render(context, request))
 
 
 def login(request):
@@ -573,3 +596,10 @@ def payout(request):
 def paymentConfirmation(request):
     payment = request.session['payment']
     return render(request, './paypalConfirm.html', {'payment': payment})
+
+def vote(request):
+    return redirect('https://docs.google.com/forms/d/e/1FAIpQLSfqL7wY8eZ4NLD_Bd9Z_jbg4UOM6ceBIi54mV6ObW7irG711w/viewform?usp=sf_link')
+
+def termsAndConditions(request):
+
+    return render(request, './T&C.html')

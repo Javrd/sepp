@@ -6,18 +6,18 @@
     <section class="container fullPage">
         <br>
         <h2>Ofertas</h2>
-        {% if offer_list %}           
-            <div class="offer-list">   
-                {% for offer in offer_list %}
-                    {% include "offerCard.html" %}
-                {% endfor %} 
-            </div>  
+        {% if artist_list %}
+            <div class="artist-list">
+                {% for artist in artist_list %}
+                    {% include "artistCard.html" %}
+                {% endfor %}
+            </div>
             {% else %}
-                <p>No hay listas disponibles.</p>            
+                <p>No hay listas disponibles.</p>
         {% endif %}
     </section>
 </div>
 <div class="fixed-bottom" style="z-index: 0;">
         <img src="../static/img/crowd.png" class="img-fluid" />
-    </div>    
+    </div>
 {% endblock %}

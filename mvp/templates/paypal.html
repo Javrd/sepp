@@ -1,0 +1,115 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Art in bar - Payment{% endblock %}
+{% block content %}
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+<div class="colored-section bg-inverse">
+        <section class="container fullPage">
+    <h1>Realizando un pago como {{user.name}} a {{contact.name}}</h1>
+    <form class="form-group" action="/payment" id="paymentForm" method="post">
+        {% with WIDGET_ERROR_CLASS='form-control-danger' %}
+        {% csrf_token %}
+        
+        <input type="hidden" id="payer" name="payer" value="{{user.id}}"/>
+        <input type="hidden" id="payee" name="payee" value="{{contact.id}}"/>         
+        
+        <label for="payeeName">Destinatario: </label>
+        <br>
+        <input type="text" class="form-control" disabled name="payeeName" id="payeeName" value="{{contact.name}}"/>  
+        <br>
+
+        <label for="amount">Precio ofrecido:</label>            
+        <div class="input-group">
+            <input class="form-control" name="amount" id="amount" placeholder="Cantidad en Euros" type="number">
+            <span class="input-group-btn">
+                <spam class="btn btn-primary"><em class="fa fa-euro"></em></spam>
+            </span>
+        </div>        
+        <br>
+
+        <h3>Datos del evento:</h3>
+
+        <label for="performanceName">Nombre: </label>
+        <br>
+        <input type="text" class="form-control" name="performanceName" placeholder="Nombre del evento" id="performanceName"/>  
+        <br>
+
+        <label for="performanceDes">Descripción: </label>
+        <br>
+        <input type="textarea" class="form-control" name="performanceDes" placeholder="¡Describe vuestro evento!" id="performanceDes"/>  
+        <br>
+
+        <label for="performanceDate">Fecha: </label>
+        <br>
+        <input type="date" class="form-control" name="performanceDate" id="performanceDate"/>  
+        <br>
+
+        <label class="custom-control custom-checkbox d-block">
+            <input class="custom-control-input" checked="true" type="checkbox" name="performancePublic" id="performancePublic">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">¿Quieres anunciar el evento públicamente?</span>
+        </label> 
+        <br>
+
+        <label for="relatedOffer">¿Quieres cerrar una oferta relacionada con este evento?</label>
+        <select class="form-control" name="relatedOffer" id="relatedOffer">
+            <option value="0">No cerrar ninguna oferta</option>
+            {% for offer in offer_list %}
+                <option value="{{offer.id}}">{{offer.name}}</option>
+            {% endfor %}
+        </select>
+
+        <br>
+        <div id="paypal-button"></div>
+        {% endwith %}
+    </form>    
+    </section>
+</div>
+
+<script>
+    var CREATE_PAYMENT_URL  = 'http://localhost:8000/payment';
+    var EXECUTE_PAYMENT_URL = 'http://localhost:8000/executePayment';
+
+    paypal.Button.render({
+
+        env: 'sandbox', // Or 'sandbox'
+
+        commit: true, // Show a 'Pay Now' button
+
+        payment: function() {
+            var data = {
+                payee: $('#payee').val(),
+                payer: $('#payer').val(),
+                amount: $('#amount').val(),
+                performanceName: $('#performanceName').val(),
+                performanceDes: $('#performanceDes').val(),
+                performanceDate: $('#performanceDate').val(),
+                performancePublic: $('#performancePublic').val(),
+                relatedOffer: $('#relatedOffer option:checked').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+            return paypal.request.post(CREATE_PAYMENT_URL,data).then(function(data) {
+                return data.id;
+            });
+        },
+
+        onAuthorize: function(data) {
+            return paypal.request.post(EXECUTE_PAYMENT_URL, {
+                paymentID: data.paymentID,
+                payerID:   data.payerID,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }).then(function(data) {
+                if (data == 'OK'){
+                    $(location).attr('href','/paymentConfirmation');
+                } else if (data == 'ERROR'){
+                    alert('Pago no confirmado')
+                } else{
+                    alert('Error en el pago')
+                }
+            });
+        }
+
+    }, '#paypal-button');
+</script>
+{% endblock %}

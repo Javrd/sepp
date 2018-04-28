@@ -21,17 +21,20 @@ from mvp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('lista_ofertas/',  views.lista_ofertas, name='lista_ofertas'),
+    path('mis_ofertas/',  views.mis_ofertas, name='mis_ofertas'),
+    path('borrar_oferta/<offer_id>/',  views.borrar_oferta, name='borrar_oferta'),
     path('', views.indexRedir, name='index'),
     path('artinbar',  views.index, name='index'),
     path('formulario_oferta/',  views.formulario_oferta, name='formulario_oferta'),
     path('logout', logout, {'next_page': '/artinbar'}, name='logout'),
     path('login', views.login, name='login'),
-    path('vista_artista/<int:id_artista>/',views.vista_artista, name='vista_artista'),
+    path('vista_artista/<int:id_artista>/',
+         views.vista_artista, name='vista_artista'),
     path('vista_local/<int:id_local>/', views.vista_local, name='vista_local'),
     path('chat/', views.chat, name='chat'),
     path('chat/<user_id>/', views.chat, name='chat'),
     path('chat/<user_id>/sync', views.chat_sync, name='chat_sync'),
-    path('paypal_test/<int:contact_id>', views.paypal_test, name='paypal_test'),
+    path('paypal/<int:contact_id>', views.paypal, name='paypal'),
     path('payment', views.payment, name='payment'),
     path('executePayment', views.executePayment, name='executePayment'),
     path('paymentConfirmation', views.paymentConfirmation,
@@ -41,4 +44,9 @@ urlpatterns = [
     path('editar_local', views.formulario_perfil_venue, name='formulario_perfil_venue'),
     path('editar_artista', views.formulario_perfil_artist, name='formulario_perfil_artist'),
     path('feedback', views.formulario_feedback.as_view(), name='formulario_feedback')
+    path('vote', views.vote, name='vote'),
+    path('T&C', views.termsAndConditions, name='termsAndConditions'),
+    path('lista_artistas/',  views.lista_artistas, name='lista_artistas'),
+    path('lista_locales/',  views.lista_locales, name='lista_locales')
+
 ]

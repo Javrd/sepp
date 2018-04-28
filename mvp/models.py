@@ -83,3 +83,9 @@ class Payment(models.Model):
     date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     performance = models.OneToOneField(Performance, on_delete=models.CASCADE)
+
+
+class Feedback(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=500, blank=False)
+

@@ -620,6 +620,30 @@ def paymentConfirmation(request):
     return render(request, './paypalConfirm.html', {'payment': payment})
 
 
+
+
+class formulario_feedback(View):
+
+    def get(self, request):
+
+        form = FeedbackForm()
+        context = {'feedback_form': form}
+
+        return render(request, 'feedback.html', context)
+
+    def post(self, request):
+
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
+        context = {'feedback_form': form}
+        return render(request, 'feedback.html', context)
+
+
 def vote(request):
     return redirect('https://docs.google.com/forms/d/e/1FAIpQLSfqL7wY8eZ4NLD_Bd9Z_jbg4UOM6ceBIi54mV6ObW7irG711w/viewform?usp=sf_link')
 
@@ -627,3 +651,4 @@ def vote(request):
 def termsAndConditions(request):
 
     return render(request, './T&C.html')
+

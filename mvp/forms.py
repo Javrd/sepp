@@ -45,3 +45,9 @@ class ArtistProfileForm(ModelForm):
         fields = ['name', 'email', 'logo', 'description', 'artistNumber']
 
 
+class FeedbackForm(ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['name', 'description']
+
+

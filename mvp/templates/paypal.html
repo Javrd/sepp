@@ -52,6 +52,14 @@
         </label> 
         <br>
 
+        <label for="relatedOffer">¿Quieres cerrar una oferta relacionada con este evento?</label>
+        <select class="form-control" name="relatedOffer" id="relatedOffer">
+            <option value="0">No cerrar ninguna oferta</option>
+            {% for offer in offer_list %}
+                <option value="{{offer.id}}">{{offer.name}}</option>
+            {% endfor %}
+        </select>
+
         <br>
         <div id="paypal-button"></div>
         {% endwith %}
@@ -78,6 +86,7 @@
                 performanceDes: $('#performanceDes').val(),
                 performanceDate: $('#performanceDate').val(),
                 performancePublic: $('#performancePublic').val(),
+                relatedOffer: $('#relatedOffer option:checked').val(),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
             return paypal.request.post(CREATE_PAYMENT_URL,data).then(function(data) {

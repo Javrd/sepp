@@ -360,10 +360,18 @@ def chat_sync(request, user_id=None):
 def paypal(request, contact_id):
     try:
         contact = get_object_or_404(Venue, pk=contact_id)
+        offer_list = Offer.objects.filter(
+            venue_id=contact.id).order_by('-date')
     except:
         contact = get_object_or_404(Artist, pk=contact_id)
+
     principal = request.user
-    context = {'contact': contact, 'user': principal}
+
+    if (offer_list is None):
+        offer_list = Offer.objects.filter(
+            venue_id=principal.id).order_by('-date')
+
+    context = {'contact': contact, 'user': principal, 'offer_list': offer_list}
     return render(request, './paypal.html', context)
 
 
@@ -399,6 +407,8 @@ def payment(request):
     print('Venue: '+str(serializedPerformance['venue']))
 
     request.session['performance'] = serializedPerformance
+
+    request.session['relaterOffer'] = form['relatedOffer']
 
     print('============ Requesting access token ============')
     payee = payee.email
@@ -595,6 +605,11 @@ def payout(request):
 
     paymentObject.save()
     print('============ Payment saved ============')
+
+    offerId = request.session['relaterOffer']
+    if (offerId != 0):
+        offer = Offer.objects.get(id=offerId)
+        offer.delete()
 
     return HttpResponse('OK')
 

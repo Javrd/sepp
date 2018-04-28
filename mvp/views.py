@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import *
 from .forms import ArtistForm
@@ -16,6 +17,7 @@ from django.template import loader
 from datetime import datetime
 from requests.auth import HTTPBasicAuth
 import requests
+import datetime
 from django.contrib.auth.models import Permission
 from django.forms import modelformset_factory
 from .forms import *
@@ -28,25 +30,32 @@ def lista_ofertas(request):
     offer_list = Offer.objects.all().order_by('-date')
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
+
+
 def lista_artistas(request):
     artist_list = Artist.objects.all()
     context = {'artist_list': artist_list}
     return render(request, './lista_artistas.html', context)
+
+
 def lista_locales(request):
     venue_list = Venue.objects.all()
     context = {'venue_list': venue_list}
     return render(request, './lista_venues.html', context)
 
+
 @permission_required('mvp.venue', login_url="/login")
 def mis_ofertas(request):
-    offer_list = Offer.objects.filter(venue_id=request.user.id).order_by('-date')
-    context = {'offer_list': offer_list, 'propias': True,}
+    offer_list = Offer.objects.filter(
+        venue_id=request.user.id).order_by('-date')
+    context = {'offer_list': offer_list, 'propias': True, }
     return render(request, './lista_ofertas.html', context)
+
 
 @permission_required('mvp.venue', login_url="/login")
 def borrar_oferta(request, offer_id):
     offer = Offer.objects.get(id=offer_id)
-    if(offer.venue.id==request.user.id):
+    if(offer.venue.id == request.user.id):
         offer.delete()
     return redirect("/mis_ofertas")
 
@@ -348,22 +357,63 @@ def chat_sync(request, user_id=None):
 
 
 @login_required(login_url='/login')
-def paypal_test(request, contact_id):
+def paypal(request, contact_id):
     try:
         contact = get_object_or_404(Venue, pk=contact_id)
+        offer_list = Offer.objects.filter(
+            venue_id=contact.id).order_by('-date')
     except:
         contact = get_object_or_404(Artist, pk=contact_id)
+
     principal = request.user
-    context = {'contact': contact, 'user': principal}
-    return render(request, './paypalTest.html', context)
+
+    if (offer_list is None):
+        offer_list = Offer.objects.filter(
+            venue_id=principal.id).order_by('-date')
+
+    context = {'contact': contact, 'user': principal, 'offer_list': offer_list}
+    return render(request, './paypal.html', context)
 
 
 @login_required(login_url='/login')
 def payment(request):
+
+    form = request.POST
+    payee = get_object_or_404(User, id=form['payee'])
+
+    try:
+        venue = Venue.objects.get(id=request.user.id).id
+        artist = Artist.objects.get(id=payee.id).id
+    except:
+        artist = Artist.objects.get(id=request.user.id).id
+        venue = Venue.objects.get(id=payee.id).id
+
+    serializedPerformance = {
+        'name': form['performanceName'],
+        'description': form['performanceDes'],
+        'date': form['performanceDate'],
+        'public': form['performancePublic'],
+        'artist': artist,
+        'venue': venue
+    }
+
+    print('============ Performance info: ============')
+
+    print('Name: '+serializedPerformance['name'])
+    print('Description: '+serializedPerformance['description'])
+    print('Date: '+serializedPerformance['date'])
+    print('Public: '+serializedPerformance['public'])
+    print('Artist: '+str(serializedPerformance['artist']))
+    print('Venue: '+str(serializedPerformance['venue']))
+
+    request.session['performance'] = serializedPerformance
+
+    request.session['relaterOffer'] = form['relatedOffer']
+
     print('============ Requesting access token ============')
-    payee = request.POST.get('payee')
+    payee = payee.email
     request.session['payee'] = payee
-    amount = request.POST.get('amount')
+    amount = form['amount']
     url = 'https://api.sandbox.paypal.com/v1/oauth2/token'
     headers = {
         'accept': 'application/json',
@@ -533,6 +583,34 @@ def payout(request):
     if (payout['batch_header']['batch_status'] == 'PENDING'):
         print('============ Payout successfully processed ============')
 
+    serializedPerformance = request.session['performance']
+    performance = Performance()
+
+    performance.name = serializedPerformance['name']
+    performance.description = serializedPerformance['description']
+    performance.date = serializedPerformance['date']
+    performance.public = True if serializedPerformance['public'] is 'on' else False
+    performance.artist = Artist.objects.get(id=serializedPerformance['artist'])
+    performance.venue = Venue.objects.get(id=serializedPerformance['venue'])
+
+    performance.save()
+    print('============ Performance saved ============')
+
+    paymentObject = Payment()
+    paymentObject.amount = payment['transactions'][0]['amount']['total']
+    paymentObject.user = request.user
+    paymentObject.performance = performance
+    paymentObject.date = datetime.datetime.now()
+    paymentObject.paypalId = payment['id']
+
+    paymentObject.save()
+    print('============ Payment saved ============')
+
+    offerId = request.session['relaterOffer']
+    if (offerId != 0):
+        offer = Offer.objects.get(id=offerId)
+        offer.delete()
+
     return HttpResponse('OK')
 
 
@@ -541,8 +619,10 @@ def paymentConfirmation(request):
     payment = request.session['payment']
     return render(request, './paypalConfirm.html', {'payment': payment})
 
+
 def vote(request):
     return redirect('https://docs.google.com/forms/d/e/1FAIpQLSfqL7wY8eZ4NLD_Bd9Z_jbg4UOM6ceBIi54mV6ObW7irG711w/viewform?usp=sf_link')
+
 
 def termsAndConditions(request):
 

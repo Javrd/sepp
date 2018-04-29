@@ -54,12 +54,12 @@ services:
     container_name: django-aib-s1
     environment:
       DJANGO_SECRET_KEY: DJANGO-SECRET-KEY
-      DJANGO_HOST_NAME: s1.artinbar.com
+      DJANGO_HOST_NAME: s1.artinbar.es
       MYSQL_DB: aib_db
       MYSQL_HOST: db-s1
       DEBUG: 'True'
       REDIS_HOST: redis
-      VIRTUAL_HOST: s1.artinbar.com
+      VIRTUAL_HOST: s1.artinbar.es
 
   django-aib-s2:
     build: ./s2
@@ -69,11 +69,11 @@ services:
     container_name: django-aib-s2
     environment:
       DJANGO_SECRET_KEY: DJANGO-SECRET-KEY
-      DJANGO_HOST_NAME: s2.artinbar.com
+      DJANGO_HOST_NAME: s2.artinbar.es
       MYSQL_DB: aib_db
       MYSQL_HOST: db-s2
       DEBUG: 'True'
-      VIRTUAL_HOST: s2.artinbar.com
+      VIRTUAL_HOST: s2.artinbar.es
 
   django-aib-dev:
     build: ./dev
@@ -84,9 +84,9 @@ services:
     container_name: django-aib-dev
     environment:
       DJANGO_SECRET_KEY: DJANGO-SECRET-KEY
-      DJANGO_HOST_NAME: dev.artinbar.com
+      DJANGO_HOST_NAME: dev.artinbar.es
       MYSQL_DB: aib_db
       MYSQL_HOST: db-dev
       DEBUG: 'True'
       REDIS_HOST: redis
-      VIRTUAL_HOST: dev.artinbar.com
+      VIRTUAL_HOST: dev.artinbar.es

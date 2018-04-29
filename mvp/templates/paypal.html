@@ -52,13 +52,15 @@
         </label> 
         <br>
 
-        <label for="relatedOffer">¿Quieres cerrar una oferta relacionada con este evento?</label>
-        <select class="form-control" name="relatedOffer" id="relatedOffer">
-            <option value="0">No cerrar ninguna oferta</option>
-            {% for offer in offer_list %}
-                <option value="{{offer.id}}">{{offer.name}}</option>
-            {% endfor %}
-        </select>
+        {% if offer_list %}
+            <label for="relatedOffer">¿Quieres cerrar una oferta relacionada con este evento?</label>
+            <select class="form-control" name="relatedOffer" id="relatedOffer">
+                <option value="0">No cerrar ninguna oferta</option>
+                {% for offer in offer_list %}
+                    <option value="{{offer.id}}">{{offer.name}}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
 
         <br>
         <div id="paypal-button"></div>

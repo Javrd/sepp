@@ -325,19 +325,15 @@ def chat(request, user_id=None):
 
 @login_required(login_url='/login')
 def paypal(request, contact_id):
-    offer_list = None
+    offer_list = []
     try:
         contact = get_object_or_404(Venue, pk=contact_id)
-        offer_list = Offer.objects.filter(
-            venue_id=contact.id).order_by('-date')
     except:
         contact = get_object_or_404(Artist, pk=contact_id)
+        offer_list = Offer.objects.filter(
+            venue_id=request.user.id).order_by('-date')
 
     principal = request.user
-
-    if (offer_list is None):
-        offer_list = Offer.objects.filter(
-            venue_id=principal.id).order_by('-date')
 
     context = {'contact': contact, 'user': principal, 'offer_list': offer_list}
     return render(request, './paypal.html', context)

@@ -31,7 +31,11 @@ class ArtistForm(UserCreationForm):
         fields = ['name', 'username', 'email', 'logo', 'description', 'artistNumber']
 
 
+class PerformanceForm(ModelForm):
 
+    class Meta:
+        model = Performance
+        fields = ['name', 'description', 'date', 'public', 'description', 'venue', 'artist']
 
 
 class VenueProfileForm(ModelForm):
@@ -43,6 +47,21 @@ class ArtistProfileForm(ModelForm):
     class Meta:
         model = Artist
         fields = ['name', 'email', 'logo', 'description', 'artistNumber']
+
+class PhotoForm(ModelForm):
+    class Meta:
+        model = Photo
+        fields = ['url', 'id']
+
+class TagForm(ModelForm):
+    class Meta:
+        model = Tag
+        fields = ['name', 'id']
+
+class MediaForm(ModelForm):
+    class Meta:
+        model = Media
+        fields = ['url', 'id']
 
 
 class FeedbackForm(ModelForm):

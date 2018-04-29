@@ -42,7 +42,7 @@ def lista_artistas(request):
 def lista_locales(request):
     venue_list = Venue.objects.all()
     context = {'venue_list': venue_list}
-    return render(request, './lista_venues.html', context)
+    return render(request, './lista_locales.html', context)
 
 
 @permission_required('mvp.venue', login_url="/login")
@@ -325,6 +325,7 @@ def chat(request, user_id=None):
 
 @login_required(login_url='/login')
 def paypal(request, contact_id):
+    offer_list = None
     try:
         contact = get_object_or_404(Venue, pk=contact_id)
         offer_list = Offer.objects.filter(

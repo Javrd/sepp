@@ -43,12 +43,13 @@ def importArtists():
             logo = line[3]
             integrantes = line[4]
             artisId = line[5]
+            username = line[6]
 
-            new = Artist.objects.create(username=nombre, email=email,
+            new = Artist.objects.create(username=username, email=email,
                                         name=nombre, description=description,
                                         logo=logo, artistNumber=integrantes,
                                         id=artisId)
-            new.set_password(nombre)
+            new.set_password(username)
             new.user_permissions.add(permission)
             new.save()
 
@@ -69,15 +70,16 @@ def importVenues():
             address = line[5]
             capacity = line[6]
             venueId = line[7]
+            username = line[8]
             geo = geo.split('/')
             geos = Geolocation.objects.create(
                 latitude=float(geo[0]), longitude=float(geo[1]))
-            new = Venue.objects.create(username=nombre, email=email,
+            new = Venue.objects.create(username=username, email=email,
                                        name=nombre, description=description,
                                        logo=logo, geolocation=geos,
                                        address=address, capacity=capacity,
                                        id=venueId)
-            new.set_password(nombre)
+            new.set_password(username)
             new.user_permissions.add(permission)
             new.save()
 

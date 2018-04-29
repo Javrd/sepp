@@ -16,7 +16,7 @@ class test_edit_profile_artist(TestCase):
             'capacity': 10
         }
 
-    def test_positive1(self):
+    def test_Positive(self):
 
         form = VenueProfileForm(data={'email': "testuser@email.com",
             'name': "testuser",
@@ -36,7 +36,7 @@ class test_edit_profile_artist(TestCase):
 
 
     #Invalid email
-    def test_negative2(self):
+    def test_InvalidEmail(self):
 
         form = VenueProfileForm(data={'email': "testuser",
             'name': "testuser",
@@ -56,7 +56,7 @@ class test_edit_profile_artist(TestCase):
 
 
     #Invalid name
-    def test_negative3(self):
+    def test_NoName(self):
 
         form = VenueProfileForm(data={'email': "testuser@email.com",
             'name': "",
@@ -76,7 +76,7 @@ class test_edit_profile_artist(TestCase):
 
 
     #Invalid logo
-    def test_negative4(self):
+    def test_InvalidLogo(self):
 
         form = VenueProfileForm(data={'email': "testuser@email.com",
             'name': "testuser",
@@ -94,9 +94,27 @@ class test_edit_profile_artist(TestCase):
         self.assertTrue(formPhoto1.is_valid())
         self.assertTrue(formPhoto2.is_valid())
 
+    def test_NoLogo(self):
+
+        form = VenueProfileForm(data={'email': "testuser@email.com",
+            'name': "testuser",
+            'logo': "",
+            'description': "this is a description",
+            'address': "addresstest",
+            'capacity': 10})
+
+        user = Venue.objects.create_user(**self.register)
+
+        formPhoto1 = PhotoForm(data={'url': "https://www.photo.com", 'id': user.id})
+        formPhoto2 = PhotoForm(data={'url': "https://www.photo2.com", 'id': user.id})
+
+        self.assertFalse(form.is_valid())
+        self.assertTrue(formPhoto1.is_valid())
+        self.assertTrue(formPhoto2.is_valid())
+
 
     #Invalid description
-    def test_negative5(self):
+    def test_NoDescription(self):
 
         form = VenueProfileForm(data={'email': "testuser@email.com",
             'name': "testuser",
@@ -116,7 +134,7 @@ class test_edit_profile_artist(TestCase):
 
 
     #Invalid address
-    def test_negative6(self):
+    def test_InvalidAddress(self):
 
         form = VenueProfileForm(data={'email': "testuser@email.com",
             'name': "testuser",
@@ -136,14 +154,14 @@ class test_edit_profile_artist(TestCase):
 
 
     #Invalid capacity
-    def test_negative7(self):
+    def test_NegativeCapacity(self):
 
         form = VenueProfileForm(data={'email': "testuser@email.com",
             'name': "testuser",
             'logo': "www.urlexample.es",
             'description': "this is a description",
             'address': "addresstest",
-            'capacity': None})
+            'capacity': -1})
 
         user = Venue.objects.create_user(**self.register)
 
@@ -156,7 +174,7 @@ class test_edit_profile_artist(TestCase):
 
 
     #Invalid photo1
-    def test_negative8(self):
+    def test_InvalidPhoto(self):
 
         form = VenueProfileForm(data={'email': "testuser@email.com",
             'name': "testuser",
@@ -176,7 +194,7 @@ class test_edit_profile_artist(TestCase):
 
 
     #Invalid photo2
-    def test_negative9(self):
+    def test_InvalidSecondPhoto(self):
 
         form = VenueProfileForm(data={'email': "testuser@email.com",
             'name': "testuser",

@@ -1,10 +1,6 @@
 version: "2"
 
 services: 
-  redis:
-    image: redis:2.8
-    ports:
-      - "6379:6379"
   nginx-proxy:
     image: jwilder/nginx-proxy
     ports:
@@ -12,37 +8,85 @@ services:
       - "443:443"
     volumes: 
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    environment:
-      - DEFAULT_HOST=localhost
-      - HTTPS_METHOD=noredirect
     restart: always
 
-  db:
+  redis:
+    image: redis:2.8
+
+  db-s1:
     image: mariadb
-    container_name: aib-db
+    container_name: aib-db-s1
     restart: always
     volumes: 
-      - ./db/mysql:/var/lib/mysql
+      - ./db/mysql1:/var/lib/mysql
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: MYSQL-PWD
       MYSQL_DATABASE: aib_db
 
-  django-aib:
-    build: .
-    links:
-      - "db"
-      - "redis"
+  db-s2:
+    image: mariadb
+    container_name: aib-db-s2
     restart: always
-    container_name: django-aib
+    volumes: 
+      - ./db/mysql2:/var/lib/mysql
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: MYSQL-PWD
+      MYSQL_DATABASE: aib_db
+
+  db-dev:
+    image: mariadb
+    container_name: aib-db-dev
+    restart: always
+    volumes: 
+      - ./db/mysql3:/var/lib/mysql
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: MYSQL-PWD
+      MYSQL_DATABASE: aib_db
+
+  django-aib-s1:
+    build: ./s1
+    links:
+      - "db-s1"
+    restart: always
+    container_name: django-aib-s1
     environment:
       DJANGO_SECRET_KEY: DJANGO-SECRET-KEY
-      DJANGO_HOST_NAME: localhost
+      DJANGO_HOST_NAME: s1.artinbar.com
       MYSQL_DB: aib_db
-      # MYSQL_USER:
-      # MYSQL_PWD:
-      MYSQL_HOST: db
-      # MYSQL_PORT:
+      MYSQL_HOST: db-s1
       DEBUG: 'True'
       REDIS_HOST: redis
-      VIRTUAL_HOST: localhost
+      VIRTUAL_HOST: s1.artinbar.com
+
+  django-aib-s2:
+    build: ./s2
+    links:
+      - "db-s2"
+    restart: always
+    container_name: django-aib-s2
+    environment:
+      DJANGO_SECRET_KEY: DJANGO-SECRET-KEY
+      DJANGO_HOST_NAME: s2.artinbar.com
+      MYSQL_DB: aib_db
+      MYSQL_HOST: db-s2
+      DEBUG: 'True'
+      VIRTUAL_HOST: s2.artinbar.com
+
+  django-aib-dev:
+    build: ./dev
+    links:
+      - "db-dev"
+      - "redis"
+    restart: always
+    container_name: django-aib-dev
+    environment:
+      DJANGO_SECRET_KEY: DJANGO-SECRET-KEY
+      DJANGO_HOST_NAME: dev.artinbar.com
+      MYSQL_DB: aib_db
+      MYSQL_HOST: db-dev
+      DEBUG: 'True'
+      REDIS_HOST: redis
+      VIRTUAL_HOST: dev.artinbar.com

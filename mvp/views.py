@@ -14,7 +14,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
 from django.template import loader
-from datetime import datetime
 from requests.auth import HTTPBasicAuth
 import requests
 import datetime
@@ -23,6 +22,8 @@ from django.forms import modelformset_factory
 from .forms import *
 from .models import *
 import re
+from django.utils.safestring import mark_safe
+import json
 
 
 # Create your views here.
@@ -304,7 +305,7 @@ def vista_local(request, id_local):
 
 @login_required(login_url='/login')
 def chat(request, user_id=None):
-
+    
     principal = request.user
 
     if not user_id:
@@ -314,46 +315,12 @@ def chat(request, user_id=None):
 
     else:
         contact = User.objects.get(id=user_id)
-
-        if request.method == 'POST':
-            form = request.POST
-            msg = Message.objects.create(
-                sender=principal, receiver=contact, timeStamp=datetime.now(), text=form['text'])
-            data = {}
-            data['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
-            data['text'] = msg.text
-            return JsonResponse(data)
-
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
-        last_contact_message = Message.objects.filter(
-            receiver=principal, sender=contact).order_by('-timeStamp')
-        if last_contact_message:
-            last_contact_message = last_contact_message[0].id
-        else:
-            last_contact_message = -1
-        return render(request, 'chat.html', {'messages': messages, 'contact': contact, 'last_contact_message': last_contact_message})
-
-
-@login_required(login_url='/login')
-def chat_sync(request, user_id=None):
-    if request.method == 'POST':
-        principal = request.user
-        contact = User.objects.get(id=user_id)
-        form = request.POST
-        messages = Message.objects.filter(
-            receiver=principal, sender=contact).order_by('-timeStamp')
-        data = []
-        list = {'list': data}
-        for i, msg in enumerate(messages):
-            if (form["lastMessageId"] == msg.id):
-                break
-            data.append({})
-            data[i]['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
-            data[i]['text'] = msg.text
-            data[i]['id'] = msg.id
-        data.reverse()
-        return JsonResponse(list)
+        return render(request, './chat.html', {
+            'messages': messages, 
+            'contact': contact
+    })
 
 
 @login_required(login_url='/login')

@@ -325,6 +325,7 @@ def chat(request, user_id=None):
 
 @login_required(login_url='/login')
 def paypal(request, contact_id):
+    offer_list = None
     try:
         contact = get_object_or_404(Venue, pk=contact_id)
         offer_list = Offer.objects.filter(

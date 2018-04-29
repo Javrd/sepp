@@ -322,26 +322,6 @@ def chat(request, user_id=None):
             'contact': contact
     })
 
-@login_required(login_url='/login')
-def chat_sync(request, user_id=None):
-    if request.method == 'POST':
-        principal = request.user
-        contact = User.objects.get(id=user_id)
-        form = request.POST
-        messages = Message.objects.filter(
-            receiver=principal, sender=contact).order_by('-timeStamp')
-        data = []
-        list = {'list': data}
-        for i, msg in enumerate(messages):
-            if (form["lastMessageId"] == msg.id):
-                break
-            data.append({})
-            data[i]['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
-            data[i]['text'] = msg.text
-            data[i]['id'] = msg.id
-        data.reverse()
-        return JsonResponse(list)
-
 
 @login_required(login_url='/login')
 def paypal(request, contact_id):

@@ -15,7 +15,7 @@ class test_registerVenue(TestCase):
                                      'address': "addresstest", 'capacity': 10})
         self.assertTrue(formulario.is_valid())
 
-    def test_RVNegativeEmail(self):
+    def test_RVNegativeNoEmail(self):
         formulario1 = VenueForm(data={'email': "", 'password1': "strongPassuser1",
                                      'password2': "strongPassuser1",
                                      'name': "testuser", 'username': "testusername",
@@ -23,7 +23,15 @@ class test_registerVenue(TestCase):
                                      'address': "addresstest", 'capacity': 10})
         self.assertFalse(formulario1.is_valid())
 
-    def test_RVNegativePassword(self):
+    def test_RVNegativeEmail(self):
+        formulario1 = VenueForm(data={'email': "eebsfbdbdsbs", 'password1': "strongPassuser1",
+                                     'password2': "strongPassuser1",
+                                     'name': "testuser", 'username': "testusername",
+                                     'logo': "www.urlexample.es", 'description': "this is a description",
+                                     'address': "addresstest", 'capacity': 10})
+        self.assertFalse(formulario1.is_valid())
+
+    def test_RVMissMatchPassword(self):
         formulario2 = VenueForm(data={'email': "testuser@mp.com", 'password1': "test",
                                      'password2': "strongPassuser1",
                                      'name': "testuser", 'username': "testusername",
@@ -31,7 +39,15 @@ class test_registerVenue(TestCase):
                                      'address': "addresstest", 'capacity': 10})
         self.assertFalse(formulario2.is_valid())
 
-    def test_RVNegativeName(self):
+    def test_RVNoPassword(self):
+        formulario2 = VenueForm(data={'email': "testuser@mp.com", 'password1': "",
+                                     'password2': "",
+                                     'name': "testuser", 'username': "testusername",
+                                     'logo': "www.urlexample.es", 'description': "this is a description",
+                                     'address': "addresstest", 'capacity': 10})
+        self.assertFalse(formulario2.is_valid())
+
+    def test_RVNegativeNoName(self):
         formulario3 = VenueForm(data={'email': "testuser@mp.com", 'password1': "strongPassuser1",
                                      'password2': "strongPassuser1",
                                      'name': "", 'username': "testusername",
@@ -39,7 +55,7 @@ class test_registerVenue(TestCase):
                                      'address': "addresstest", 'capacity': 10})
         self.assertFalse(formulario3.is_valid())
 
-    def test_RVNegativeUsername(self):
+    def test_RVNegativeNoUsername(self):
         formulario4 = VenueForm(data={'email': "testuser@mp.com", 'password1': "strongPassuser1",
                                      'password2': "strongPassuser1",
                                      'name': "testuser", 'username': "",
@@ -52,6 +68,14 @@ class test_registerVenue(TestCase):
                                      'password2': "strongPassuser1",
                                      'name': "testuser", 'username': "testusername",
                                      'logo': "vfsvevg", 'description': "this is a description",
+                                     'address': "addresstest", 'capacity': 10})
+        self.assertFalse(formulario5.is_valid())
+
+    def test_RVNegativeNoLogo(self):
+        formulario5 = VenueForm(data={'email': "testuser@mp.com", 'password1': "strongPassuser1",
+                                     'password2': "strongPassuser1",
+                                     'name': "testuser", 'username': "testusername",
+                                     'logo': "", 'description': "this is a description",
                                      'address': "addresstest", 'capacity': 10})
         self.assertFalse(formulario5.is_valid())
 
@@ -71,11 +95,27 @@ class test_registerVenue(TestCase):
                                      'address': "", 'capacity': 10})
         self.assertFalse(formulario7.is_valid())
 
+    def test_RVNoCapacity(self):
+        formulario8 = VenueForm(data={'email': "testuser@mp.com", 'password1': "strongPassuser1",
+                                     'password2': "strongPassuser1",
+                                     'name': "testuser", 'username': "testusername",
+                                     'logo': "www.urlexample.es", 'description': "this is a description",
+                                     'address': "addresstest", 'capacity': None})
+        self.assertFalse(formulario8.is_valid())
+
     def test_RVNegativeCapacity(self):
         formulario8 = VenueForm(data={'email': "testuser@mp.com", 'password1': "strongPassuser1",
                                      'password2': "strongPassuser1",
                                      'name': "testuser", 'username': "testusername",
                                      'logo': "www.urlexample.es", 'description': "this is a description",
-                                     'address': "addresstest", 'capacity': ""})
+                                     'address': "addresstest", 'capacity': -10})
+        self.assertFalse(formulario8.is_valid())
+
+    def test_RVNegativeCeroCapacity(self):
+        formulario8 = VenueForm(data={'email': "testuser@mp.com", 'password1': "strongPassuser1",
+                                     'password2': "strongPassuser1",
+                                     'name': "testuser", 'username': "testusername",
+                                     'logo': "www.urlexample.es", 'description': "this is a description",
+                                     'address': "addresstest", 'capacity': 0})
         self.assertFalse(formulario8.is_valid())
 

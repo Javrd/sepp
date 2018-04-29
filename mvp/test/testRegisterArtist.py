@@ -25,7 +25,7 @@ class test_register_artist(TestCase):
         form3 = ArtistForm(data={'email': "artist_test3@test.com", 'password1': "password_test3", 'password2': "password_test3",
                                      'name': "name_test3", 'username': "username_test3",
                                      'logo': "https://www.logotest3.com", 'description': "description_test3",
-                                     'artistNumber': 0})
+                                     'artistNumber': 1})
         self.assertTrue(form3.is_valid())
 
     def test_negativeRAnoEmail(self):
@@ -75,14 +75,14 @@ class test_register_artist(TestCase):
                                  'password2': "password_test1", 'name': "name_test1", 'username': "username_test1",
                                     'logo': "https://www.logotest1.com", 'description': "description_test1",
                                     'artistNumber': 0})
-        self.assertTrue(form1.is_valid())
+        self.assertFalse(form1.is_valid())
 
     def test_RAnegativeArtist(self):
         form1 = ArtistForm(data={'email': "artist_test1@test.com", 'password1': "password_test1",
                                  'password2': "password_test1", 'name': "name_test1", 'username': "username_test1",
                                     'logo': "https://www.logotest1.com", 'description': "description_test1",
                                     'artistNumber': -8})
-        self.assertTrue(form1.is_valid())
+        self.assertFalse(form1.is_valid())
 
     def test_positiveRANoLogo(self):
         form1 = ArtistForm(data={'email': "artist_test1@test.com", 'password1': "password_test1",

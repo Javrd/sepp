@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from datetime import datetime, timedelta
+from django.core.validators import ValidationError, EMPTY_VALUES
 
 class User(AbstractUser):
     name = models.CharField(max_length=100)
@@ -11,7 +13,7 @@ class User(AbstractUser):
 
 
 class Artist(User):
-    artistNumber = models.IntegerField(null=True)
+    artistNumber = models.IntegerField(null=True, validators=[MinValueValidator(1)])
 
 
 class Venue(User):
@@ -55,7 +57,11 @@ class Offer(models.Model):
     offeredAmount = models.FloatField(null=True, validators=[MinValueValidator(1.0)])
     date = models.DateTimeField()
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name="offers")
-
+    def clean(self):
+        if type(self.date) is not datetime:
+            raise ValidationError('Fecha invalida.')
+        elif self.date < (datetime.today()-timedelta(1)):
+            raise ValidationError('La fecha introducida ha pasado.')
 
 # Announcements
 class Performance(models.Model):

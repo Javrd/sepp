@@ -7,10 +7,6 @@ class OfferForm(ModelForm):
     class Meta:
         model = Offer
         fields = ['name', 'description', 'offeredAmount', 'date']
-        labels = {
-            'name': _('Nombre'), 'description': _('Descripción'),
-            'offeredAmount': _('Cantidad ofrecida'), 'date': _('Fecha'),
-        }
 
     def __init__(self, user, *args, **kwargs):
         super(OfferForm, self).__init__(*args, **kwargs)
@@ -35,7 +31,11 @@ class ArtistForm(UserCreationForm):
         fields = ['name', 'username', 'email', 'logo', 'description', 'artistNumber']
 
 
+class PerformanceForm(ModelForm):
 
+    class Meta:
+        model = Performance
+        fields = ['name', 'description', 'date', 'public', 'description', 'venue', 'artist']
 
 
 class VenueProfileForm(ModelForm):
@@ -62,5 +62,11 @@ class MediaForm(ModelForm):
     class Meta:
         model = Media
         fields = ['url', 'id']
+
+
+class FeedbackForm(ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['name', 'description']
 
 

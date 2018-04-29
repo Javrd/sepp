@@ -74,7 +74,13 @@ src/redis-server
 
 #### Windows
 
-If you want to use redis on windows you should install the non official port. You can download the installer [here](https://github.com/MicrosoftArchive/redis/releases/download/win-2.8.2402/Redis-x64-2.8.2402.msi).
+If you want to use redis on windows you should install the non official port. You can download the installer [here](https://github.com/MicrosoftArchive/redis/releases/download/win-2.8.2402/Redis-x64-2.8.2402.msi). Make sure you select add to the path when installing it.
+
+To run the service, open a terminal and execute:
+
+```bash
+redis-server --maxheap 150M
+```
 
 
 ## <a name="Installing-python-dependencies"></a>Installing python dependencies

@@ -1,6 +1,22 @@
 version: "2"
 
 services: 
+  redis:
+    image: redis:2.8
+    ports:
+      - "6379:6379"
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes: 
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    environment:
+      - DEFAULT_HOST=localhost
+      - HTTPS_METHOD=noredirect
+    restart: always
+
   db:
     image: mariadb
     container_name: aib-db
@@ -16,10 +32,9 @@ services:
     build: .
     links:
       - "db"
+      - "redis"
     restart: always
     container_name: django-aib
-    ports:
-      - '80:80'
     environment:
       DJANGO_SECRET_KEY: DJANGO-SECRET-KEY
       DJANGO_HOST_NAME: localhost
@@ -29,3 +44,5 @@ services:
       MYSQL_HOST: db
       # MYSQL_PORT:
       DEBUG: 'True'
+      REDIS_HOST: redis
+      VIRTUAL_HOST: localhost

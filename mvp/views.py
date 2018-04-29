@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import *
 from .forms import ArtistForm
@@ -13,21 +14,51 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
 from django.template import loader
-from datetime import datetime
 from requests.auth import HTTPBasicAuth
 import requests
+import datetime
 from django.contrib.auth.models import Permission
 from django.forms import modelformset_factory
 from .forms import *
 from .models import *
 import re
+from django.utils.safestring import mark_safe
+import json
 
 
 # Create your views here.
 def lista_ofertas(request):
-    offer_list = Offer.objects.all()
+    offer_list = Offer.objects.all().order_by('-date')
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
+
+
+def lista_artistas(request):
+    artist_list = Artist.objects.all()
+    context = {'artist_list': artist_list}
+    return render(request, './lista_artistas.html', context)
+
+
+def lista_locales(request):
+    venue_list = Venue.objects.all()
+    context = {'venue_list': venue_list}
+    return render(request, './lista_venues.html', context)
+
+
+@permission_required('mvp.venue', login_url="/login")
+def mis_ofertas(request):
+    offer_list = Offer.objects.filter(
+        venue_id=request.user.id).order_by('-date')
+    context = {'offer_list': offer_list, 'propias': True, }
+    return render(request, './lista_ofertas.html', context)
+
+
+@permission_required('mvp.venue', login_url="/login")
+def borrar_oferta(request, offer_id):
+    offer = Offer.objects.get(id=offer_id)
+    if(offer.venue.id == request.user.id):
+        offer.delete()
+    return redirect("/mis_ofertas")
 
 
 @permission_required('mvp.venue', login_url="/login")
@@ -38,7 +69,7 @@ def formulario_oferta(request):
             offer = form.save(commit=False)
             offer.venue = Venue.objects.get(id=request.user.id)
             offer.save()
-            return HttpResponseRedirect('/lista_ofertas/')
+            return HttpResponseRedirect('/mis_ofertas/')
     else:
         form = OfferForm(request.user)
 
@@ -274,7 +305,7 @@ def vista_local(request, id_local):
 
 @login_required(login_url='/login')
 def chat(request, user_id=None):
-
+    
     principal = request.user
 
     if not user_id:
@@ -284,65 +315,73 @@ def chat(request, user_id=None):
 
     else:
         contact = User.objects.get(id=user_id)
-
-        if request.method == 'POST':
-            form = request.POST
-            msg = Message.objects.create(
-                sender=principal, receiver=contact, timeStamp=datetime.now(), text=form['text'])
-            data = {}
-            data['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
-            data['text'] = msg.text
-            return JsonResponse(data)
-
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
-        last_contact_message = Message.objects.filter(
-            receiver=principal, sender=contact).order_by('-timeStamp')
-        if last_contact_message:
-            last_contact_message = last_contact_message[0].id
-        else:
-            last_contact_message = -1
-        return render(request, 'chat.html', {'messages': messages, 'contact': contact, 'last_contact_message': last_contact_message})
+        return render(request, './chat.html', {
+            'messages': messages, 
+            'contact': contact
+    })
 
 
 @login_required(login_url='/login')
-def chat_sync(request, user_id=None):
-    if request.method == 'POST':
-        principal = request.user
-        contact = User.objects.get(id=user_id)
-        form = request.POST
-        messages = Message.objects.filter(
-            receiver=principal, sender=contact).order_by('-timeStamp')
-        data = []
-        list = {'list': data}
-        for i, msg in enumerate(messages):
-            if (form["lastMessageId"] == msg.id):
-                break
-            data.append({})
-            data[i]['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
-            data[i]['text'] = msg.text
-            data[i]['id'] = msg.id
-        data.reverse()
-        return JsonResponse(list)
-
-
-@login_required(login_url='/login')
-def paypal_test(request, contact_id):
+def paypal(request, contact_id):
+    offer_list = None
     try:
         contact = get_object_or_404(Venue, pk=contact_id)
+        offer_list = Offer.objects.filter(
+            venue_id=contact.id).order_by('-date')
     except:
         contact = get_object_or_404(Artist, pk=contact_id)
+
     principal = request.user
-    context = {'contact': contact, 'user': principal}
-    return render(request, './paypalTest.html', context)
+
+    if (offer_list is None):
+        offer_list = Offer.objects.filter(
+            venue_id=principal.id).order_by('-date')
+
+    context = {'contact': contact, 'user': principal, 'offer_list': offer_list}
+    return render(request, './paypal.html', context)
 
 
 @login_required(login_url='/login')
 def payment(request):
+
+    form = request.POST
+    payee = get_object_or_404(User, id=form['payee'])
+
+    try:
+        venue = Venue.objects.get(id=request.user.id).id
+        artist = Artist.objects.get(id=payee.id).id
+    except:
+        artist = Artist.objects.get(id=request.user.id).id
+        venue = Venue.objects.get(id=payee.id).id
+
+    serializedPerformance = {
+        'name': form['performanceName'],
+        'description': form['performanceDes'],
+        'date': form['performanceDate'],
+        'public': form['performancePublic'],
+        'artist': artist,
+        'venue': venue
+    }
+
+    print('============ Performance info: ============')
+
+    print('Name: '+serializedPerformance['name'])
+    print('Description: '+serializedPerformance['description'])
+    print('Date: '+serializedPerformance['date'])
+    print('Public: '+serializedPerformance['public'])
+    print('Artist: '+str(serializedPerformance['artist']))
+    print('Venue: '+str(serializedPerformance['venue']))
+
+    request.session['performance'] = serializedPerformance
+
+    request.session['relaterOffer'] = form['relatedOffer']
+
     print('============ Requesting access token ============')
-    payee = request.POST.get('payee')
+    payee = payee.email
     request.session['payee'] = payee
-    amount = request.POST.get('amount')
+    amount = form['amount']
     url = 'https://api.sandbox.paypal.com/v1/oauth2/token'
     headers = {
         'accept': 'application/json',
@@ -512,6 +551,34 @@ def payout(request):
     if (payout['batch_header']['batch_status'] == 'PENDING'):
         print('============ Payout successfully processed ============')
 
+    serializedPerformance = request.session['performance']
+    performance = Performance()
+
+    performance.name = serializedPerformance['name']
+    performance.description = serializedPerformance['description']
+    performance.date = serializedPerformance['date']
+    performance.public = True if serializedPerformance['public'] is 'on' else False
+    performance.artist = Artist.objects.get(id=serializedPerformance['artist'])
+    performance.venue = Venue.objects.get(id=serializedPerformance['venue'])
+
+    performance.save()
+    print('============ Performance saved ============')
+
+    paymentObject = Payment()
+    paymentObject.amount = payment['transactions'][0]['amount']['total']
+    paymentObject.user = request.user
+    paymentObject.performance = performance
+    paymentObject.date = datetime.datetime.now()
+    paymentObject.paypalId = payment['id']
+
+    paymentObject.save()
+    print('============ Payment saved ============')
+
+    offerId = request.session['relaterOffer']
+    if (offerId != 0):
+        offer = Offer.objects.get(id=offerId)
+        offer.delete()
+
     return HttpResponse('OK')
 
 
@@ -519,3 +586,37 @@ def payout(request):
 def paymentConfirmation(request):
     payment = request.session['payment']
     return render(request, './paypalConfirm.html', {'payment': payment})
+
+
+
+
+class formulario_feedback(View):
+
+    def get(self, request):
+
+        form = FeedbackForm()
+        context = {'feedback_form': form}
+
+        return render(request, 'feedback.html', context)
+
+    def post(self, request):
+
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
+        context = {'feedback_form': form}
+        return render(request, 'feedback.html', context)
+
+
+def vote(request):
+    return redirect('https://docs.google.com/forms/d/e/1FAIpQLSfqL7wY8eZ4NLD_Bd9Z_jbg4UOM6ceBIi54mV6ObW7irG711w/viewform?usp=sf_link')
+
+
+def termsAndConditions(request):
+
+    return render(request, './T&C.html')
+

@@ -189,7 +189,7 @@ def formulario_perfil_artist(request):
 
 
 def indexRedir(request):
-    return redirect("/artinbar")
+    return redirect("/")
 
 
 def index(request):
@@ -314,6 +314,15 @@ def chat(request, user_id=None):
 
     else:
         contact = User.objects.get(id=user_id)
+        
+        principalIsVenue = Venue.objects.filter(pk=principal.id).exists()
+        principalIsArtist = Artist.objects.filter(pk=principal.id).exists()
+        contactIsVenue = Venue.objects.filter(pk=contact.id).exists()
+        contactIsArtist = Artist.objects.filter(pk=contact.id).exists()
+
+        if ((principalIsVenue and contactIsVenue) or (principalIsArtist and contactIsArtist)):
+            return redirect("/chat")
+
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
         return render(request, './chat.html', {
@@ -441,8 +450,8 @@ def payment(request):
         'transactions': transactions,
         'note_to_payer': 'Puedes contactar con nosotros para cualquier duda en pagosartinbar@gmail.com',
         'redirect_urls': {
-            'return_url': 'http://localhost:8000/artinbar',
-            'cancel_url': 'http://localhost:8000/artinbar'
+            'return_url': 'http://artinbar.es/artinbar',
+            'cancel_url': 'http://artinbar.es/artinbar'
         }
     }
 

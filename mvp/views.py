@@ -203,18 +203,17 @@ def login(request):
     if request.user.is_authenticated:
         return redirect("/artinbar")
     if request.method == 'POST':
-        formulario = AuthenticationForm(data=request.POST)
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None and user.is_active:
+        formulario = LoginForm(data=request.POST)
+        if formulario.is_valid():
+            user = formulario.login(request)
             auth_login(request, user)
             return redirect("/artinbar")
         else:
+            print(formulario.errors)
             context = {'formulario': formulario}
             return render(request, 'login.html', context)
     else:
-        formulario = AuthenticationForm()
+        formulario = LoginForm()
     context = {'formulario': formulario}
     return render(request, 'login.html', context)
 

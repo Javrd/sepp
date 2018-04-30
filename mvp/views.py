@@ -315,6 +315,15 @@ def chat(request, user_id=None):
 
     else:
         contact = User.objects.get(id=user_id)
+        
+        principalIsVenue = Venue.objects.filter(pk=principal.id).exists()
+        principalIsArtist = Artist.objects.filter(pk=principal.id).exists()
+        contactIsVenue = Venue.objects.filter(pk=contact.id).exists()
+        contactIsArtist = Artist.objects.filter(pk=contact.id).exists()
+
+        if ((principalIsVenue and contactIsVenue) or (principalIsArtist and contactIsArtist)):
+            return redirect("/chat")
+
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
         return render(request, './chat.html', {

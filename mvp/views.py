@@ -442,8 +442,8 @@ def payment(request):
         'transactions': transactions,
         'note_to_payer': 'Puedes contactar con nosotros para cualquier duda en pagosartinbar@gmail.com',
         'redirect_urls': {
-            'return_url': 'http://localhost:8000/artinbar',
-            'cancel_url': 'http://localhost:8000/artinbar'
+            'return_url': 'http://artinbar.es/artinbar',
+            'cancel_url': 'http://artinbar.es/artinbar'
         }
     }
 

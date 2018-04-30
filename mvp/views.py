@@ -189,7 +189,7 @@ def formulario_perfil_artist(request):
 
 
 def indexRedir(request):
-    return redirect("/artinbar")
+    return redirect("/")
 
 
 def index(request):

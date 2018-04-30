@@ -61,30 +61,35 @@
         {% with WIDGET_ERROR_CLASS='form-control-danger' %}
         {% csrf_token %}
         
-        {{ venueForm.name.errors }}
+
         <label for="{{ venueForm.name.id_for_label }}">Nombre:</label>
         {% render_field venueForm.name class+="form-control" %}
+        {{ venueForm.name.errors }}
         <br>
-        {{ venueForm.email.errors }}
+
         <label for="{{ venueForm.email.id_for_label }}">Email:</label>
         {% render_field venueForm.email class+="form-control" %}
+        {{ venueForm.email.errors }}
         <br>
-        {{ venueForm.logo.errors }}
+
         <label for="{{ venueForm.logo.id_for_label }}">Logo:</label>
         {% render_field venueForm.logo class+="form-control" %}
+        {{ venueForm.logo.errors }}
         <br>
-        {{ venueForm.description.errors }}
+
         <label for="{{ venueForm.description.id_for_label }}">Descripción:</label>
         {% render_field venueForm.description class+="form-control" %}
+        {{ venueForm.description.errors }}
         <br>
-        {{ venueForm.capacity.errors }}
+
         <label for="{{ venueForm.capacity.id_for_label }}">Capacidad:</label>
         {% render_field venueForm.capacity class+="form-control" %}
+        {{ venueForm.capacity.errors }}
         <br>
         <br/>
         <br/>
 
-        {{ venueForm.address.errors }}
+
         <input class="form-control" name="Ven-address" id="id_Ven-address" value="{{ venueForm.address.value }}"/>
             <br>
 
@@ -129,6 +134,7 @@
     </form>
 </section>
 </div>
+{{ venueForm.address.errors }}
 <div class="fixed-bottom" style="z-index: 0;">
         <img src="../static/img/crowd.png" class="img-fluid" />
     </div>

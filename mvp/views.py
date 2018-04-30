@@ -305,7 +305,7 @@ def vista_local(request, id_local):
 
 @login_required(login_url='/login')
 def chat(request, user_id=None):
-    
+
     principal = request.user
 
     if not user_id:
@@ -318,9 +318,9 @@ def chat(request, user_id=None):
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
         return render(request, './chat.html', {
-            'messages': messages, 
+            'messages': messages,
             'contact': contact
-    })
+        })
 
 
 @login_required(login_url='/login')
@@ -335,15 +335,44 @@ def paypal(request, contact_id):
 
     principal = request.user
 
-    context = {'contact': contact, 'user': principal, 'offer_list': offer_list}
+    paymentErrors = []
+
+    if ('paymentErrors' in request.session):
+        paymentErrors = request.session['paymentErrors']
+        request.session['paymentErrors'] = []
+
+    context = {'contact': contact, 'user': principal,
+               'offer_list': offer_list, 'paymentErrors': paymentErrors}
     return render(request, './paypal.html', context)
 
 
 @login_required(login_url='/login')
 def payment(request):
 
+    errors = []
+
     form = request.POST
     payee = get_object_or_404(User, id=form['payee'])
+
+    # Aquí se puede añadir validación adicional sobre el destinatario
+    if (payee is None or payee.id == request.user.id):
+        errors.append("Destinatario del pago no válido.")
+
+    if (form['amount'] is None or form['amount'] == '' or float(form['amount']) <= 0.0):
+        errors.append(
+            "Por favor, introduce una cantidad entre 1 y 9999 euros.")
+
+    if (form['performanceDate'] is None or form['performanceDate'] == ""):
+        errors.append("Por favor, introduzca una fecha.")
+
+    dateFormat = "%Y-%m-%d"
+
+    try:
+        formDate = datetime.strptime(form['performanceDate'], dateFormat)
+        if (formDate.date() < datetime.today().date()):
+            errors.append("Por favor, introduzca una fecha en el futuro.")
+    except:
+        errors.append("Ha ocurrido un error procesando la fecha.")
 
     try:
         venue = Venue.objects.get(id=request.user.id).id
@@ -360,6 +389,10 @@ def payment(request):
         'artist': artist,
         'venue': venue
     }
+
+    if errors:
+        request.session['paymentErrors'] = errors
+        return JsonResponse({'errors': errors, 'status': 'formError'})
 
     print('============ Performance info: ============')
 
@@ -438,8 +471,8 @@ def payment(request):
         'transactions': transactions,
         'note_to_payer': 'Puedes contactar con nosotros para cualquier duda en pagosartinbar@gmail.com',
         'redirect_urls': {
-            'return_url': 'http://localhost:8000/artinbar',
-            'cancel_url': 'http://localhost:8000/artinbar'
+            'return_url': 'http://artinbar.es/artinbar',
+            'cancel_url': 'http://artinbar.es/artinbar'
         }
     }
 
@@ -564,7 +597,7 @@ def payout(request):
     paymentObject.amount = payment['transactions'][0]['amount']['total']
     paymentObject.user = request.user
     paymentObject.performance = performance
-    paymentObject.date = datetime.datetime.now()
+    paymentObject.date = datetime.now()
     paymentObject.paypalId = payment['id']
 
     paymentObject.save()
@@ -582,8 +615,6 @@ def payout(request):
 def paymentConfirmation(request):
     payment = request.session['payment']
     return render(request, './paypalConfirm.html', {'payment': payment})
-
-
 
 
 class formulario_feedback(View):
@@ -615,4 +646,3 @@ def vote(request):
 def termsAndConditions(request):
 
     return render(request, './T&C.html')
-

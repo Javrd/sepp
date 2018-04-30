@@ -28,18 +28,48 @@
         <br>
         <div class="tab-content container">
             <div class="tab-pane fade active show" id="home" role="tabpanel">
-                <p>
-                    {{artista.description}}
-                </p>
-                <p>
-                    Número de integrantes: {{artista.artistNumber}}
-                </p>
-                <p>
-                    Etiquetas: 
-                    {% for tag in tags %}
-                        <span>{{tag.name}}</span>
-                    {% endfor %}
-                </p>
+                    <div class="card">
+                            <div class="card-block">
+                            <div class="row">
+                            <div class="col-3 w-25 p-3 vcenter" >
+                            <img src="{{artista.logo}}" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+                            </div>
+                            <div class="col-6 vcenter">
+                                <div class="row">
+                                <h2>{{artista.name}}</h2>
+                                </div>
+                                <div class="row">
+                                <p>
+                                        {{artista.description}}
+                                    </p>
+                                </div>
+                                   
+                            </div>
+                            
+                          
+                            </div>
+                            <div classs="row">
+                                    <p><b>
+                                        Número de integrantes: {{artista.artistNumber}}
+                                    </b>
+                                    </p>
+                        </div>
+                    
+                            </div>
+                        </div>
+                        <br>
+                        <div class="card">
+                        <div class="card-block">
+                        <p>
+                               <b> Etiquetas</b>
+                            </p>
+                            <p>
+                                {% for tag in tags %}
+                                    <span>{{tag.name}}</span>
+                                {% endfor %}
+                            </p>
+                            </div>
+                            </div>
             </div>
             <div class="tab-pane fade" id="media" role="tabpanel">
                 <div class="embed-responsive embed-responsive-16by9">
@@ -52,7 +82,7 @@
             </div>
             <div class="tab-pane fade" id="photos" role="tabpanel">
                 {% for foto in fotos %}
-                    <img class="img-fluid" src="{{foto.url}}" />
+                    <img class="rounded img-fluid" src="{{foto.url}}" />
                     <br><br>
                 {% endfor %}
             </div>
@@ -65,4 +95,6 @@
         </div>
     </div>
 </div>
+
+
 {% endblock %}

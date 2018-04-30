@@ -32,19 +32,22 @@
             <span class="ion-grid"></span>
         </button>
         <div class="container">
-            <a class="navbar-brand" href="/artinbar">
+            <a class="navbar-brand" href="/">
                 <img src="{% static "/img/logo.png" %}" class="nav-brand-logo" />
             </a>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link page-scroll" href="/artinbar">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link page-scroll" href="/T&C">Términos y Condiciones</a>
+                        <a class="nav-link page-scroll" href="/">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link page-scroll" href="/lista_ofertas">Ofertas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="/lista_artistas">Artistas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="/lista_locales">Locales</a>
                     </li>
                     {% if perms.mvp.venue %}
                         <li class="nav-item">
@@ -59,7 +62,7 @@
                         <li class="nav-item">
                             <a class="nav-link page-scroll" href="/editar_local">Editar Perfil</a>
                         </li>
-                        
+
                     {% endif %}
 
                     {% if perms.mvp.artist %}

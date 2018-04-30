@@ -15,14 +15,14 @@
         <div id="msg"></div>
 
         <input type="hidden" id="payer" name="payer" value="{{user.id}}"/>
-        <input type="hidden" id="payee" name="payee" value="{{contact.id}}"/>         
-        
+        <input type="hidden" id="payee" name="payee" value="{{contact.id}}"/>
+
         <label for="payeeName">Destinatario: </label>
         <br>
-        <input type="text" class="form-control" disabled name="payeeName" id="payeeName" value="{{contact.name}}"/>  
+        <input type="text" class="form-control" disabled name="payeeName" id="payeeName" value="{{contact.name}}"/>
         <br>
 
-        <label for="amount">Precio ofrecido:</label>            
+        <label for="amount">Precio ofrecido:</label>
         <div class="input-group">
             <input class="form-control" name="amount" id="amount" placeholder="Cantidad en Euros" type="number" min="1" max="9999" required autofocus>
             <span class="input-group-btn">
@@ -71,7 +71,7 @@
         <br>
         <div id="paypal-button"></div>        
         {% endwith %}
-    </form>    
+    </form>
     </section>
 </div>
 <script>

@@ -82,6 +82,12 @@ To run the service, open a terminal and execute:
 redis-server --maxheap 150M
 ```
 
+Then go to your repository folder and execute:
+
+```bash
+pip install pypiwin32
+```
+
 
 ## <a name="Installing-python-dependencies"></a>Installing python dependencies
 Open a terminal at repository folder:

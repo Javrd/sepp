@@ -1,18 +1,13 @@
-{% if propias %}
-<div class="card">
-  {% else %}
-  <div class="card" onclick="window.location='/vista_artista/{{ artist.id }}';">
-    {% endif %}
-    <div class="card-block">
-      <h4>{{ artist.name }}  </h4>
-      <div>
-        <p>
-          Numeros de integrantes:{{ artist.artistNumber }}
-          <br> {{ artist.description }}
-        </p>
-
-      </div>
-      <br>
+<div class="card" onclick="window.location='/vista_artista/{{ artist.id }}';">
+  <div class="card-block">
+    <h4>{{ artist.name }}  </h4>
+    <div>
+      <p>
+        Numeros de integrantes:{{ artist.artistNumber }}
+        <br> {{ artist.description }}
+      </p>
     </div>
+    <br>
   </div>
-  <br>
+</div>
+<br>

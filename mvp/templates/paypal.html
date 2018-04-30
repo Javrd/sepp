@@ -108,9 +108,9 @@
         commit: true, // Show a 'Pay Now' button
 
         payment: function() {
-            //if (!isValid()){                
-            //    throw new Error('Formulario Inválido')
-            //}
+            if (!isValid()){                
+                throw new Error('Formulario Inválido')
+            }
             
             var data = {
                 payee: $('#payee').val(),

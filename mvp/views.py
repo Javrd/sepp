@@ -201,13 +201,13 @@ def index(request):
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect("/artinbar")
+        return redirect("/")
     if request.method == 'POST':
         formulario = LoginForm(data=request.POST)
         if formulario.is_valid():
             user = formulario.login(request)
             auth_login(request, user)
-            return redirect("/artinbar")
+            return redirect("/")
         else:
             print(formulario.errors)
             context = {'formulario': formulario}
@@ -304,7 +304,7 @@ def vista_local(request, id_local):
 
 @login_required(login_url='/login')
 def chat(request, user_id=None):
-    
+
     principal = request.user
 
     if not user_id:
@@ -314,7 +314,7 @@ def chat(request, user_id=None):
 
     else:
         contact = User.objects.get(id=user_id)
-        
+
         principalIsVenue = Venue.objects.filter(pk=principal.id).exists()
         principalIsArtist = Artist.objects.filter(pk=principal.id).exists()
         contactIsVenue = Venue.objects.filter(pk=contact.id).exists()
@@ -326,7 +326,7 @@ def chat(request, user_id=None):
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
         return render(request, './chat.html', {
-            'messages': messages, 
+            'messages': messages,
             'contact': contact
     })
 
@@ -450,8 +450,8 @@ def payment(request):
         'transactions': transactions,
         'note_to_payer': 'Puedes contactar con nosotros para cualquier duda en pagosartinbar@gmail.com',
         'redirect_urls': {
-            'return_url': 'http://artinbar.es/artinbar',
-            'cancel_url': 'http://artinbar.es/artinbar'
+            'return_url': 'http://.es/',
+            'cancel_url': 'http://.es/'
         }
     }
 
@@ -627,4 +627,3 @@ def vote(request):
 def termsAndConditions(request):
 
     return render(request, './T&C.html')
-

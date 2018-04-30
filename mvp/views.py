@@ -612,7 +612,7 @@ def payout(request):
     print('============ Payment saved ============')
 
     offerId = request.session['relaterOffer']
-    if (offerId != 0):
+    if (offerId is not None and offerId != 'undefined' and offerId != 0):
         offer = Offer.objects.get(id=offerId)
         offer.delete()
 

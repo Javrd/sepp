@@ -1,11 +1,15 @@
 {% extends "common/masterpage.html" %}
 
-{% block title %}Ofertas{% endblock %}
+{% block title %}Mis Ofertas{% endblock %}
 {% block content %}
 <div class="colored-section bg-inverse">
     <section class="container fullPage">
         <br>
+        {% if propias %}
+        <h2>Mis Ofertas</h2>
+        {%else%}
         <h2>Ofertas</h2>
+        {%endif%}
         {% if offer_list %}           
             <div class="offer-list">   
                 {% for offer in offer_list %}

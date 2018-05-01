@@ -33,7 +33,7 @@
 
     </script>
 <div class="colored-section bg-inverse">
-    <div class="jumbotron jumbotron-fluid profileBanner" style="background-image: url('{{local.logo}}');">
+    <div class="jumbotron jumbotron-fluid profileBanner" style="background-image: url('https://i.pinimg.com/564x/01/fd/3f/01fd3f197a7cdfe7c8ffd3d867868ed3.jpg');">
         <div class="container profileTitle">
             <h1 class="display-6" style="margin-bottom: 0px">{{local.name}}</h1>
         </div>
@@ -87,18 +87,13 @@
 
                 <div class="card">
                     <div class="card-block">
-                             <p>
+                             <h4>
                                 {{local.address}}
-                            </p>
+                             </h4>
                             <br>
-                            <style>
-                                    #map{
-                                       height: 200px;
-                                       width: auto;
-                                     }
-                                 </style>
-                
-                                <div id="map"></div><br>
+                            <div class="map-container"/>
+                            <div class="map" id="map"></div>
+                            </div>
                      </div>
                 </div>
 

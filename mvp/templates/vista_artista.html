@@ -3,7 +3,7 @@
 {% block title %}Perfil{% endblock %}
 {% block content %}
 <div class="colored-section bg-inverse">
-    <div class="jumbotron jumbotron-fluid profileBanner" style="background-image: url('{{artista.logo}}');">
+    <div class="jumbotron jumbotron-fluid profileBanner" style="background-image: url('http://media.socastsrm.com/wordpress/wp-content/blogs.dir/1166/files/2018/02/live-music-1.jpg');">
         <div class="container profileTitle">
             <h1 class="display-6" style="margin-bottom: 0px">{{artista.name}}</h1>
         </div>
@@ -95,6 +95,10 @@
                 <p>¡Contacta con {{artista.name}} para iniciar el chat y preparar un nuevo evento!</p>
                 <a href="/chat/{{artista.id}}" class="btn btn-primary btn-lg">Contactar ahora</a>
             </div>
+            {% endif %}
+            {% if user.id == artista.id %}
+                <br></br>
+                <a href="/editar_artista" class="btn btn-primary btn-lg">Editar</a>
             {% endif %}
         </div>
     </div>

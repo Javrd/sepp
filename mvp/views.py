@@ -17,7 +17,11 @@ from django.utils.safestring import mark_safe
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 from requests.auth import HTTPBasicAuth
-
+from django.http import HttpRequest
+import requests
+import datetime
+from django.contrib.auth.models import Permission
+from django.forms import modelformset_factory
 from .forms import *
 from .models import *
 import re
@@ -209,6 +213,11 @@ def index(request):
 
 
 def login(request):
+    next = ''
+    if request.POST:
+        url = request.META.get('HTTP_REFERER')
+        if '/login?next=' in url:
+            next = url.replace('/login?next=', '')
     if request.user.is_authenticated:
         return redirect("/")
     if request.method == 'POST':
@@ -216,7 +225,10 @@ def login(request):
         if formulario.is_valid():
             user = formulario.login(request)
             auth_login(request, user)
-            return redirect("/")
+            if next == '':
+                return redirect('/')
+            else:
+                return redirect(next)
         else:
             context = {'formulario': formulario}
             return render(request, 'login.html', context)
@@ -272,7 +284,6 @@ class register_artist(View):
 
         form = ArtistForm(request.POST)
         if form.is_valid():
-
             new_artist = form.save()
             permission = Permission.objects.get(codename='artist')
             new_artist.user_permissions.add(permission)

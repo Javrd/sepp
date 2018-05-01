@@ -9,7 +9,7 @@ class User(AbstractUser):
     name = models.CharField(max_length=100)
     email = models.EmailField('email address', blank=False, unique=True)
     description = models.CharField(max_length=500, null=True)
-    logo = models.URLField(null=True)
+    logo = models.URLField(null=True, blank=True)
     receivers = models.ManyToManyField(
         'self', symmetrical=False, through='Message', related_name="senders")
 

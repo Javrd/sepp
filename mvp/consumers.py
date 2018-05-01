@@ -51,7 +51,7 @@ class ChatConsumer(WebsocketConsumer):
                     'type': 'chat_message',
                     'message': message.text,
                     'userId': message.sender.id,
-                    'date': message.timeStamp.strftime("%d/%m/%Y %H:%m")
+                    'date': message.timeStamp.strftime("%d/%m/%Y %H:%M")
                 }
             )
 

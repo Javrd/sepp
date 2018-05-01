@@ -10,8 +10,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Permission
 from django.forms import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import (get_list_or_404, get_object_or_404, redirect,
-                              render)
+from django.shortcuts import (get_list_or_404, get_object_or_404, redirect, render)
 from django.template import loader
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -19,10 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 from requests.auth import HTTPBasicAuth
 
-from mvp.models import Artist
-
 from .forms import *
-from .forms import ArtistForm
 from .models import *
 
 

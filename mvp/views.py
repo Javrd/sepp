@@ -406,20 +406,20 @@ def payment(request):
         request.session['paymentErrors'] = errors
         return JsonResponse({'errors': errors, 'status': 'formError'})
 
-    print('============ Performance info: ============')
+    # print('============ Performance info: ============')
 
-    print('Name: '+serializedPerformance['name'])
-    print('Description: '+serializedPerformance['description'])
-    print('Date: '+serializedPerformance['date'])
-    print('Public: '+serializedPerformance['public'])
-    print('Artist: '+str(serializedPerformance['artist']))
-    print('Venue: '+str(serializedPerformance['venue']))
+    # print('Name: '+serializedPerformance['name'])
+    # print('Description: '+serializedPerformance['description'])
+    # print('Date: '+serializedPerformance['date'])
+    # print('Public: '+serializedPerformance['public'])
+    # print('Artist: '+str(serializedPerformance['artist']))
+    # print('Venue: '+str(serializedPerformance['venue']))
 
     request.session['performance'] = serializedPerformance
 
     request.session['relaterOffer'] = form['relatedOffer']
 
-    print('============ Requesting access token ============')
+    # print('============ Requesting access token ============')
     payee = payee.email
     request.session['payee'] = payee
     amount = form['amount']
@@ -436,16 +436,16 @@ def payment(request):
     json = paypalResponse.json()
     accessToken = json['access_token']
 
-    print('Access Token obtained, expires in '+str(json['expires_in']))
-    print('Access Token: '+accessToken)
+    # print('Access Token obtained, expires in '+str(json['expires_in']))
+    # print('Access Token: '+accessToken)
 
-    print('============ Creating payment ============')
-    print('Payee: '+payee)
-    print('Amount: '+amount)
+    # print('============ Creating payment ============')
+    # print('Payee: '+payee)
+    # print('Amount: '+amount)
     fee = float(amount)*0.05  # TODO: Fee?
     totalAmount = float(amount) + fee
-    print('Fee: '+str(fee))
-    print('Total amount: '+str(totalAmount))
+    # print('Fee: '+str(fee))
+    # print('Total amount: '+str(totalAmount))
 
     bearerToken = 'Bearer '+accessToken
 
@@ -492,9 +492,9 @@ def payment(request):
 
     payment = requests.post(saleUrl, headers=headers, json=data).json()
 
-    if (payment['id'] is not None):
-        print('Payment id: '+payment['id'])
-        print('============ Payment created succesfully ============')
+    # if (payment['id'] is not None):
+    #     print('Payment id: '+payment['id'])
+    #     print('============ Payment created succesfully ============')
 
     return JsonResponse(payment)
 
@@ -520,9 +520,9 @@ def executePayment(request):
     #print('Access Token obtained, expires in '+str(json['expires_in']))
     #print('Access Token: '+accessToken)
 
-    print('============ Building payment execution request ============')
-    print('Payment ID: '+paymentId)
-    print('Payer ID: '+payerId)
+    # print('============ Building payment execution request ============')
+    # print('Payment ID: '+paymentId)
+    # print('Payer ID: '+payerId)
 
     executeUri = 'https://api.sandbox.paypal.com/v1/payments/payment/'+paymentId+'/execute/'
 
@@ -555,10 +555,10 @@ def payout(request):
     emailMessage = '¡Felicidades! Acabas de recibir un pago de '+amount + \
         '€ a través de Art in Bar.'  # TODO: Currarse un poco el mensaje, poner datos
 
-    print('============ Creating payout ============')
-    print('Payee: '+payee)
-    print('Amount: '+amount)
-    print('Sender batch ID: '+batchId)
+    # print('============ Creating payout ============')
+    # print('Payee: '+payee)
+    # print('Amount: '+amount)
+    # print('Sender batch ID: '+batchId)
 
     payoutsURI = 'https://api.sandbox.paypal.com/v1/payments/payouts'
 
@@ -589,8 +589,8 @@ def payout(request):
 
     payout = requests.post(payoutsURI, headers=headers, json=data).json()
 
-    if (payout['batch_header']['batch_status'] == 'PENDING'):
-        print('============ Payout successfully processed ============')
+    # if (payout['batch_header']['batch_status'] == 'PENDING'):
+    #     print('============ Payout successfully processed ============')
 
     serializedPerformance = request.session['performance']
     performance = Performance()
@@ -603,7 +603,7 @@ def payout(request):
     performance.venue = Venue.objects.get(id=serializedPerformance['venue'])
 
     performance.save()
-    print('============ Performance saved ============')
+    # print('============ Performance saved ============')
 
     paymentObject = Payment()
     paymentObject.amount = payment['transactions'][0]['amount']['total']
@@ -613,7 +613,7 @@ def payout(request):
     paymentObject.paypalId = payment['id']
 
     paymentObject.save()
-    print('============ Payment saved ============')
+    # print('============ Payment saved ============')
 
     offerId = request.session['relaterOffer']
     if (offerId is not None and offerId != 'undefined' and offerId != 0):

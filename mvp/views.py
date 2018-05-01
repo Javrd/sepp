@@ -218,7 +218,6 @@ def login(request):
             auth_login(request, user)
             return redirect("/")
         else:
-            print(formulario.errors)
             context = {'formulario': formulario}
             return render(request, 'login.html', context)
     else:

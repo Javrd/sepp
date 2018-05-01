@@ -5,12 +5,11 @@
 <div class="colored-section bg-inverse">
     <section class="container fullPage">
         <br>
-        {% if propias %}           
+        {% if propias %}
         <h2>Mis Ofertas</h2>
-        {% else %}       
+        {%else%}
         <h2>Ofertas</h2>
-        {% endif %}
-
+        {%endif%}
         {% if offer_list %}           
             <div class="offer-list">   
                 {% for offer in offer_list %}

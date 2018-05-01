@@ -40,6 +40,16 @@
                     <li class="nav-item">
                         <a class="nav-link page-scroll" href="/">Inicio</a>
                     </li>
+                    <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLists" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Usuarios
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLists">
+                                <a class="dropdown-item" href="/lista_artistas">Artistas</a>
+                                <a class="dropdown-item" href="/lista_locales">Locales</a>
+                            </div>
+                        
+                         </li>
                     {% if not perms.mvp.venue %}
                     <li class="nav-item">
                         <a class="nav-link page-scroll" href="/lista_ofertas">Ofertas</a>
@@ -58,10 +68,10 @@
                             
                              </li>
                              <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuPerfilArtista" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuPerfilLocal" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Local
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuPerfilArtista">
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuPerfilLocal">
                                         <a class="dropdown-item" href="/vista_local/{{user.id}}">Mi Perfil</a>
                                         <a class="dropdown-item" href="/editar_local">Editar Perfil</a>
                                         <a class="dropdown-item" href="/chat">Chat</a>

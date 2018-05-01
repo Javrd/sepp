@@ -20,6 +20,10 @@ from requests.auth import HTTPBasicAuth
 
 from .forms import *
 from .models import *
+import re
+from django.utils.safestring import mark_safe
+import json
+from django.db.models import Q
 
 
 # Create your views here.
@@ -199,7 +203,7 @@ def indexRedir(request):
 
 def index(request):
     template = loader.get_template('index.html')
-    performance_list = Performance.objects.all()
+    performance_list = Performance.objects.all().filter(public=True).filter(Q(date__gte=datetime.now())|Q(date=None)).order_by('date')
     context = {'performance_list': performance_list}
     return HttpResponse(template.render(context, request))
 

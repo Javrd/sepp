@@ -15,14 +15,16 @@
             {% with WIDGET_ERROR_CLASS='form-control-danger' %}
             {% csrf_token %}
 
-            {{ feedback_form.name.errors }}
+
             <label for="{{ feedback_form.name.id_for_label }}">Nombre:</label>
             {% render_field feedback_form.name class+="form-control" placeholder="Indica tu nombre" %}
+            {{ feedback_form.name.errors }}
             <br>
 
-            {{ feedback_form.description.errors }}
+
             <label for="{{ feedback_form.description.id_for_label }}">Opinión:</label>
             <textarea name="description" id="{{ feedback_form.description.id_for_label }}" class="form-control" placeholder="Describe tu opinión sobre la aplicación"></textarea>
+            {{ feedback_form.description.errors }}
             <br>
             
             <div class="text-center">

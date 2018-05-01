@@ -97,6 +97,7 @@ DATABASES = {
     }
 }
 
+
 AUTH_USER_MODEL = 'mvp.User'
 
 # Password validation
@@ -121,13 +122,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'es-es'
-
+LANGUAGE_CODE = 'es-ES'
+DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y/%m/%d')
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = False
 

@@ -1,24 +1,23 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
-from django.shortcuts import render, redirect
-from django.views.generic.base import View
-from django.views.decorators.csrf import csrf_exempt
+import datetime
+import json
+import re
 
-from .forms import *
-from .forms import ArtistForm
-from mvp.models import Artist
+import requests
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
-from django.template import loader
-from requests.auth import HTTPBasicAuth
-import requests
-import datetime
 from django.contrib.auth.models import Permission
 from django.forms import modelformset_factory
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import (get_list_or_404, get_object_or_404, redirect, render)
+from django.template import loader
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import View
+from requests.auth import HTTPBasicAuth
+
 from .forms import *
 from .models import *
 import re
@@ -81,7 +80,7 @@ def formulario_oferta(request):
 def formulario_perfil_venue(request):
     venue = Venue.objects.get(id=request.user.id)
     geoloc = Geolocation.objects.get(venue=request.user.id)
-    formSet = modelformset_factory(Photo, fields=('url', 'id',), )
+    formSet = modelformset_factory(Photo, fields=('url', 'id',), extra=3)
     if request.method == 'POST':
         venueForm = VenueProfileForm(
             request.POST, instance=venue, prefix='Ven')
@@ -113,7 +112,8 @@ def formulario_perfil_venue(request):
         geoForm = GeolocationForm(instance=geoloc, prefix='Geo')
         photoFormSet = formSet(
             queryset=Photo.objects.filter(user_id=request.user.id))
-
+    for form in photoFormSet:
+        form.fields['url'].widget.attrs.update({'class': 'form-control'})
     context = {'venueForm': venueForm,
                'geoForm': geoForm, 'photoFormSet': photoFormSet}
     return render(request, './formulario_perfil_local.html', context)
@@ -122,9 +122,10 @@ def formulario_perfil_venue(request):
 @permission_required('mvp.artist', login_url="/login")
 def formulario_perfil_artist(request):
     artist = Artist.objects.get(id=request.user.id)
-    formSetPhoto = modelformset_factory(Photo, fields=('url', 'id',), )
-    formSetTag = modelformset_factory(Tag, fields=('name', 'id',), )
-    formSetMedia = modelformset_factory(Media, fields=('url', 'id',), )
+    formSetPhoto = modelformset_factory(Photo, fields=('url', 'id',), extra=3)
+    formSetTag = modelformset_factory(Tag, fields=('name', 'id',), extra=3)
+    formSetMedia = modelformset_factory(Media, fields=('url', 'id',), extra=3)
+    
     if request.method == 'POST':
         artistForm = ArtistProfileForm(
             request.POST, instance=artist, prefix='Art')
@@ -183,6 +184,13 @@ def formulario_perfil_artist(request):
             artist_id=request.user.id), prefix='Tag')
         mediaFormSet = formSetMedia(queryset=Media.objects.filter(
             artist_id=request.user.id), prefix='Media')
+    
+    for form in photoFormSet:
+        form.fields['url'].widget.attrs.update({'class': 'form-control'})
+    for form in tagFormSet:
+        form.fields['name'].widget.attrs.update({'class': 'form-control'})
+    for form in mediaFormSet:
+        form.fields['url'].widget.attrs.update({'class': 'form-control'})
 
     context = {'artistForm': artistForm, 'photoFormSet': photoFormSet, 'tagFormSet': tagFormSet,
                'mediaFormSet': mediaFormSet}
@@ -210,7 +218,6 @@ def login(request):
             auth_login(request, user)
             return redirect("/")
         else:
-            print(formulario.errors)
             context = {'formulario': formulario}
             return render(request, 'login.html', context)
     else:
@@ -403,20 +410,20 @@ def payment(request):
         request.session['paymentErrors'] = errors
         return JsonResponse({'errors': errors, 'status': 'formError'})
 
-    print('============ Performance info: ============')
+    # print('============ Performance info: ============')
 
-    print('Name: '+serializedPerformance['name'])
-    print('Description: '+serializedPerformance['description'])
-    print('Date: '+serializedPerformance['date'])
-    print('Public: '+serializedPerformance['public'])
-    print('Artist: '+str(serializedPerformance['artist']))
-    print('Venue: '+str(serializedPerformance['venue']))
+    # print('Name: '+serializedPerformance['name'])
+    # print('Description: '+serializedPerformance['description'])
+    # print('Date: '+serializedPerformance['date'])
+    # print('Public: '+serializedPerformance['public'])
+    # print('Artist: '+str(serializedPerformance['artist']))
+    # print('Venue: '+str(serializedPerformance['venue']))
 
     request.session['performance'] = serializedPerformance
 
     request.session['relaterOffer'] = form['relatedOffer']
 
-    print('============ Requesting access token ============')
+    # print('============ Requesting access token ============')
     payee = payee.email
     request.session['payee'] = payee
     amount = form['amount']
@@ -433,16 +440,16 @@ def payment(request):
     json = paypalResponse.json()
     accessToken = json['access_token']
 
-    print('Access Token obtained, expires in '+str(json['expires_in']))
-    print('Access Token: '+accessToken)
+    # print('Access Token obtained, expires in '+str(json['expires_in']))
+    # print('Access Token: '+accessToken)
 
-    print('============ Creating payment ============')
-    print('Payee: '+payee)
-    print('Amount: '+amount)
+    # print('============ Creating payment ============')
+    # print('Payee: '+payee)
+    # print('Amount: '+amount)
     fee = float(amount)*0.05  # TODO: Fee?
     totalAmount = float(amount) + fee
-    print('Fee: '+str(fee))
-    print('Total amount: '+str(totalAmount))
+    # print('Fee: '+str(fee))
+    # print('Total amount: '+str(totalAmount))
 
     bearerToken = 'Bearer '+accessToken
 
@@ -489,9 +496,9 @@ def payment(request):
 
     payment = requests.post(saleUrl, headers=headers, json=data).json()
 
-    if (payment['id'] is not None):
-        print('Payment id: '+payment['id'])
-        print('============ Payment created succesfully ============')
+    # if (payment['id'] is not None):
+    #     print('Payment id: '+payment['id'])
+    #     print('============ Payment created succesfully ============')
 
     return JsonResponse(payment)
 
@@ -517,9 +524,9 @@ def executePayment(request):
     #print('Access Token obtained, expires in '+str(json['expires_in']))
     #print('Access Token: '+accessToken)
 
-    print('============ Building payment execution request ============')
-    print('Payment ID: '+paymentId)
-    print('Payer ID: '+payerId)
+    # print('============ Building payment execution request ============')
+    # print('Payment ID: '+paymentId)
+    # print('Payer ID: '+payerId)
 
     executeUri = 'https://api.sandbox.paypal.com/v1/payments/payment/'+paymentId+'/execute/'
 
@@ -552,10 +559,10 @@ def payout(request):
     emailMessage = '¡Felicidades! Acabas de recibir un pago de '+amount + \
         '€ a través de Art in Bar.'  # TODO: Currarse un poco el mensaje, poner datos
 
-    print('============ Creating payout ============')
-    print('Payee: '+payee)
-    print('Amount: '+amount)
-    print('Sender batch ID: '+batchId)
+    # print('============ Creating payout ============')
+    # print('Payee: '+payee)
+    # print('Amount: '+amount)
+    # print('Sender batch ID: '+batchId)
 
     payoutsURI = 'https://api.sandbox.paypal.com/v1/payments/payouts'
 
@@ -586,8 +593,8 @@ def payout(request):
 
     payout = requests.post(payoutsURI, headers=headers, json=data).json()
 
-    if (payout['batch_header']['batch_status'] == 'PENDING'):
-        print('============ Payout successfully processed ============')
+    # if (payout['batch_header']['batch_status'] == 'PENDING'):
+    #     print('============ Payout successfully processed ============')
 
     serializedPerformance = request.session['performance']
     performance = Performance()
@@ -600,7 +607,7 @@ def payout(request):
     performance.venue = Venue.objects.get(id=serializedPerformance['venue'])
 
     performance.save()
-    print('============ Performance saved ============')
+    # print('============ Performance saved ============')
 
     paymentObject = Payment()
     paymentObject.amount = payment['transactions'][0]['amount']['total']
@@ -610,7 +617,7 @@ def payout(request):
     paymentObject.paypalId = payment['id']
 
     paymentObject.save()
-    print('============ Payment saved ============')
+    # print('============ Payment saved ============')
 
     offerId = request.session['relaterOffer']
     if (offerId is not None and offerId != 'undefined' and offerId != 0):

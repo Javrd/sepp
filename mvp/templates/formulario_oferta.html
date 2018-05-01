@@ -29,7 +29,7 @@
             
             <label for="{{ form.offeredAmount.id_for_label }}">Precio ofrecido:</label>            
             <div class="input-group">
-                {% render_field form.offeredAmount class+="form-control" placeholder="Cantidad en Euros" type="number" %}
+                {% render_field form.offeredAmount class+="form-control" placeholder="Cantidad en Euros" type="number" max="999999999999999" %}
                 <span class="input-group-btn">
                     <spam class="btn btn-primary" ><em class="fa fa-euro"></em></spam>
                 </span>

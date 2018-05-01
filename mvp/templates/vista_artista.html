@@ -92,6 +92,10 @@
                 <a href="/chat/{{artista.id}}" class="btn btn-primary btn-lg">Contactar ahora</a>
             </div>
             {% endif %}
+            {% if user.id == artista.id %}
+                <br></br>
+                <a href="/editar_artista" class="btn btn-primary btn-lg">Editar</a>
+            {% endif %}
         </div>
     </div>
 </div>

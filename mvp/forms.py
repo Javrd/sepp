@@ -77,7 +77,6 @@ class LoginForm(forms.Form):
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-        print(username)
         user = authenticate(username=username, password=password)
         if not user or not user.is_active & username:
             raise forms.ValidationError("Lo sentimos, esas credenciales son incorrectas. Por favor intentelo de nuevo.")

@@ -80,7 +80,7 @@ def formulario_oferta(request):
 def formulario_perfil_venue(request):
     venue = Venue.objects.get(id=request.user.id)
     geoloc = Geolocation.objects.get(venue=request.user.id)
-    formSet = modelformset_factory(Photo, fields=('url', 'id',), )
+    formSet = modelformset_factory(Photo, fields=('url', 'id',), extra=3)
     if request.method == 'POST':
         venueForm = VenueProfileForm(
             request.POST, instance=venue, prefix='Ven')
@@ -112,7 +112,8 @@ def formulario_perfil_venue(request):
         geoForm = GeolocationForm(instance=geoloc, prefix='Geo')
         photoFormSet = formSet(
             queryset=Photo.objects.filter(user_id=request.user.id))
-
+    for form in photoFormSet:
+        form.fields['url'].widget.attrs.update({'class': 'form-control'})
     context = {'venueForm': venueForm,
                'geoForm': geoForm, 'photoFormSet': photoFormSet}
     return render(request, './formulario_perfil_local.html', context)
@@ -121,9 +122,10 @@ def formulario_perfil_venue(request):
 @permission_required('mvp.artist', login_url="/login")
 def formulario_perfil_artist(request):
     artist = Artist.objects.get(id=request.user.id)
-    formSetPhoto = modelformset_factory(Photo, fields=('url', 'id',), )
-    formSetTag = modelformset_factory(Tag, fields=('name', 'id',), )
-    formSetMedia = modelformset_factory(Media, fields=('url', 'id',), )
+    formSetPhoto = modelformset_factory(Photo, fields=('url', 'id',), extra=3)
+    formSetTag = modelformset_factory(Tag, fields=('name', 'id',), extra=3)
+    formSetMedia = modelformset_factory(Media, fields=('url', 'id',), extra=3)
+    
     if request.method == 'POST':
         artistForm = ArtistProfileForm(
             request.POST, instance=artist, prefix='Art')
@@ -182,6 +184,13 @@ def formulario_perfil_artist(request):
             artist_id=request.user.id), prefix='Tag')
         mediaFormSet = formSetMedia(queryset=Media.objects.filter(
             artist_id=request.user.id), prefix='Media')
+    
+    for form in photoFormSet:
+        form.fields['url'].widget.attrs.update({'class': 'form-control'})
+    for form in tagFormSet:
+        form.fields['name'].widget.attrs.update({'class': 'form-control'})
+    for form in mediaFormSet:
+        form.fields['url'].widget.attrs.update({'class': 'form-control'})
 
     context = {'artistForm': artistForm, 'photoFormSet': photoFormSet, 'tagFormSet': tagFormSet,
                'mediaFormSet': mediaFormSet}

@@ -49,9 +49,11 @@
                     {% if form.id.value != None and form.id.value != "" %}
                         <input type="radio" name="photoToDelete" value='{{ form.id.value }}'/>
                     {% endif %}
+                    {{form.url.errors}}
                 </div>
+                <br>
                 {% endfor %}
-                <input type="submit" name="deletePhoto" value='Borrar foto seleccionada' />
+                <input type="submit" class="btn btn-round btn-primary" name="deletePhoto" value='Borrar foto seleccionada' />
         </div>
         <div>
             {{ tagFormSet.management_form }}
@@ -62,9 +64,11 @@
                     {% if form.id.value != None and form.id.value != "" %}
                         <input type="radio" name="tagToDelete" value='{{ form.id.value }}'/>
                     {% endif %}
+                    {{form.name.errors}}                    
                 </div>
+                <br>
                 {% endfor %}
-                <input type="submit" name="deleteTag" value='Borrar etiqueta seleccionada' />
+                <input type="submit" class="btn btn-round btn-primary" name="deleteTag" value='Borrar etiqueta seleccionada' />
         </div>
         <div>
             {{ mediaFormSet.management_form }}
@@ -75,9 +79,11 @@
                     {% if form.id.value != None and form.id.value != "" %}
                         <input type="radio" name="mediaToDelete" value='{{ form.id.value }}'/>
                     {% endif %}
+                    {{form.url.errors}}
                 </div>
+                <br>
                 {% endfor %}
-                <input type="submit" name="deleteMedia" value='Borrar media seleccionada' />
+                <input type="submit" class="btn btn-round btn-primary" name="deleteMedia" value='Borrar media seleccionada' />
         </div>
 
         

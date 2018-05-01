@@ -82,7 +82,11 @@ class Performance(models.Model):
         Artist, on_delete=models.CASCADE, related_name="performances")
     venue = models.ForeignKey(
         Venue, on_delete=models.CASCADE, related_name="performances")
-
+    def clean(self):
+        if type(self.date) is not datetime:
+            raise ValidationError('Fecha invalida.')
+        elif self.date < (datetime.today()-timedelta(1)):
+            raise ValidationError('La fecha introducida ha pasado.')
 
 class Payment(models.Model):
     amount = models.FloatField()

@@ -12,25 +12,30 @@
         {% with WIDGET_ERROR_CLASS='form-control-danger' %} 
         {% csrf_token %}
         
-        {{ artistForm.name.errors }}
+
         <label for="{{ artistForm.name.id_for_label }}">Nombre:</label>
         {% render_field artistForm.name class+="form-control" %}
+        {{ artistForm.name.errors }}
         <br>
-        {{ artistForm.email.errors }}
+
         <label for="{{ artistForm.email.id_for_label }}">Email:</label>
         {% render_field artistForm.email class+="form-control" %}
+        {{ artistForm.email.errors }}
         <br>
-        {{ artistForm.logo.errors }}
+
         <label for="{{ artistForm.logo.id_for_label }}">Logo:</label>
         {% render_field artistForm.logo class+="form-control" %}
+        {{ artistForm.logo.errors }}
         <br>
-        {{ artistForm.description.errors }}
+
         <label for="{{ artistForm.description.id_for_label }}">Descripción:</label>
         {% render_field artistForm.description class+="form-control" %}
+        {{ artistForm.description.errors }}
         <br>
-        {{ artistForm.artistNumber.errors }}
+
         <label for="{{ artistForm.artistNumber.id_for_label }}">Número de Integrantes:</label>
         {% render_field artistForm.artistNumber class+="form-control" %}
+        {{ artistForm.artistNumber.errors }}
         <br>
         <br/>
         <h3>Multimedia</h3>

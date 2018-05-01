@@ -42,7 +42,7 @@ def lista_artistas(request):
 def lista_locales(request):
     venue_list = Venue.objects.all()
     context = {'venue_list': venue_list}
-    return render(request, './lista_venues.html', context)
+    return render(request, './lista_locales.html', context)
 
 
 @permission_required('mvp.venue', login_url="/login")
@@ -189,7 +189,7 @@ def formulario_perfil_artist(request):
 
 
 def indexRedir(request):
-    return redirect("/artinbar")
+    return redirect("/")
 
 
 def index(request):
@@ -201,20 +201,19 @@ def index(request):
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect("/artinbar")
+        return redirect("/")
     if request.method == 'POST':
-        formulario = AuthenticationForm(data=request.POST)
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None and user.is_active:
+        formulario = LoginForm(data=request.POST)
+        if formulario.is_valid():
+            user = formulario.login(request)
             auth_login(request, user)
-            return redirect("/artinbar")
+            return redirect("/")
         else:
+            print(formulario.errors)
             context = {'formulario': formulario}
             return render(request, 'login.html', context)
     else:
-        formulario = AuthenticationForm()
+        formulario = LoginForm()
     context = {'formulario': formulario}
     return render(request, 'login.html', context)
 
@@ -305,7 +304,7 @@ def vista_local(request, id_local):
 
 @login_required(login_url='/login')
 def chat(request, user_id=None):
-    
+
     principal = request.user
 
     if not user_id:
@@ -315,39 +314,73 @@ def chat(request, user_id=None):
 
     else:
         contact = User.objects.get(id=user_id)
+
+        principalIsVenue = Venue.objects.filter(pk=principal.id).exists()
+        principalIsArtist = Artist.objects.filter(pk=principal.id).exists()
+        contactIsVenue = Venue.objects.filter(pk=contact.id).exists()
+        contactIsArtist = Artist.objects.filter(pk=contact.id).exists()
+
+        if ((principalIsVenue and contactIsVenue) or (principalIsArtist and contactIsArtist)):
+            return redirect("/chat")
+
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
         return render(request, './chat.html', {
-            'messages': messages, 
+            'messages': messages,
             'contact': contact
-    })
+        })
 
 
 @login_required(login_url='/login')
 def paypal(request, contact_id):
-    offer_list = None
+    offer_list = []
     try:
         contact = get_object_or_404(Venue, pk=contact_id)
-        offer_list = Offer.objects.filter(
-            venue_id=contact.id).order_by('-date')
     except:
         contact = get_object_or_404(Artist, pk=contact_id)
+        offer_list = Offer.objects.filter(
+            venue_id=request.user.id).order_by('-date')
 
     principal = request.user
 
-    if (offer_list is None):
-        offer_list = Offer.objects.filter(
-            venue_id=principal.id).order_by('-date')
+    paymentErrors = []
 
-    context = {'contact': contact, 'user': principal, 'offer_list': offer_list}
+    if ('paymentErrors' in request.session):
+        paymentErrors = request.session['paymentErrors']
+        request.session['paymentErrors'] = []
+
+    context = {'contact': contact, 'user': principal,
+               'offer_list': offer_list, 'paymentErrors': paymentErrors}
     return render(request, './paypal.html', context)
 
 
 @login_required(login_url='/login')
 def payment(request):
 
+    errors = []
+
     form = request.POST
     payee = get_object_or_404(User, id=form['payee'])
+
+    # Aquí se puede añadir validación adicional sobre el destinatario
+    if (payee is None or payee.id == request.user.id):
+        errors.append("Destinatario del pago no válido.")
+
+    if (form['amount'] is None or form['amount'] == '' or float(form['amount']) <= 0.0):
+        errors.append(
+            "Por favor, introduce una cantidad entre 1 y 9999 euros.")
+
+    if (form['performanceDate'] is None or form['performanceDate'] == ""):
+        errors.append("Por favor, introduzca una fecha.")
+
+    dateFormat = "%Y-%m-%d"
+
+    try:
+        formDate = datetime.strptime(form['performanceDate'], dateFormat)
+        if (formDate.date() < datetime.today().date()):
+            errors.append("Por favor, introduzca una fecha en el futuro.")
+    except:
+        errors.append("Ha ocurrido un error procesando la fecha.")
 
     try:
         venue = Venue.objects.get(id=request.user.id).id
@@ -364,6 +397,10 @@ def payment(request):
         'artist': artist,
         'venue': venue
     }
+
+    if errors:
+        request.session['paymentErrors'] = errors
+        return JsonResponse({'errors': errors, 'status': 'formError'})
 
     print('============ Performance info: ============')
 
@@ -442,8 +479,8 @@ def payment(request):
         'transactions': transactions,
         'note_to_payer': 'Puedes contactar con nosotros para cualquier duda en pagosartinbar@gmail.com',
         'redirect_urls': {
-            'return_url': 'http://localhost:8000/artinbar',
-            'cancel_url': 'http://localhost:8000/artinbar'
+            'return_url': 'http://artinbar.es/',
+            'cancel_url': 'http://artinbar.es/'
         }
     }
 
@@ -568,14 +605,14 @@ def payout(request):
     paymentObject.amount = payment['transactions'][0]['amount']['total']
     paymentObject.user = request.user
     paymentObject.performance = performance
-    paymentObject.date = datetime.datetime.now()
+    paymentObject.date = datetime.now()
     paymentObject.paypalId = payment['id']
 
     paymentObject.save()
     print('============ Payment saved ============')
 
     offerId = request.session['relaterOffer']
-    if (offerId != 0):
+    if (offerId is not None and offerId != 'undefined' and offerId != 0):
         offer = Offer.objects.get(id=offerId)
         offer.delete()
 
@@ -586,8 +623,6 @@ def payout(request):
 def paymentConfirmation(request):
     payment = request.session['payment']
     return render(request, './paypalConfirm.html', {'payment': payment})
-
-
 
 
 class formulario_feedback(View):
@@ -619,4 +654,3 @@ def vote(request):
 def termsAndConditions(request):
 
     return render(request, './T&C.html')
-

@@ -1,18 +1,13 @@
-{% if propias %}
-<div class="card">
-  {% else %}
-  <div class="card" onclick="window.location='/vista_local/{{ venue.id }}';">
-    {% endif %}
-    <div class="card-block">
-      <h4>{{ venue.name }}  </h4>
-      <div>
-        <p>
-          Aforo: {{ venue.capacity }}
-          <br> {{ venue.description }}
-        </p>
-
-      </div>
-      <br>
+<div class="card" onclick="window.location='/vista_local/{{ venue.id }}';">
+  <div class="card-block">
+    <h4>{{ venue.name }}  </h4>
+    <div>
+      <p>
+        Aforo: {{ venue.capacity }}
+        <br> {{ venue.description }}
+      </p>
     </div>
+    <br>
   </div>
-  <br>
+</div>
+<br>

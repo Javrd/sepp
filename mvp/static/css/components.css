@@ -67,6 +67,20 @@ body, button, input, optgroup, select, textarea {
     background-position: center center;
     position: relative;
 }
+
+.map{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+.map-container{
+    position: relative;
+    padding-bottom: 75%;
+    height: 0;
+    overflow: hidden;
+}
 .colored-section.hero-header{
     background-image: url(../img/bg3.jpg);
 }

@@ -1,29 +1,29 @@
-from django.http import HttpResponse, HttpResponseRedirect
+import datetime
+import json
+import re
+
+import requests
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import Permission
+from django.forms import modelformset_factory
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import (get_list_or_404, get_object_or_404, redirect,
+                              render)
+from django.template import loader
 from django.urls import reverse
-from django.shortcuts import render, redirect
-from django.views.generic.base import View
+from django.utils.safestring import mark_safe
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import View
+from requests.auth import HTTPBasicAuth
+
+from mvp.models import Artist
 
 from .forms import *
 from .forms import ArtistForm
-from mvp.models import Artist
-from django.contrib.auth import login as auth_login
-from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import permission_required, login_required
-from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
-from django.template import loader
-from requests.auth import HTTPBasicAuth
-import requests
-import datetime
-from django.contrib.auth.models import Permission
-from django.forms import modelformset_factory
-from .forms import *
 from .models import *
-import re
-from django.utils.safestring import mark_safe
-import json
 
 
 # Create your views here.

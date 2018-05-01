@@ -10,7 +10,7 @@
         <br>
         <h2>Inicia sesión:</h2>
 
-        <form id='formulario' method="post" class="form-group" action='/login'> 
+        <form id='formulario' method="post" class="form-group" action='/login'>
             {% with WIDGET_ERROR_CLASS='form-control-danger' %}
             {% csrf_token %}
 
@@ -35,6 +35,7 @@
 
             {% endwith %}
         </form>
+
 
     </section>
 </div>

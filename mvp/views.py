@@ -598,7 +598,7 @@ def payout(request):
     performance.name = serializedPerformance['name']
     performance.description = serializedPerformance['description']
     performance.date = serializedPerformance['date']
-    performance.public = True if serializedPerformance['public'] is 'on' else False
+    performance.public = serializedPerformance['public'] == 'on'
     performance.artist = Artist.objects.get(id=serializedPerformance['artist'])
     performance.venue = Venue.objects.get(id=serializedPerformance['venue'])
 
@@ -616,7 +616,7 @@ def payout(request):
     # print('============ Payment saved ============')
 
     offerId = request.session['relaterOffer']
-    if (offerId is not None and offerId != 'undefined' and offerId != 0):
+    if (offerId is not None and offerId != 'undefined' and offerId != '0'):
         offer = Offer.objects.get(id=offerId)
         offer.delete()
 

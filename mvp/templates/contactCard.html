@@ -1,0 +1,19 @@
+
+    <div class="card" onclick="window.location='/chat/{{ contact.id }}';">
+    <div class="card-block">
+        <div>
+            <div class="row">
+                <div class="col-8">
+                    <p style="margin: 0px"><h4>{{contact.name}}</h4></p>
+                </div>
+                <div class="col-4">
+                    <p style="margin: 0px"><h6>{{contact.message.timeStamp}}</h6></p>
+                </div>
+            </div>
+            <div class="row">
+                <p style="margin: 0px;padding-left: 15px;text-overflow:ellipsis">{{contact.message.text}}</p>
+            </div>     
+        </div>        
+    </div> 
+</div>
+<br> 

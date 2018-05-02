@@ -8,13 +8,7 @@
             <br>
             {% if contacts %}
                 {% for contact in contacts %}          
-                <div class="card">
-                    <div class="lead font-weight-bold card-header">
-                        <div class="row"> 
-                            <a href='/chat/{{ contact.id }}'>{{contact.name}}</a>
-                        </div>                                                  
-                    </div>                                                  
-                </div>                                                  
+                    {% include "contactCard.html" %}
                 {% endfor %}
                                 
             {% else %}

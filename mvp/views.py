@@ -332,6 +332,13 @@ def chat(request, user_id=None):
     if not user_id:
         contacts = (User.objects.filter(receivers__in=[principal]) | User.objects.filter(
             senders__in=[principal])).distinct()
+        if (contacts):
+            for contact in contacts:
+                message = Message.objects.raw("SELECT * FROM aib_db.mvp_message WHERE (receiver_id = '"+str(principal.id)+"' AND sender_id = '" +
+                                              str(contact.id)+"') OR (receiver_id = '"+str(contact.id)+"' AND sender_id = '"+str(principal.id)+"') ORDER BY timeStamp desc LIMIT 1")[0]
+                if (message is not None):
+                    contact.message = message
+
         return render(request, 'contacts.html', {'contacts': contacts})
 
     else:

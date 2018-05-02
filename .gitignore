@@ -109,3 +109,4 @@ venv.bak/
 
 \.idea/
 .vscode/launch.json
+mvp/migrations/0004_auto_20180502_1614.py

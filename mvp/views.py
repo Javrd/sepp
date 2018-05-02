@@ -10,7 +10,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Permission
 from django.forms import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import (get_list_or_404, get_object_or_404, redirect, render)
+from django.shortcuts import (
+    get_list_or_404, get_object_or_404, redirect, render)
 from django.template import loader
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -28,6 +29,7 @@ import re
 from django.utils.safestring import mark_safe
 import json
 from django.db.models import Q
+from decimal import *
 
 
 # Create your views here.
@@ -129,7 +131,7 @@ def formulario_perfil_artist(request):
     formSetPhoto = modelformset_factory(Photo, fields=('url', 'id',), extra=3)
     formSetTag = modelformset_factory(Tag, fields=('name', 'id',), extra=3)
     formSetMedia = modelformset_factory(Media, fields=('url', 'id',), extra=3)
-    
+
     if request.method == 'POST':
         artistForm = ArtistProfileForm(
             request.POST, instance=artist, prefix='Art')
@@ -188,7 +190,7 @@ def formulario_perfil_artist(request):
             artist_id=request.user.id), prefix='Tag')
         mediaFormSet = formSetMedia(queryset=Media.objects.filter(
             artist_id=request.user.id), prefix='Media')
-    
+
     for form in photoFormSet:
         form.fields['url'].widget.attrs.update({'class': 'form-control'})
     for form in tagFormSet:
@@ -207,7 +209,8 @@ def indexRedir(request):
 
 def index(request):
     template = loader.get_template('index.html')
-    performance_list = Performance.objects.all().filter(public=True).filter(Q(date__gte=datetime.now())|Q(date=None)).order_by('date')
+    performance_list = Performance.objects.all().filter(public=True).filter(
+        Q(date__gte=datetime.now()) | Q(date=None)).order_by('date')
     context = {'performance_list': performance_list}
     return HttpResponse(template.render(context, request))
 
@@ -437,7 +440,10 @@ def payment(request):
     # print('============ Requesting access token ============')
     payee = payee.email
     request.session['payee'] = payee
-    amount = form['amount']
+
+    amount = Decimal(form['amount'])
+    amount = round(amount, 2)
+
     url = 'https://api.sandbox.paypal.com/v1/oauth2/token'
     headers = {
         'accept': 'application/json',
@@ -457,8 +463,14 @@ def payment(request):
     # print('============ Creating payment ============')
     # print('Payee: '+payee)
     # print('Amount: '+amount)
-    fee = float(amount)*0.05  # TODO: Fee?
-    totalAmount = float(amount) + fee
+    if (amount <= Decimal(100.0)):
+        fee = Decimal(1.0)
+    else:
+        fee = Decimal(0.01) * amount
+
+    fee = round(fee, 2)
+    totalAmount = amount + fee
+    totalAmount = round(totalAmount, 2)
     # print('Fee: '+str(fee))
     # print('Total amount: '+str(totalAmount))
 

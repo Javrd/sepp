@@ -1,6 +1,8 @@
 import datetime
 import json
+import os
 import re
+from decimal import *
 
 import requests
 from django.contrib.auth import login as auth_login
@@ -8,28 +10,19 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Permission
+from django.db.models import Q
 from django.forms import modelformset_factory
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import (
-    get_list_or_404, get_object_or_404, redirect, render)
+from django.http import (HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse)
+from django.shortcuts import (get_list_or_404, get_object_or_404, redirect, render)
 from django.template import loader
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 from requests.auth import HTTPBasicAuth
-from django.http import HttpRequest
-import requests
-import datetime
-from django.contrib.auth.models import Permission
-from django.forms import modelformset_factory
+
 from .forms import *
 from .models import *
-import re
-from django.utils.safestring import mark_safe
-import json
-from django.db.models import Q
-from decimal import *
 
 
 # Create your views here.
@@ -354,9 +347,12 @@ def chat(request, user_id=None):
 
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
+        https = os.getenv('HTTPS', 'False')=='True'
+        proto = 'wss' if https else 'ws'
         return render(request, './chat.html', {
             'messages': messages,
-            'contact': contact
+            'contact': contact,
+            'proto': proto
         })
 
 
@@ -378,8 +374,10 @@ def paypal(request, contact_id):
         paymentErrors = request.session['paymentErrors']
         request.session['paymentErrors'] = []
 
+    https = os.getenv('HTTPS', 'False')=='True'
+    proto = 'https' if https else 'http'
     context = {'contact': contact, 'user': principal,
-               'offer_list': offer_list, 'paymentErrors': paymentErrors}
+               'offer_list': offer_list, 'paymentErrors': paymentErrors, 'proto': proto}
     return render(request, './paypal.html', context)
 
 

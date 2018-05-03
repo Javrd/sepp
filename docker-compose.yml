@@ -8,6 +8,17 @@ services:
       - "443:443"
     volumes: 
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx-proxy/certs:/etc/nginx/certs
+      - ./nginx-proxy/vhost.d:/etc/nginx/vhost.d
+      - ./nginx-proxy/html:/usr/share/nginx/html
+    restart: always
+
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    volumes_from:
+      - nginx-proxy
     restart: always
 
   redis:
@@ -73,7 +84,7 @@ services:
       MYSQL_DB: aib_db
       MYSQL_HOST: db-s2
       DEBUG: 'True'
-      VIRTUAL_HOST: s2.artinbar.es
+      VIRTUAL_HOST: s2.artinbar.es, artinbar.es
 
   django-aib-dev:
     build: ./dev
@@ -85,8 +96,11 @@ services:
     environment:
       DJANGO_SECRET_KEY: DJANGO-SECRET-KEY
       DJANGO_HOST_NAME: dev.artinbar.es
+      LETSENCRYPT_HOST: dev.artinbar.es
+      LETSENCRYPT_EMAIL: trarsheise@gmail.com
       MYSQL_DB: aib_db
       MYSQL_HOST: db-dev
       DEBUG: 'True'
+      HTTPS: 'True'
       REDIS_HOST: redis
       VIRTUAL_HOST: dev.artinbar.es

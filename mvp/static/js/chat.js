@@ -1,11 +1,11 @@
 $('#chat').scrollTop($('#chat')[0].scrollHeight);
-function loadChat (userId, contactId){
+function loadChat (userId, contactId, proto){
     var roomName = contactId;
 
     var chatSocket = new WebSocket(
-        'ws://' + window.location.host +
-        '/ws/chat/' + roomName + '/');
-
+        proto + '://' + window.location.host +
+        '/'+ proto +'/chat/' + roomName + '/');
+        
     chatSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         var message = data['message'];

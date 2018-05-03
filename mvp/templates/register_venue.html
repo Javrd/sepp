@@ -6,6 +6,14 @@
 {% load widget_tweaks %}
 
 <script>	    
+
+		var input = document.getElementById("id_address");
+		input.addEventListener("keyup", function(event) {
+			event.preventDefault();
+				if (event.keyCode === 13) {
+					searchAddress();
+				}
+		});
 	    var map;
 	    var marker;
 	    function initialize() {
@@ -33,7 +41,7 @@
 				  document.getElementById('longitude').value = longi;
 	    	    }else { // if status value is not equal to "google.maps.GeocoderStatus.OK"
 	    	        // warning message
-	    	        alert("The Geocode was not successful for the following reason: " + status);
+	    	        alert("No se ha podido encontrar la dirección");
 	    	      }
 	    	  });
 	    	}
@@ -142,7 +150,7 @@
 
 
 			<div>
-				<button type="button" onclick="searchAddress();">Buscar dirección</button>
+				<button id="searchButton" type="button" class="btn btn-round btn-primary"onclick="searchAddress();">Buscar dirección</button>
 			</div>
 			
 			<br>

@@ -1,0 +1,23 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Locales{% endblock %}
+{% block content %}
+<div class="colored-section bg-inverse">
+    <section class="container fullPage">
+        <br>
+        <h2>Locales</h2>
+        {% if venue_list %}           
+            <div class="venue-list">
+                {% for venue in venue_list %}
+                    {% include "venueCard.html" %}
+                {% endfor %}
+            </div>
+            {% else %}
+                <p>No hay listas disponibles.</p>
+        {% endif %}
+    </section>
+</div>
+<div class="fixed-bottom" style="z-index: 0;">
+        <img src="../static/img/crowd.png" class="img-fluid" />
+    </div>
+{% endblock %}

@@ -33,7 +33,7 @@
 
     </script>
 <div class="colored-section bg-inverse">
-    <div class="jumbotron jumbotron-fluid profileBanner" style="background-image: url('{{local.logo}}');">
+    <div class="jumbotron jumbotron-fluid profileBanner" style="background-image: url('https://i.pinimg.com/564x/01/fd/3f/01fd3f197a7cdfe7c8ffd3d867868ed3.jpg');">
         <div class="container profileTitle">
             <h1 class="display-6" style="margin-bottom: 0px">{{local.name}}</h1>
         </div>
@@ -55,27 +55,63 @@
         <br>
         <div class="tab-content container">
             <div class="tab-pane fade active show" id="home" role="tabpanel">
-                <p>
-                    {{local.description}}
-                </p>
-                <p>
-                    {{local.address}}
-                </p>
-                <p>
-                    Aforo: {{local.capacity}}
-                </p>
-                <style>
-                    #map{
-                       height: 170px;
-                       width: 300px;
-                     }
-                 </style>
+                    <div class="card">
+                            <div class="card-block">
+                            <div class="row">
+                            <div class="col-3 w-25 p-3 vcenter" >
+                            <img src="{{local.logo}}" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+                            </div>
+                            <div class="col-6 vcenter">
+                                <div class="row">
+                                <h2>{{local.name}}</h2>
+                                </div>
+                                <div class="row">
+                                <p>
+                                        {{local.description}}
+                                    </p>
+                                </div>
+                                   
+                            </div>
+                            
+                          
+                            </div>
+                            <div classs="row">
+                                    <div class="col-md-4 vcenter">
+                                    <p><b>
+                                        Aforo: {{local.capacity}}
+                                    </b>
+                                    </p>
+                                    </div>
+                                    <div class="col-md-4 vcenter">
+                                            <p><b>
+                                               {{local.email}}
+                                            </b>
+                                            </p>
+                                            </div>
+                        </div>
+                            </div>
+                        </div>
+                        <br>
 
-                <div id="map"></div><br>
+                <div class="card">
+                    <div class="card-block">
+                             <h4>
+                                {{local.address}}
+                             </h4>
+                            <br>
+                            <div class="map-container"/>
+                            <div class="map" id="map"></div>
+                            </div>
+                     </div>
+                </div>
+
+                
+                
+                
             </div>
             <div class="tab-pane fade" id="photos" role="tabpanel">
                 {% for foto in fotos %}
-                    <img class="img-fluid" src="{{foto.url}}" />
+                    <img class="rounded img-fluid" src="{{foto.url}}" />
                     <br><br>
                 {% endfor %}
             </div>
@@ -91,4 +127,6 @@
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdGla1CET4Qscd4i_tnk7o1JTosQQvVZk&&callback=initialize">
 </script>
+
+
 {% endblock %}

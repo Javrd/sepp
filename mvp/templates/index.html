@@ -1,21 +1,17 @@
-{% extends "common/masterpage.html" %} 
+{% extends "common/masterpage.html" %}
 
-{% block title %}Art in Bar - Inicio{% endblock %} 
-
-
-{% block content %} 
-
-<div class="wrapper">
-
-    <!--header section-->
-    <section class="colored-section hero-header" id="home" style="background-image: url(../static/img/slide1.jpg);display: flex;flex-direction: column">
+{% block title %}Art in Bar - Inicio{% endblock %}
+{% block content %}
+<div class="colored-section bg-inverse">
+    <section class="colored-section  hero-header" id="home" style="background-image: url(../static/img/slide1.jpg);display: flex;flex-direction: column;  background-repeat: no-repeat; background-attachment: fixed;" >
+        
         <div class="container" >
             <div class="row">
                 <div class="col-md-8 offset-md-2">
                     <div class="brand">
                         <h1 class="heading-light">Art in Bar</h1>
                         <p class="lead mb-5">
-                            Duis commodo ex eiusmod qui irure pariatur occaecat ex.
+                            ENCUENTRA TU ESCENARIO
                         </p>
                         {% if not user.is_authenticated %}
                         <a href="/registerArtist" class="btn btn-outline-white btn-round btn-md page-scroll">
@@ -33,10 +29,31 @@
         <div class="row align-items-center justify-content-center flex-grow: 1;" style="height:100%">
             <div class="col-6 text-center">
                     <i id="#goBottom" class="fa fa-angle-double-down fa-5x" aria-hidden="true"></i>
-            </div>
+                    <br><br><br>
+                    
+                </div>
+                
         </div>
+        <div class="container">
+
+                <h2><b>Actuaciones<b></h2>
+                {% if performance_list %}           
+                    <div class="offer-list">   
+                        {% for performance in performance_list %}
+                            {% include "performanceCard.html" %}
+                        {% endfor %} 
+                    </div>  
+                    {% else %}
+                        <p>No hay espectáculos disponibles.</p>            
+                {% endif %}
+    
+            </div>
+
     </section>
-</div> 
+    
+
+</div>
+
 
 <script>
     window.onload = function(){

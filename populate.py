@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Import models from mvp/data/xxx.csv."""
 import csv
 import datetime
@@ -42,13 +43,13 @@ def importArtists():
             logo = line[3]
             integrantes = line[4]
             artisId = line[5]
-            # print(line)
+            username = line[6]
 
-            new = Artist.objects.create(username=nombre, email=email,
+            new = Artist.objects.create(username=username, email=email,
                                         name=nombre, description=description,
                                         logo=logo, artistNumber=integrantes,
                                         id=artisId)
-            new.set_password(nombre)
+            new.set_password(username)
             new.user_permissions.add(permission)
             new.save()
 
@@ -56,7 +57,7 @@ def importArtists():
 def importVenues():
     """Import venues from venues.csv to database."""
     permission = Permission.objects.get(codename='venue')
-    with open('mvp/data/venues.csv', encoding='latin1') as csvfile:
+    with open('mvp/data/venues.csv', encoding='utf-8') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
         for line in spamreader:
@@ -69,23 +70,23 @@ def importVenues():
             address = line[5]
             capacity = line[6]
             venueId = line[7]
-            # print(line)
+            username = line[8]
             geo = geo.split('/')
             geos = Geolocation.objects.create(
                 latitude=float(geo[0]), longitude=float(geo[1]))
-            new = Venue.objects.create(username=nombre, email=email,
+            new = Venue.objects.create(username=username, email=email,
                                        name=nombre, description=description,
                                        logo=logo, geolocation=geos,
                                        address=address, capacity=capacity,
                                        id=venueId)
-            new.set_password(nombre)
+            new.set_password(username)
             new.user_permissions.add(permission)
             new.save()
 
 
 def importMessages():
     """Import messages from messages.csv to database."""
-    with open('mvp/data/messages.csv', encoding='latin1') as csvfile:
+    with open('mvp/data/messages.csv', encoding='utf-8') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
         for line in spamreader:
@@ -94,7 +95,6 @@ def importMessages():
             sender = User.objects.get(pk=line[2])
             receiver = User.objects.get(pk=line[3])
             messageId = line[4]
-            # print(line)
 
             new = Message.objects.create(timeStamp=timeStamp, text=text,
                                          sender=sender, receiver=receiver,
@@ -105,14 +105,13 @@ def importMessages():
 
 def importPhotos():
     """Import photos from photos.csv to database."""
-    with open('mvp/data/photos.csv', encoding='latin1') as csvfile:
+    with open('mvp/data/photos.csv', encoding='utf-8') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
         for line in spamreader:
             photoUrl = line[0]
             userId = User.objects.get(pk=line[1])
             photoId = line[2]
-            # print(line)
             new = Photo.objects.create(url=photoUrl, user=userId, id=photoId)
 
             new.save()
@@ -120,14 +119,13 @@ def importPhotos():
 
 def importTags():
     """Import tags from tags.csv to database."""
-    with open('mvp/data/tags.csv', encoding='latin1') as csvfile:
+    with open('mvp/data/tags.csv', encoding='utf-8') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
         for line in spamreader:
             name = line[0]
             artisId = Artist.objects.get(pk=line[1])
             tagId = line[2]
-            # print(line)
             new = Tag.objects.create(name=name, artist=artisId, id=tagId)
 
             new.save()
@@ -135,14 +133,13 @@ def importTags():
 
 def importMedias():
     """Import Medias from medias.csv to database."""
-    with open('mvp/data/medias.csv', encoding='latin1') as csvfile:
+    with open('mvp/data/medias.csv', encoding='utf-8') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
         for line in spamreader:
             url = line[0]
             artisId = Artist.objects.get(pk=line[1])
             mediaId = line[2]
-            # print(line)
             new = Media.objects.create(url=url, artist=artisId, id=mediaId)
 
             new.save()
@@ -150,7 +147,7 @@ def importMedias():
 
 def importOffers():
     """Import Offers from offers.csv to database."""
-    with open('mvp/data/offers.csv', encoding='latin1') as csvfile:
+    with open('mvp/data/offers.csv', encoding='utf-8') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
         for line in spamreader:
@@ -160,7 +157,6 @@ def importOffers():
             date = datetime.datetime.strptime(line[3], '%Y-%m-%d')
             venue = Venue.objects.get(pk=line[4])
             offerId = line[5]
-            # print(line)
             new = Offer.objects.create(name=name, description=description,
                                        offeredAmount=offeredAmount, date=date,
                                        venue=venue, id=offerId)
@@ -170,7 +166,7 @@ def importOffers():
 
 def importPerfomances():
     """Import performances from performances.csv to database."""
-    with open('mvp/data/performances.csv', encoding='latin1') as csvfile:
+    with open('mvp/data/performances.csv', encoding='utf-8') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
         for line in spamreader:
@@ -181,7 +177,6 @@ def importPerfomances():
             artist = Artist.objects.get(pk=line[4])
             venue = Venue.objects.get(pk=line[5])
             performanceId = line[6]
-            # print(line)
             new = Performance.objects.create(name=name,
                                              description=description,
                                              date=date, public=public,
@@ -193,7 +188,7 @@ def importPerfomances():
 
 def importPayments():
     """Import Payment from payment.csv to database."""
-    with open('mvp/data/payments.csv', encoding='latin1') as csvfile:
+    with open('mvp/data/payments.csv', encoding='utf-8') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         print(spamreader.__next__())
         for line in spamreader:
@@ -202,7 +197,6 @@ def importPayments():
             user = User.objects.get(pk=line[2])
             performance = Performance.objects.get(pk=line[3])
             paymentId = line[4]
-            # print(line)
             new = Payment.objects.create(amount=amount,
                                          date=date, user=user,
                                          performance=performance,

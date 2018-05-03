@@ -12,25 +12,30 @@
         {% with WIDGET_ERROR_CLASS='form-control-danger' %} 
         {% csrf_token %}
         
-        {{ artistForm.name.errors }}
+
         <label for="{{ artistForm.name.id_for_label }}">Nombre:</label>
         {% render_field artistForm.name class+="form-control" %}
+        {{ artistForm.name.errors }}
         <br>
-        {{ artistForm.email.errors }}
+
         <label for="{{ artistForm.email.id_for_label }}">Email:</label>
         {% render_field artistForm.email class+="form-control" %}
+        {{ artistForm.email.errors }}
         <br>
-        {{ artistForm.logo.errors }}
+
         <label for="{{ artistForm.logo.id_for_label }}">Logo:</label>
         {% render_field artistForm.logo class+="form-control" %}
+        {{ artistForm.logo.errors }}
         <br>
-        {{ artistForm.description.errors }}
+
         <label for="{{ artistForm.description.id_for_label }}">Descripción:</label>
         {% render_field artistForm.description class+="form-control" %}
+        {{ artistForm.description.errors }}
         <br>
-        {{ artistForm.artistNumber.errors }}
+
         <label for="{{ artistForm.artistNumber.id_for_label }}">Número de Integrantes:</label>
         {% render_field artistForm.artistNumber class+="form-control" %}
+        {{ artistForm.artistNumber.errors }}
         <br>
         <br/>
         <h3>Multimedia</h3>
@@ -44,9 +49,11 @@
                     {% if form.id.value != None and form.id.value != "" %}
                         <input type="radio" name="photoToDelete" value='{{ form.id.value }}'/>
                     {% endif %}
+                    {{form.url.errors}}
                 </div>
+                <br>
                 {% endfor %}
-                <input type="submit" name="deletePhoto" value='Borrar foto seleccionada' />
+                <input type="submit" class="btn btn-round btn-primary" name="deletePhoto" value='Borrar foto seleccionada' />
         </div>
         <div>
             {{ tagFormSet.management_form }}
@@ -57,9 +64,11 @@
                     {% if form.id.value != None and form.id.value != "" %}
                         <input type="radio" name="tagToDelete" value='{{ form.id.value }}'/>
                     {% endif %}
+                    {{form.name.errors}}                    
                 </div>
+                <br>
                 {% endfor %}
-                <input type="submit" name="deleteTag" value='Borrar etiqueta seleccionada' />
+                <input type="submit" class="btn btn-round btn-primary" name="deleteTag" value='Borrar etiqueta seleccionada' />
         </div>
         <div>
             {{ mediaFormSet.management_form }}
@@ -70,9 +79,11 @@
                     {% if form.id.value != None and form.id.value != "" %}
                         <input type="radio" name="mediaToDelete" value='{{ form.id.value }}'/>
                     {% endif %}
+                    {{form.url.errors}}
                 </div>
+                <br>
                 {% endfor %}
-                <input type="submit" name="deleteMedia" value='Borrar media seleccionada' />
+                <input type="submit" class="btn btn-round btn-primary" name="deleteMedia" value='Borrar media seleccionada' />
         </div>
 
         

@@ -1,50 +1,51 @@
 $('#chat').scrollTop($('#chat')[0].scrollHeight);
-$("#chat-form").submit(function(e) {
+function loadChat (userId, contactId, proto){
+    var roomName = contactId;
 
-    $.ajax({
-        type: "POST",
-        url: "",
-        data: $("#chat-form").serialize(), // serializes the form's elements.
-        success: function(data) {
+    var chatSocket = new WebSocket(
+        proto + '://' + window.location.host +
+        '/'+ proto +'/chat/' + roomName + '/');
+        
+    chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        var message = data['message'];
+        var date = data['date'];
+        if  (data['userId'] ==  userId) {
             $('#chat-panel').append(
                 '<div class="row">' +
                     '<div class="col"> '+
-                        '<div class="list-group-item bg-primary pull-right text-right text-white">' + $('<div/>').text(data.date).html() + '<br> '+ $('<div/>').text(data.text).html() + '</div>'+
+                        '<div class="list-group-item bg-primary pull-right text-right text-white">' + $('<div/>').text(date).html() + '<br> '+ $('<div/>').text(message).html() + '</div>'+
                     '</div>'+
                 '</div>');
-            $('#chat').scrollTop($('#chat')[0].scrollHeight);
-            $('#text').val('');
+        } else {
+            $('#chat-panel').append(
+                '<div class="row">' +
+                    '<div class="col"> '+
+                        '<div class="list-group-item pull-left">' + $('<div/>').text(date).html() + '<br> '+ $('<div/>').text(message).html() + '</div>'+
+                    '</div>'+
+                '</div>');
         }
-    });
+        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+    };
 
-    e.preventDefault(); // avoid to execute the actual submit of the form.
-});
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
 
-function sync_messages(lastMessage){
-    window.setInterval(function (){
+    document.querySelector('#text').focus();
+    document.querySelector('#text').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#send').click();
+        }
+    };
 
-        var data = $("#chat-form").serialize();
-        data.lastMessageId = lastMessage;
-        $.ajax({
-            type: "POST",
-            url: "sync",
-            data: data, // serializes the form's elements.
-            success: function(data) {
-                data = data.list
-                if(lastMessage != -1 && lastMessage != data[data.length-1].id){
-                    for (var i=0; i<data.length; i++) {
-                        $('#chat-panel').append(
-                            '<div class="row">' +
-                                '<div class="col"> '+
-                                    '<div class="list-group-item pull-left">' + $('<div/>').text(data[i].date).html() + '<br> '+ $('<div/>').text(data[i].text).html() + '</div>'+
-                                '</div>'+
-                            '</div>');
-                        $('#chat').scrollTop($('#chat')[0].scrollHeight);
-                        lastMessage = data[i].id;
-                        console.log(lastMessage)
-                    }
-                }
-            }
-        })
-    }, 2000);
+    document.querySelector('#send').onclick = function(e) {
+        var messageInputDom = document.querySelector('#text');
+        var message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+
+        messageInputDom.value = '';
+    };
 }

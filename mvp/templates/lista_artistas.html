@@ -1,0 +1,23 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Artistas{% endblock %}
+{% block content %}
+<div class="colored-section bg-inverse">
+    <section class="container fullPage">
+        <br>
+        <h2>Artistas</h2>
+        {% if artist_list %}
+            <div class="artist-list">
+                {% for artist in artist_list %}
+                    {% include "artistCard.html" %}
+                {% endfor %}
+            </div>
+            {% else %}
+                <p>No hay listas disponibles.</p>
+        {% endif %}
+    </section>
+</div>
+<div class="fixed-bottom" style="z-index: 0;">
+        <img src="../static/img/crowd.png" class="img-fluid" />
+    </div>
+{% endblock %}

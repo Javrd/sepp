@@ -1,0 +1,43 @@
+{% extends "common/masterpage.html" %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+
+<div class="colored-section bg-inverse" style="z-index: -1;">
+    <section class="container fullPage" style="z-index: 1;">
+        <br>
+        <h2>Déjanos tu opinión:</h2>
+
+         <form class="form-group" action="" method="post">
+
+            {% with WIDGET_ERROR_CLASS='form-control-danger' %}
+            {% csrf_token %}
+
+
+            <label for="{{ feedback_form.name.id_for_label }}">Nombre:</label>
+            {% render_field feedback_form.name class+="form-control" placeholder="Indica tu nombre" %}
+            {{ feedback_form.name.errors }}
+            <br>
+
+
+            <label for="{{ feedback_form.description.id_for_label }}">Opinión:</label>
+            <textarea name="description" id="{{ feedback_form.description.id_for_label }}" class="form-control" placeholder="Describe tu opinión sobre la aplicación"></textarea>
+            {{ feedback_form.description.errors }}
+            <br>
+            
+            <div class="text-center">
+                <input type="submit" class="btn btn-round btn-primary" value="Enviar" />
+            </div>
+
+            {% endwith %}
+        </form>
+
+    </section>
+</div>
+
+<div class="fixed-bottom" style="z-index: 0;">
+    <img src="../static/img/crowd.png" class="img-fluid" />
+</div>    
+{% endblock %}

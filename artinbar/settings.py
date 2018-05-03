@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'm#=d20%yta%r!71d#r)m(jq_m(3a9yeowo1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True')=='True'
 
-ALLOWED_HOSTS = [os.getenv('DJANGO_HOST_NAME', '*')]
+ALLOWED_HOSTS = list(map(lambda x: x.strip(), os.getenv('DJANGO_HOST_NAME', '*').split(',')))
 
 
 # Application definition
@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'channels',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -71,6 +73,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'artinbar.wsgi.application'
 
+ASGI_APPLICATION = "artinbar.routing.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(os.getenv('REDIS_HOST', 'localhost'), 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -85,6 +96,7 @@ DATABASES = {
         'PORT': os.getenv('MYSQL_PORT', '3306'),
     }
 }
+
 
 AUTH_USER_MODEL = 'mvp.User'
 
@@ -110,13 +122,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'es-ES'
+DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y/%m/%d')
+TIME_ZONE = 'Europe/Madrid'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = False
 
@@ -124,11 +136,11 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_ROOT = BASE_DIR+'/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
 # HTTPS Config
 
-CSRF_COOKIE_SECURE = os.getenv('DEBUG', 'True')=='False'
-SESSION_COOKIE_SECURE = os.getenv('DEBUG', 'True')=='False'
+CSRF_COOKIE_SECURE = os.getenv('HTTPS', 'False')=='True'
+SESSION_COOKIE_SECURE = os.getenv('HTTPS', 'False')=='True'

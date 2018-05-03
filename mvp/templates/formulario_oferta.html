@@ -15,29 +15,37 @@
             {% with WIDGET_ERROR_CLASS='form-control-danger' %}
             {% csrf_token %}
 
-            {{ form.name.errors }}
+            
             <label for="{{ form.name.id_for_label }}">Título:</label>
             {% render_field form.name class+="form-control" placeholder="¿Cómo se llama tu oferta?" %}
+            {{ form.name.errors }}
             <br>
 
-            {{ form.description.errors }}
             <label for="{{ form.description.id_for_label }}">Descripción:</label>
-            <textarea class="form-control" name="description" required id="id_description" placeholder="Explica a los artistas qué estás buscando"></textarea>
+            {% render_field form.description class+="form-control" placeholder="Explica a los artistas qué estás buscando" %}
+            {{ form.description.errors }}
             <br>
 
-            {{ form.offeredAmount.errors }}
+            
             <label for="{{ form.offeredAmount.id_for_label }}">Precio ofrecido:</label>            
             <div class="input-group">
-                <input class="form-control" name="offeredAmount" placeholder="Cantidad en Euros" type="number">
+                {% render_field form.offeredAmount class+="form-control" placeholder="Cantidad en Euros" type="number" max="999999999999999" %}
                 <span class="input-group-btn">
-                    <spam class="btn btn-primary"><em class="fa fa-euro"></em></spam>
+                    <spam class="btn btn-primary" ><em class="fa fa-euro"></em></spam>
                 </span>
-            </div>        
+            </div>
+            {{ form.offeredAmount.errors }}        
             <br>
 
-            {{ form.date.errors }}
+            
             <label for="{{ form.date.id_for_label }}">Fecha:</label>
-            <input class="form-control" name="date" required id="datepicker" placeholder="Selecciona fecha" type="text">
+            <input class="form-control" name="date" required id="datepicker" placeholder="Selecciona fecha" type="datetime">
+            {{ form.date.errors }}
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    {{error}}
+                {% endfor %}
+            {% endif %}
             <br>
             
             <div class="text-center">

@@ -3,7 +3,7 @@
 {% block title %}Perfil{% endblock %}
 {% block content %}
 <div class="colored-section bg-inverse">
-    <div class="jumbotron jumbotron-fluid profileBanner" style="background-image: url('{{artista.logo}}');">
+    <div class="jumbotron jumbotron-fluid profileBanner" style="background-image: url('http://media.socastsrm.com/wordpress/wp-content/blogs.dir/1166/files/2018/02/live-music-1.jpg');">
         <div class="container profileTitle">
             <h1 class="display-6" style="margin-bottom: 0px">{{artista.name}}</h1>
         </div>
@@ -28,31 +28,73 @@
         <br>
         <div class="tab-content container">
             <div class="tab-pane fade active show" id="home" role="tabpanel">
-                <p>
-                    {{artista.description}}
-                </p>
-                <p>
-                    Número de integrantes: {{artista.artistNumber}}
-                </p>
-                <p>
-                    Etiquetas: 
-                    {% for tag in tags %}
-                        <span>{{tag.name}}</span>
-                    {% endfor %}
-                </p>
+                    <div class="card">
+                            <div class="card-block">
+                            <div class="row">
+                            <div class="col-3 w-25 p-3 vcenter" >
+                            {% if not artista.logo %}
+                            <img src="https://freakuotes.com/users/avatars/default.jpg" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+                            {% else %}
+                                 <img src="{{artista.logo}}" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+                            {% endif %}
+                            </div>
+                            <div class="col-6 vcenter">
+                                <div class="row">
+                                <h2>{{artista.name}}</h2>
+                                </div>
+                                <div class="row">
+                                <p>
+                                        {{artista.description}}
+                                    </p>
+                                </div>
+                                   
+                            </div>
+                            
+                          
+                            </div>
+                            <div classs="row">
+                                    <div class="col-md-4 vcenter">
+                                    <p><b>
+                                        Número de integrantes: {{artista.artistNumber}}
+                                    </b>
+                                    </p>
+                                    </div>
+                                    <div class="col-md-4 vcenter">
+                                            <p><b>
+                                               {{artista.email}}
+                                            </b>
+                                            </p>
+                                            </div>
+                        </div>
+                    
+                            </div>
+                        </div>
+                        <br>
+                        <div class="card">
+                        <div class="card-block">
+                        <p>
+                               <b> Etiquetas</b>
+                            </p>
+                            <p>
+                                {% for tag in tags %}
+                                    <span>{{tag.name}}</span>
+                                {% endfor %}
+                            </p>
+                            </div>
+                            </div>
             </div>
             <div class="tab-pane fade" id="media" role="tabpanel">
-                <div class="embed-responsive embed-responsive-16by9">
                     {% for media in multimedia %}
-                                <iframe  class="embed-responsive-item"
-                                src="http://www.youtube.com/embed/{{media}}">
-                                </iframe>
+                    <div class="embed-responsive embed-responsive-16by9">
+                            <iframe  class="embed-responsive-item"
+                            src="http://www.youtube.com/embed/{{media}}">
+                            </iframe>
+                        </div>
                     {% endfor %}
-                </div>
             </div>
             <div class="tab-pane fade" id="photos" role="tabpanel">
                 {% for foto in fotos %}
-                    <img class="img-fluid" src="{{foto.url}}" />
+                    <img class="rounded img-fluid" src="{{foto.url}}" />
                     <br><br>
                 {% endfor %}
             </div>
@@ -62,7 +104,13 @@
                 <a href="/chat/{{artista.id}}" class="btn btn-primary btn-lg">Contactar ahora</a>
             </div>
             {% endif %}
+            {% if user.id == artista.id %}
+                <br></br>
+                <a href="/editar_artista" class="btn btn-primary btn-lg">Editar</a>
+            {% endif %}
         </div>
     </div>
 </div>
+
+
 {% endblock %}

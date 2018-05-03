@@ -1,33 +1,63 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
-from django.shortcuts import render, redirect
-from django.views.generic.base import View
+import datetime
+import json
+import os
+import re
+from decimal import *
 
-from .forms import *
-from .forms import ArtistForm
-from mvp.models import Artist
+import requests
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_list_or_404, redirect, render, get_object_or_404
-from django.template import loader
-from datetime import datetime
-from requests.auth import HTTPBasicAuth
-import requests
 from django.contrib.auth.models import Permission
+from django.db.models import Q
 from django.forms import modelformset_factory
+from django.http import (HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse)
+from django.shortcuts import (get_list_or_404, get_object_or_404, redirect, render)
+from django.template import loader
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import View
+from requests.auth import HTTPBasicAuth
+
 from .forms import *
 from .models import *
-import re
 
 
 # Create your views here.
 def lista_ofertas(request):
-    offer_list = Offer.objects.all()
+    offer_list = Offer.objects.all().order_by('-date')
     context = {'offer_list': offer_list}
     return render(request, './lista_ofertas.html', context)
+
+
+def lista_artistas(request):
+    artist_list = Artist.objects.all()
+    context = {'artist_list': artist_list}
+    return render(request, './lista_artistas.html', context)
+
+
+def lista_locales(request):
+    venue_list = Venue.objects.all()
+    context = {'venue_list': venue_list}
+    return render(request, './lista_locales.html', context)
+
+
+@permission_required('mvp.venue', login_url="/login")
+def mis_ofertas(request):
+    offer_list = Offer.objects.filter(
+        venue_id=request.user.id).order_by('-date')
+    context = {'offer_list': offer_list, 'propias': True, }
+    return render(request, './lista_ofertas.html', context)
+
+
+@permission_required('mvp.venue', login_url="/login")
+def borrar_oferta(request, offer_id):
+    offer = Offer.objects.get(id=offer_id)
+    if(offer.venue.id == request.user.id):
+        offer.delete()
+    return redirect("/mis_ofertas")
 
 
 @permission_required('mvp.venue', login_url="/login")
@@ -38,7 +68,7 @@ def formulario_oferta(request):
             offer = form.save(commit=False)
             offer.venue = Venue.objects.get(id=request.user.id)
             offer.save()
-            return HttpResponseRedirect('/lista_ofertas/')
+            return HttpResponseRedirect('/mis_ofertas/')
     else:
         form = OfferForm(request.user)
 
@@ -49,7 +79,7 @@ def formulario_oferta(request):
 def formulario_perfil_venue(request):
     venue = Venue.objects.get(id=request.user.id)
     geoloc = Geolocation.objects.get(venue=request.user.id)
-    formSet = modelformset_factory(Photo, fields=('url', 'id',), )
+    formSet = modelformset_factory(Photo, fields=('url', 'id',), extra=3)
     if request.method == 'POST':
         venueForm = VenueProfileForm(
             request.POST, instance=venue, prefix='Ven')
@@ -81,7 +111,8 @@ def formulario_perfil_venue(request):
         geoForm = GeolocationForm(instance=geoloc, prefix='Geo')
         photoFormSet = formSet(
             queryset=Photo.objects.filter(user_id=request.user.id))
-
+    for form in photoFormSet:
+        form.fields['url'].widget.attrs.update({'class': 'form-control'})
     context = {'venueForm': venueForm,
                'geoForm': geoForm, 'photoFormSet': photoFormSet}
     return render(request, './formulario_perfil_local.html', context)
@@ -90,9 +121,10 @@ def formulario_perfil_venue(request):
 @permission_required('mvp.artist', login_url="/login")
 def formulario_perfil_artist(request):
     artist = Artist.objects.get(id=request.user.id)
-    formSetPhoto = modelformset_factory(Photo, fields=('url', 'id',), )
-    formSetTag = modelformset_factory(Tag, fields=('name', 'id',), )
-    formSetMedia = modelformset_factory(Media, fields=('url', 'id',), )
+    formSetPhoto = modelformset_factory(Photo, fields=('url', 'id',), extra=3)
+    formSetTag = modelformset_factory(Tag, fields=('name', 'id',), extra=3)
+    formSetMedia = modelformset_factory(Media, fields=('url', 'id',), extra=3)
+
     if request.method == 'POST':
         artistForm = ArtistProfileForm(
             request.POST, instance=artist, prefix='Art')
@@ -152,36 +184,52 @@ def formulario_perfil_artist(request):
         mediaFormSet = formSetMedia(queryset=Media.objects.filter(
             artist_id=request.user.id), prefix='Media')
 
+    for form in photoFormSet:
+        form.fields['url'].widget.attrs.update({'class': 'form-control'})
+    for form in tagFormSet:
+        form.fields['name'].widget.attrs.update({'class': 'form-control'})
+    for form in mediaFormSet:
+        form.fields['url'].widget.attrs.update({'class': 'form-control'})
+
     context = {'artistForm': artistForm, 'photoFormSet': photoFormSet, 'tagFormSet': tagFormSet,
                'mediaFormSet': mediaFormSet}
     return render(request, './formulario_perfil_artista.html', context)
 
 
 def indexRedir(request):
-    return redirect("/artinbar")
+    return redirect("/")
 
 
 def index(request):
     template = loader.get_template('index.html')
-    return HttpResponse(template.render({}, request))
+    performance_list = Performance.objects.all().filter(public=True).filter(
+        Q(date__gte=datetime.now()) | Q(date=None)).order_by('date')
+    context = {'performance_list': performance_list}
+    return HttpResponse(template.render(context, request))
 
 
 def login(request):
+    next = ''
+    if request.POST:
+        url = request.META.get('HTTP_REFERER')
+        if '/login?next=' in url:
+            next = url.replace('/login?next=', '')
     if request.user.is_authenticated:
-        return redirect("/artinbar")
+        return redirect("/")
     if request.method == 'POST':
-        formulario = AuthenticationForm(data=request.POST)
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None and user.is_active:
+        formulario = LoginForm(data=request.POST)
+        if formulario.is_valid():
+            user = formulario.login(request)
             auth_login(request, user)
-            return redirect("/artinbar")
+            if next == '':
+                return redirect('/')
+            else:
+                return redirect(next)
         else:
             context = {'formulario': formulario}
             return render(request, 'login.html', context)
     else:
-        formulario = AuthenticationForm()
+        formulario = LoginForm()
     context = {'formulario': formulario}
     return render(request, 'login.html', context)
 
@@ -232,7 +280,6 @@ class register_artist(View):
 
         form = ArtistForm(request.POST)
         if form.is_valid():
-
             new_artist = form.save()
             permission = Permission.objects.get(codename='artist')
             new_artist.user_permissions.add(permission)
@@ -278,69 +325,130 @@ def chat(request, user_id=None):
     if not user_id:
         contacts = (User.objects.filter(receivers__in=[principal]) | User.objects.filter(
             senders__in=[principal])).distinct()
+        if (contacts):
+            for contact in contacts:
+                message = Message.objects.raw("SELECT * FROM aib_db.mvp_message WHERE (receiver_id = '"+str(principal.id)+"' AND sender_id = '" +
+                                              str(contact.id)+"') OR (receiver_id = '"+str(contact.id)+"' AND sender_id = '"+str(principal.id)+"') ORDER BY timeStamp desc LIMIT 1")[0]
+                if (message is not None):
+                    contact.message = message
+
         return render(request, 'contacts.html', {'contacts': contacts})
 
     else:
         contact = User.objects.get(id=user_id)
 
-        if request.method == 'POST':
-            form = request.POST
-            msg = Message.objects.create(
-                sender=principal, receiver=contact, timeStamp=datetime.now(), text=form['text'])
-            data = {}
-            data['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
-            data['text'] = msg.text
-            return JsonResponse(data)
+        principalIsVenue = Venue.objects.filter(pk=principal.id).exists()
+        principalIsArtist = Artist.objects.filter(pk=principal.id).exists()
+        contactIsVenue = Venue.objects.filter(pk=contact.id).exists()
+        contactIsArtist = Artist.objects.filter(pk=contact.id).exists()
+
+        if ((principalIsVenue and contactIsVenue) or (principalIsArtist and contactIsArtist)):
+            return redirect("/chat")
 
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
-        last_contact_message = Message.objects.filter(
-            receiver=principal, sender=contact).order_by('-timeStamp')
-        if last_contact_message:
-            last_contact_message = last_contact_message[0].id
-        else:
-            last_contact_message = -1
-        return render(request, 'chat.html', {'messages': messages, 'contact': contact, 'last_contact_message': last_contact_message})
+        https = os.getenv('HTTPS', 'False')=='True'
+        proto = 'wss' if https else 'ws'
+        return render(request, './chat.html', {
+            'messages': messages,
+            'contact': contact,
+            'proto': proto
+        })
 
 
 @login_required(login_url='/login')
-def chat_sync(request, user_id=None):
-    if request.method == 'POST':
-        principal = request.user
-        contact = User.objects.get(id=user_id)
-        form = request.POST
-        messages = Message.objects.filter(
-            receiver=principal, sender=contact).order_by('-timeStamp')
-        data = []
-        list = {'list': data}
-        for i, msg in enumerate(messages):
-            if (form["lastMessageId"] == msg.id):
-                break
-            data.append({})
-            data[i]['date'] = msg.timeStamp.strftime("%d/%m/%Y %H:%m")
-            data[i]['text'] = msg.text
-            data[i]['id'] = msg.id
-        data.reverse()
-        return JsonResponse(list)
-
-
-@login_required(login_url='/login')
-def paypal_test(request, contact_id):
+def paypal(request, contact_id):
+    offer_list = []
     try:
         contact = get_object_or_404(Venue, pk=contact_id)
     except:
         contact = get_object_or_404(Artist, pk=contact_id)
+        offer_list = Offer.objects.filter(
+            venue_id=request.user.id).order_by('-date')
+
     principal = request.user
-    context = {'contact': contact, 'user': principal}
-    return render(request, './paypalTest.html', context)
+
+    paymentErrors = []
+
+    if ('paymentErrors' in request.session):
+        paymentErrors = request.session['paymentErrors']
+        request.session['paymentErrors'] = []
+
+    https = os.getenv('HTTPS', 'False')=='True'
+    proto = 'https' if https else 'http'
+    context = {'contact': contact, 'user': principal,
+               'offer_list': offer_list, 'paymentErrors': paymentErrors, 'proto': proto}
+    return render(request, './paypal.html', context)
 
 
 @login_required(login_url='/login')
 def payment(request):
-    print('============ Requesting access token ============')
-    payee = request.POST.get('payee')
+
+    errors = []
+
+    form = request.POST
+    payee = get_object_or_404(User, id=form['payee'])
+
+    # Aquí se puede añadir validación adicional sobre el destinatario
+    if (payee is None or payee.id == request.user.id):
+        errors.append("Destinatario del pago no válido.")
+
+    if (form['amount'] is None or form['amount'] == '' or float(form['amount']) <= 0.0):
+        errors.append(
+            "Por favor, introduce una cantidad entre 1 y 9999 euros.")
+
+    if (form['performanceDate'] is None or form['performanceDate'] == ""):
+        errors.append("Por favor, introduzca una fecha.")
+
+    dateFormat = "%Y-%m-%d"
+
+    try:
+        formDate = datetime.strptime(form['performanceDate'], dateFormat)
+        if (formDate.date() < datetime.today().date()):
+            errors.append("Por favor, introduzca una fecha en el futuro.")
+    except:
+        errors.append("Ha ocurrido un error procesando la fecha.")
+
+    try:
+        venue = Venue.objects.get(id=request.user.id).id
+        artist = Artist.objects.get(id=payee.id).id
+    except:
+        artist = Artist.objects.get(id=request.user.id).id
+        venue = Venue.objects.get(id=payee.id).id
+
+    serializedPerformance = {
+        'name': form['performanceName'],
+        'description': form['performanceDes'],
+        'date': form['performanceDate'],
+        'public': form['performancePublic'],
+        'artist': artist,
+        'venue': venue
+    }
+
+    if errors:
+        request.session['paymentErrors'] = errors
+        return JsonResponse({'errors': errors, 'status': 'formError'})
+
+    # print('============ Performance info: ============')
+
+    # print('Name: '+serializedPerformance['name'])
+    # print('Description: '+serializedPerformance['description'])
+    # print('Date: '+serializedPerformance['date'])
+    # print('Public: '+serializedPerformance['public'])
+    # print('Artist: '+str(serializedPerformance['artist']))
+    # print('Venue: '+str(serializedPerformance['venue']))
+
+    request.session['performance'] = serializedPerformance
+
+    request.session['relaterOffer'] = form['relatedOffer']
+
+    # print('============ Requesting access token ============')
+    payee = payee.email
     request.session['payee'] = payee
-    amount = request.POST.get('amount')
+
+    amount = Decimal(form['amount'])
+    amount = round(amount, 2)
+
     url = 'https://api.sandbox.paypal.com/v1/oauth2/token'
     headers = {
         'accept': 'application/json',
@@ -354,16 +462,22 @@ def payment(request):
     json = paypalResponse.json()
     accessToken = json['access_token']
 
-    print('Access Token obtained, expires in '+str(json['expires_in']))
-    print('Access Token: '+accessToken)
+    # print('Access Token obtained, expires in '+str(json['expires_in']))
+    # print('Access Token: '+accessToken)
 
-    print('============ Creating payment ============')
-    print('Payee: '+payee)
-    print('Amount: '+amount)
-    fee = float(amount)*0.05  # TODO: Fee?
-    totalAmount = float(amount) + fee
-    print('Fee: '+str(fee))
-    print('Total amount: '+str(totalAmount))
+    # print('============ Creating payment ============')
+    # print('Payee: '+payee)
+    # print('Amount: '+amount)
+    if (amount <= Decimal(100.0)):
+        fee = Decimal(1.0)
+    else:
+        fee = Decimal(0.01) * amount
+
+    fee = round(fee, 2)
+    totalAmount = amount + fee
+    totalAmount = round(totalAmount, 2)
+    # print('Fee: '+str(fee))
+    # print('Total amount: '+str(totalAmount))
 
     bearerToken = 'Bearer '+accessToken
 
@@ -401,8 +515,8 @@ def payment(request):
         'transactions': transactions,
         'note_to_payer': 'Puedes contactar con nosotros para cualquier duda en pagosartinbar@gmail.com',
         'redirect_urls': {
-            'return_url': 'http://localhost:8000/artinbar',
-            'cancel_url': 'http://localhost:8000/artinbar'
+            'return_url': 'http://artinbar.es/',
+            'cancel_url': 'http://artinbar.es/'
         }
     }
 
@@ -410,9 +524,9 @@ def payment(request):
 
     payment = requests.post(saleUrl, headers=headers, json=data).json()
 
-    if (payment['id'] is not None):
-        print('Payment id: '+payment['id'])
-        print('============ Payment created succesfully ============')
+    # if (payment['id'] is not None):
+    #     print('Payment id: '+payment['id'])
+    #     print('============ Payment created succesfully ============')
 
     return JsonResponse(payment)
 
@@ -438,9 +552,9 @@ def executePayment(request):
     #print('Access Token obtained, expires in '+str(json['expires_in']))
     #print('Access Token: '+accessToken)
 
-    print('============ Building payment execution request ============')
-    print('Payment ID: '+paymentId)
-    print('Payer ID: '+payerId)
+    # print('============ Building payment execution request ============')
+    # print('Payment ID: '+paymentId)
+    # print('Payer ID: '+payerId)
 
     executeUri = 'https://api.sandbox.paypal.com/v1/payments/payment/'+paymentId+'/execute/'
 
@@ -473,10 +587,10 @@ def payout(request):
     emailMessage = '¡Felicidades! Acabas de recibir un pago de '+amount + \
         '€ a través de Art in Bar.'  # TODO: Currarse un poco el mensaje, poner datos
 
-    print('============ Creating payout ============')
-    print('Payee: '+payee)
-    print('Amount: '+amount)
-    print('Sender batch ID: '+batchId)
+    # print('============ Creating payout ============')
+    # print('Payee: '+payee)
+    # print('Amount: '+amount)
+    # print('Sender batch ID: '+batchId)
 
     payoutsURI = 'https://api.sandbox.paypal.com/v1/payments/payouts'
 
@@ -507,8 +621,36 @@ def payout(request):
 
     payout = requests.post(payoutsURI, headers=headers, json=data).json()
 
-    if (payout['batch_header']['batch_status'] == 'PENDING'):
-        print('============ Payout successfully processed ============')
+    # if (payout['batch_header']['batch_status'] == 'PENDING'):
+    #     print('============ Payout successfully processed ============')
+
+    serializedPerformance = request.session['performance']
+    performance = Performance()
+
+    performance.name = serializedPerformance['name']
+    performance.description = serializedPerformance['description']
+    performance.date = serializedPerformance['date']
+    performance.public = serializedPerformance['public'] == 'on'
+    performance.artist = Artist.objects.get(id=serializedPerformance['artist'])
+    performance.venue = Venue.objects.get(id=serializedPerformance['venue'])
+
+    performance.save()
+    # print('============ Performance saved ============')
+
+    paymentObject = Payment()
+    paymentObject.amount = payment['transactions'][0]['amount']['total']
+    paymentObject.user = request.user
+    paymentObject.performance = performance
+    paymentObject.date = datetime.now()
+    paymentObject.paypalId = payment['id']
+
+    paymentObject.save()
+    # print('============ Payment saved ============')
+
+    offerId = request.session['relaterOffer']
+    if (offerId is not None and offerId != 'undefined' and offerId != '0'):
+        offer = Offer.objects.get(id=offerId)
+        offer.delete()
 
     return HttpResponse('OK')
 
@@ -517,3 +659,34 @@ def payout(request):
 def paymentConfirmation(request):
     payment = request.session['payment']
     return render(request, './paypalConfirm.html', {'payment': payment})
+
+
+class formulario_feedback(View):
+
+    def get(self, request):
+
+        form = FeedbackForm()
+        context = {'feedback_form': form}
+
+        return render(request, 'feedback.html', context)
+
+    def post(self, request):
+
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            url = request.GET.get('next', 'index')
+            return redirect(url)
+
+        context = {'feedback_form': form}
+        return render(request, 'feedback.html', context)
+
+
+def vote(request):
+    return redirect('https://docs.google.com/forms/d/e/1FAIpQLSfqL7wY8eZ4NLD_Bd9Z_jbg4UOM6ceBIi54mV6ObW7irG711w/viewform?usp=sf_link')
+
+
+def termsAndConditions(request):
+
+    return render(request, './T&C.html')

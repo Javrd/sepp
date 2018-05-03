@@ -7,10 +7,6 @@ class OfferForm(ModelForm):
     class Meta:
         model = Offer
         fields = ['name', 'description', 'offeredAmount', 'date']
-        labels = {
-            'name': _('Nombre'), 'description': _('Descripción'),
-            'offeredAmount': _('Cantidad ofrecida'), 'date': _('Fecha'),
-        }
 
     def __init__(self, user, *args, **kwargs):
         super(OfferForm, self).__init__(*args, **kwargs)
@@ -35,7 +31,11 @@ class ArtistForm(UserCreationForm):
         fields = ['name', 'username', 'email', 'logo', 'description', 'artistNumber']
 
 
+class PerformanceForm(ModelForm):
 
+    class Meta:
+        model = Performance
+        fields = ['name', 'description', 'date', 'public', 'description', 'venue', 'artist']
 
 
 class VenueProfileForm(ModelForm):
@@ -47,5 +47,45 @@ class ArtistProfileForm(ModelForm):
     class Meta:
         model = Artist
         fields = ['name', 'email', 'logo', 'description', 'artistNumber']
+
+class PhotoForm(ModelForm):
+    class Meta:
+        model = Photo
+        fields = ['url', 'id']
+
+class TagForm(ModelForm):
+    class Meta:
+        model = Tag
+        fields = ['name', 'id']
+
+class MediaForm(ModelForm):
+    class Meta:
+        model = Media
+        fields = ['url', 'id']
+
+
+class FeedbackForm(ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['name', 'description']
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=255, required=True)
+    password = forms.CharField(widget=forms.PasswordInput, required=True)
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        if not user or not user.is_active:
+            raise forms.ValidationError("Lo sentimos, esas credenciales son incorrectas. Por favor intentelo de nuevo.")
+        return self.cleaned_data
+
+    def login(self, request):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        return user
 
 

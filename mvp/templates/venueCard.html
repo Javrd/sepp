@@ -1,13 +1,43 @@
 <div class="card" onclick="window.location='/vista_local/{{ venue.id }}';">
-  <div class="card-block">
-    <h4>{{ venue.name }}  </h4>
-    <div>
-      <p>
-        Aforo: {{ venue.capacity }}
-        <br> {{ venue.description }}
-      </p>
+    <div class="card-block">
+    <div class="row">
+    <div class="col-3 w-25 p-3 vcenter" >
+    <img src="{{venue.logo}}" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
     </div>
-    <br>
-  </div>
+    <div class="col-6 vcenter">
+        <div class="row">
+        <h2>{{venue.name}}</h2>
+        </div>
+        <div class="row">
+        <p>
+                {{venue.description}}
+            </p>
+        </div>
+           
+    </div>
+    
+  
+    </div>
+    <div classs="row">
+            <div class="col-md-4 vcenter">
+            <p><b>
+                Aforo: {{venue.capacity}}
+            </b>
+            </p>
+            </div>
+            <div class="col-md-4 vcenter">
+                    <p><b>
+                       {{venue.email}}
+                    </b>
+                    </p>
+                    </div>
+                    <div class="col-md-4 vcenter">
+                        <p><b>
+                           {{venue.address}}
+                        </b>
+                        </p>
+                        </div>
+</div>
+    </div>
 </div>
 <br>

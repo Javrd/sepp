@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'm#=d20%yta%r!71d#r)m(jq_m(3a9yeowo1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True')=='True'
 
-ALLOWED_HOSTS = [os.getenv('DJANGO_HOST_NAME', '*')]
+ALLOWED_HOSTS = list(map(lambda x: x.strip(), os.getenv('DJANGO_HOST_NAME', '*').split(','))
 
 
 # Application definition
@@ -142,5 +142,5 @@ STATIC_URL = '/static/'
 
 # HTTPS Config
 
-CSRF_COOKIE_SECURE = os.getenv('DEBUG', 'True')=='False'
-SESSION_COOKIE_SECURE = os.getenv('DEBUG', 'True')=='False'
+CSRF_COOKIE_SECURE = os.getenv('HTTPS', 'False')=='True'
+SESSION_COOKIE_SECURE = os.getenv('HTTPS', 'False')=='True'

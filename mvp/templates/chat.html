@@ -45,5 +45,5 @@
 
 {% block js %}
 <script src="{% static "/js/chat.js" %}"></script>
-<script>loadChat({{user.id}}, {{contact.id}})</script>
+<script>loadChat({{user.id}}, {{contact.id}}, '{{proto}}')</script>
 {% endblock %}

@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'm#=d20%yta%r!71d#r)m(jq_m(3a9yeowo1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True')=='True'
 
-ALLOWED_HOSTS = list(map(lambda x: x.strip(), os.getenv('DJANGO_HOST_NAME', '*').split(','))
+ALLOWED_HOSTS = list(map(lambda x: x.strip(), os.getenv('DJANGO_HOST_NAME', '*').split(',')))
 
 
 # Application definition

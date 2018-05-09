@@ -302,8 +302,10 @@ def vista_artista(request, id_artista):
         if '=' in link.url:
             multimedia.append(link.url.rpartition('=')[2])
 
+    https = os.getenv('HTTPS', 'False')=='True'
+    proto = 'https' if https else 'http'
     context = {'artista': artista, 'fotos': fotos, 'multimedia': multimedia,
-               'tags': tags}
+               'tags': tags, 'proto': proto}
     return render(request, './vista_artista.html', context)
 
 

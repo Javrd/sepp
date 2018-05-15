@@ -1,45 +1,73 @@
-$('#chat').scrollTop($('#chat')[0].scrollHeight);
-function loadChat (userId, contactId, proto){
+$('ul').scrollTop($('ul')[0].scrollHeight);
+
+function loadChat(userId, contactId, proto) {
     var roomName = contactId;
 
     var chatSocket = new WebSocket(
         proto + '://' + window.location.host +
-        '/'+ proto +'/chat/' + roomName + '/');
-        
-    chatSocket.onmessage = function(e) {
+        '/' + proto + '/chat/' + roomName + '/');
+
+    chatSocket.onmessage = function (e) {
         var data = JSON.parse(e.data);
         var message = data['message'];
         var date = data['date'];
-        if  (data['userId'] ==  userId) {
-            $('#chat-panel').append(
-                '<div class="row">' +
-                    '<div class="col"> '+
-                        '<div class="list-group-item bg-primary pull-right text-right text-white">' + $('<div/>').text(date).html() + '<br> '+ $('<div/>').text(message).html() + '</div>'+
-                    '</div>'+
-                '</div>');
+        if (data['userId'] == userId) {
+            message =
+                '<li style="width:100%;">' +
+                '<div class="message-r msgWrapper">' +
+                '<div class="text text-r">' +
+                '<p>' + $('<div/>').text(message).html() + '</p>' +
+                '<p><small>' + $('<div/>').text(date).html() + '</small></p>' +
+                '</div>' +
+                '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:100%;" src="' + data['image'] + '" /></div>' +
+                '</li>';
         } else {
-            $('#chat-panel').append(
-                '<div class="row">' +
-                    '<div class="col"> '+
-                        '<div class="list-group-item pull-left">' + $('<div/>').text(date).html() + '<br> '+ $('<div/>').text(message).html() + '</div>'+
-                    '</div>'+
-                '</div>');
+            message =
+                '<li style="width:100%">' +
+                '<div class="message msgWrapper">' +
+                '<div class="avatar"><img class="img-circle" style="width:100%;" src="' + data['image'] + '" /></div>' +
+                '<div class="text text-l">' +
+                '<p>' + $('<div/>').text(message).html() + '</p>' +
+                '<p><small>' + $('<div/>').text(date).html() + '</small></p>' +
+                '</div>' +
+                '</div>' +
+                '</li>';
         }
-        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        $("ul").append(message).scrollTop($('ul')[0].scrollHeight);
+        //$('#chat').scrollTop($('#chat')[0].scrollHeight);
     };
 
-    chatSocket.onclose = function(e) {
+    chatSocket.onclose = function (e) {
         console.error('Chat socket closed unexpectedly');
     };
 
     document.querySelector('#text').focus();
-    document.querySelector('#text').onkeyup = function(e) {
-        if (e.keyCode === 13) {  // enter, return
+    document.querySelector('#text').onkeyup = function (e) {
+        if (e.keyCode === 13) { // enter, return
             document.querySelector('#send').click();
+        }
+        if ($('#text').val().length === 0) {
+            $('#pay').removeClass("d-none")
+            $('#send').addClass("d-none")
+        } else {
+            $('#send').removeClass("d-none")
+            $('#pay').addClass("d-none")
         }
     };
 
-    document.querySelector('#send').onclick = function(e) {
+    document.querySelector('#text').onkeydown = function (e) {
+        if (e.keyCode != 13) {
+            if ($('#text').val().length === 0) {
+                $('#pay').removeClass("d-none")
+                $('#send').addClass("d-none")
+            } else {
+                $('#send').removeClass("d-none")
+                $('#pay').addClass("d-none")
+            }
+        }
+    }
+
+    document.querySelector('#send').onclick = function (e) {
         var messageInputDom = document.querySelector('#text');
         var message = messageInputDom.value;
         chatSocket.send(JSON.stringify({

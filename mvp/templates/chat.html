@@ -1,49 +1,62 @@
-{% extends "common/masterpage.html" %}
-{% load static %}
-{% block title %}Conversación con {{contact.name}}{% endblock %}
+<!DOCTYPE html>
+<html lang="es">
+{% load static%}
+<head>
+    <meta charset="utf-8">
+    <title>Conversación con {{contact.name}}</title>
+    <link rel="icon" href="{% static 'img/logo.png' %}">
+    <meta name="description" content="Art in Bar" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Bootstrap 4-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <!--icons-->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--vendors-->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="{% static "/js/vendors/daterangepicker/daterangepicker.css" %}"/>
+    <!--custom css-->
+    <link rel="stylesheet" href="{% static "/css/components.css" %}"/>
+    <link rel="stylesheet" href="{% static "/css/colors.css" %}"/>
+    <link rel="stylesheet" href="{% static "/css/demo.css" %}"/>
+    <link rel="stylesheet" href="{% static "/css/style.css" %}"/>
+</head>
 
-{% block content %}
+<link rel="stylesheet" href="{% static "/css/chat.css" %}"/>
 
-<div class="colored-section bg-inverse">
-    <section class="container fullPage">
-        <br>
-        <h2><a href="/chat/"><</a>  {{contact.name}}</h2>
-        <div id="chat" class ="pre-scrollable chat-window">
-            <div id="chat-panel" class="lead font-weight-bold card-header">
+<div class="chatWindow">
+    <div class="chatHeader bg-inverse">
+        <div class="contactName backArrow" onclick="location.href = '/chat'"><i class="fa fa-arrow-left" aria-hidden="true"></i></div> 
+        <div class="contactName">{{ contact.name }}</div>
+    </div>
+
+    <div class="chatContent">
+        <ul>
             {% if messages %}
-            {% for message in messages %}
-                <div class="row">
-                    <div class="col"> 
-                        {% if message.sender == user %}
-                        <div class="list-group-item bg-primary pull-right text-right text-white">{{message.timeStamp|date:"d/m/Y H:m" }}<br> {{message.text}}</div>
-                        {% else %}         
-                        <div class="list-group-item pull-left">{{message.timeStamp|date:"d/m/Y H:m" }}<br> {{message.text}}</div>                  
-                        {% endif %}
-                    </div>                     
-                </div>
-            {% endfor %}
+                {% for message in messages %}
+                    {% include "message.html" %}
+                {% endfor %}
             {% endif %}
-            </div>                                 
-        </div>
-        <div id="chat-typer" class="input-group">
-            <input type="text" id="text" name="text" class="text chat-text" autocomplete="off" autofocus/>
-            <span class="input-group-btn">
-                <input class="btn btn-default" id="send" type="submit" value="Enviar"/>
-            </span>
-        </div>
-        <div>
-            <span class="input-group-btn">
-                <input class="btn btn-round btn-primary" id="pago" type="button" value="Pagar" onclick="location.href = '/paypal/{{contact.id}}'" />
-            </span>
-        </div>
-
-    </section>
+        </ul>
+    </div> 
+    <div class="chatSend">
+        <div>                        
+            <div style="background:whitesmoke !important">
+                <div class="input-group">
+                    <input class="form-control" type="text" id="text" name="text" placeholder="Mensaje" required autofocus>
+                    <span class="input-group-btn">
+                        <spam class="btn btn-primary" id="pay"><em class="fa fa-credit-card" onclick="location.href = '/paypal/{{contact.id}}'"></em></spam>
+                        <spam class="btn btn-primary d-none" id="send" type="submit" value="Enviar"><em class="fa fa-paper-plane"></em></spam>
+                    </span>
+                </div>
+            </div> 
+        </div>               
+    </div>
+    
 </div>
 
-
-{% endblock %}
-
-{% block js %}
+{% include "common/footer.html" %}
 <script src="{% static "/js/chat.js" %}"></script>
 <script>loadChat({{user.id}}, {{contact.id}}, '{{proto}}')</script>
-{% endblock %}

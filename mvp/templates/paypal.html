@@ -14,7 +14,6 @@
 
         <div id="msg"></div>
 
-        <input type="hidden" id="payer" name="payer" value="{{user.id}}"/>
         <input type="hidden" id="payee" name="payee" value="{{contact.id}}"/>
 
         <label for="payeeName">Destinatario: </label>
@@ -114,7 +113,6 @@
             
             var data = {
                 payee: $('#payee').val(),
-                payer: $('#payer').val(),
                 amount: $('#amount').val(),
                 performanceName: $('#performanceName').val(),
                 performanceDes: $('#performanceDes').val(),

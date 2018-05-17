@@ -47,7 +47,7 @@
                 <div class="input-group">
                     <input class="form-control" type="text" id="text" name="text" placeholder="Mensaje" required autofocus>
                     <span class="input-group-btn">
-                        <spam class="btn btn-primary" id="pay"><em class="fa fa-credit-card" onclick="location.href = '/paypal/{{contact.id}}'"></em></spam>
+                        <spam class="btn btn-primary" id="pay" type="submit" onclick="location.href = '/paypal/{{contact.id}}'">Pagar actuación<em style="margin-left: 5px;" class="fa fa-paypal"></em></spam>
                         <spam class="btn btn-primary d-none" id="send" type="submit" value="Enviar"><em class="fa fa-paper-plane"></em></spam>
                     </span>
                 </div>

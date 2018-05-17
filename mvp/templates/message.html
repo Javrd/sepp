@@ -3,25 +3,25 @@
     <div class="message-r msgWrapper">
         <div class="text text-r">
             <p>{{ message.text }}</p>
-            <p>
-                <small>{{message.timeStamp|date:"d/m/Y H:m" }}</small>
+            <p style="text-align: left;">
+                <small style="color: black;"><strong>{{message.timeStamp|date:"d/m/Y H:m" }}</strong></small>
             </p>
         </div>
         <div class="avatar" style="padding:0px 0px 0px 10px !important">
-            <img class="rounded-circle" style="width:100%;" src="{{ message.sender.logo }}">
+            <img class="rounded-circle" style="width:100%; margin-top: 5px;;" src="{{ message.sender.logo }}">
         </div>
     </div>
-</li>
+</li>   
 {% else %}
 <li style="width:100%">
     <div class="message msgWrapper">
         <div class="avatar">
-            <img class="rounded-circle" style="width:100%;" src="{{ message.sender.logo }}">
+            <img class="rounded-circle" style="width:100%; margin-top: 5px" src="{{ message.sender.logo }}">
         </div>
         <div class="text text-l">
             <p>{{ message.text }}</p>
-            <p>
-                <small>{{message.timeStamp|date:"d/m/Y H:m" }}</small>
+            <p style="text-align: right">
+                <small style="color: black;"><strong>{{message.timeStamp|date:"d/m/Y H:m" }}</strong></small>
             </p>
         </div>
     </div>

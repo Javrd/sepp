@@ -17,18 +17,18 @@ function loadChat(userId, contactId, proto) {
                 '<div class="message-r msgWrapper">' +
                 '<div class="text text-r">' +
                 '<p>' + $('<div/>').text(message).html() + '</p>' +
-                '<p><small>' + $('<div/>').text(date).html() + '</small></p>' +
+                '<p style="text-align: left;"><small style="color: black;"><strong>' + $('<div/>').text(date).html() + '</strong></small></p>' +
                 '</div>' +
-                '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:100%;" src="' + data['image'] + '" /></div>' +
+                '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="rounded-circle" style="width:100%; margin-top: 5px" src="' + data['image'] + '" /></div>' +
                 '</li>';
         } else {
             message =
                 '<li style="width:100%">' +
                 '<div class="message msgWrapper">' +
-                '<div class="avatar"><img class="img-circle" style="width:100%;" src="' + data['image'] + '" /></div>' +
+                '<div class="avatar"><img class="rounded-circle" style="width:100%; margin-top: 5px" src="' + data['image'] + '" /></div>' +
                 '<div class="text text-l">' +
                 '<p>' + $('<div/>').text(message).html() + '</p>' +
-                '<p><small>' + $('<div/>').text(date).html() + '</small></p>' +
+                '<p style="text-align: left"><small style="color: black;"><strong>' + $('<div/>').text(date).html() + '</strong></small></p>' +
                 '</div>' +
                 '</div>' +
                 '</li>';

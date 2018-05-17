@@ -82,7 +82,7 @@ body {
     margin-top: 0;
     margin-bottom: auto;
     line-height: 21 px;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .text>p:last-of-type {
@@ -106,7 +106,7 @@ body {
 .avatar {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
     width: 25%;
     float: left;
     padding-right: 10px;
@@ -122,12 +122,18 @@ body {
 
 .message-r {
     float: right;
-    background: whitesmoke;
+    background: #a57eff;
+    -webkit-box-shadow: -10px 10px 5px -8px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -10px 10px 5px -8px rgba(0, 0, 0, 0.75);
+    box-shadow: -10px 10px 5px -8px rgba(0, 0, 0, 0.75);
 }
 
 .message {
     float: left;
     background: white;
+    -webkit-box-shadow: 10px 10px 5px -8px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px -8px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px -8px rgba(0, 0, 0, 0.75);
 }
 
 body>div>div>div:nth-child(2)>span {
@@ -178,5 +184,5 @@ ul li:first-child {
     position: relative;
     border-style: solid;
     border-width: 13px 13px 0 0;
-    border-color: whitesmoke transparent transparent transparent;
+    border-color: #a57eff transparent transparent transparent;
 }

@@ -1,4 +1,11 @@
-{% include "common/header.html" %} 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>{% block title %}Art in Bar{% endblock %}</title>
+    {% include "common/header.html" %} 
+    {% block header %}{% endblock %}
+</head>
+{% include "common/nav.html" %} 
 
 {% block content %}
 <div class="wrapper">

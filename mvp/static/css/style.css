@@ -84,3 +84,52 @@
     border-color: #6200ea;
     background-color: #6200ea;
 }
+
+.error-img{
+    max-width: 100%;
+    max-height: 404px;
+}
+
+
+
+@media screen and (max-width: 420px) {
+    .message-logo{
+        max-width:100%; 
+        height:auto; 
+        margin-top: 5px;
+    }
+}
+
+@media  screen and (min-width: 420px) and (max-width: 768px) {
+
+.message-logo{
+        
+    max-width:80%; 
+    height:auto; 
+    margin-top: 5px;
+}
+
+}
+
+@media  screen and (min-width: 768px) and (max-width: 1337px) {
+
+    .message-logo{
+            
+        max-width:50%; 
+        height:auto; 
+        margin-top: 5px;
+    }
+    
+}
+
+@media screen and (min-width: 1337px) {
+
+    .message-logo{
+                
+        max-width:30%; 
+        height:auto; 
+        margin-top: 5px;
+    }
+        
+}
+

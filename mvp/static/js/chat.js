@@ -56,14 +56,12 @@ function loadChat(userId, contactId, proto) {
     };
 
     document.querySelector('#text').onkeydown = function (e) {
-        if (e.keyCode != 13) {
-            if ($('#text').val().length === 0) {
-                $('#pay').removeClass("d-none")
-                $('#send').addClass("d-none")
-            } else {
-                $('#send').removeClass("d-none")
-                $('#pay').addClass("d-none")
-            }
+        if ($('#text').val().length === 0) {
+            $('#pay').removeClass("d-none")
+            $('#send').addClass("d-none")
+        } else {
+            $('#send').removeClass("d-none")
+            $('#pay').addClass("d-none")
         }
     }
 

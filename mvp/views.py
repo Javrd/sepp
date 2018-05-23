@@ -12,8 +12,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Permission
 from django.db.models import Q
 from django.forms import modelformset_factory
-from django.http import (HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse)
-from django.shortcuts import (get_list_or_404, get_object_or_404, redirect, render)
+from django.http import (HttpRequest, HttpResponse,
+                         HttpResponseRedirect, JsonResponse)
+from django.shortcuts import (
+    get_list_or_404, get_object_or_404, redirect, render)
 from django.template import loader
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -302,7 +304,7 @@ def vista_artista(request, id_artista):
         if '=' in link.url:
             multimedia.append(link.url.rpartition('=')[2])
 
-    https = os.getenv('HTTPS', 'False')=='True'
+    https = os.getenv('HTTPS', 'False') == 'True'
     proto = 'https' if https else 'http'
     context = {'artista': artista, 'fotos': fotos, 'multimedia': multimedia,
                'tags': tags, 'proto': proto}
@@ -349,7 +351,7 @@ def chat(request, user_id=None):
 
         messages = Message.objects.filter(receiver=principal, sender=contact) | Message.objects.filter(
             receiver=contact, sender=principal).order_by('timeStamp')
-        https = os.getenv('HTTPS', 'False')=='True'
+        https = os.getenv('HTTPS', 'False') == 'True'
         proto = 'wss' if https else 'ws'
         return render(request, './chat.html', {
             'messages': messages,
@@ -376,7 +378,7 @@ def paypal(request, contact_id):
         paymentErrors = request.session['paymentErrors']
         request.session['paymentErrors'] = []
 
-    https = os.getenv('HTTPS', 'False')=='True'
+    https = os.getenv('HTTPS', 'False') == 'True'
     proto = 'https' if https else 'http'
     context = {'contact': contact, 'user': principal,
                'offer_list': offer_list, 'paymentErrors': paymentErrors, 'proto': proto}
@@ -478,6 +480,15 @@ def payment(request):
     fee = round(fee, 2)
     totalAmount = amount + fee
     totalAmount = round(totalAmount, 2)
+
+    paypalFee = (totalAmount * Decimal(0.035)) + Decimal(0.35)
+    paypalFee = round(paypalFee, 2)
+
+    totalAmount = totalAmount + paypalFee
+    totalAmount = round(totalAmount, 2)
+
+    fee = fee + paypalFee
+    fee = round(fee, 2)
     # print('Fee: '+str(fee))
     # print('Total amount: '+str(totalAmount))
 

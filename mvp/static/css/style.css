@@ -37,7 +37,7 @@
 
 .profileBanner {
     background-size: cover;
-    margin-top: 76px;
+    margin-top: 70px;
     height: calc(40vh - 76px);
     margin-bottom: 0px;
     display: flex;

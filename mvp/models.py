@@ -9,10 +9,13 @@ class User(AbstractUser):
     name = models.CharField(max_length=100)
     email = models.EmailField('email address', blank=False, unique=True)
     description = models.CharField(max_length=500, null=True)
-    logo = models.URLField(null=True, blank=True)
+    logo =models.OneToOneField(
+        "Image", on_delete=models.CASCADE, null=True)
     receivers = models.ManyToManyField(
         'self', symmetrical=False, through='Message', related_name="senders")
 
+class Image(models.Model):
+        image = models.FileField(upload_to='media/')
 
 class Artist(User):
     artistNumber = models.IntegerField(null=True, validators=[MinValueValidator(1)])

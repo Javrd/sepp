@@ -22,15 +22,18 @@ class GeolocationForm(ModelForm):
 class VenueForm(UserCreationForm):
     class Meta:
         model = Venue
-        fields = ['name', 'email', 'username', 'logo', 'description', 'address', 'capacity']
+        fields = ['name', 'email', 'username', 'description', 'address', 'capacity']
 
 class ArtistForm(UserCreationForm):
 
     class Meta:
         model = Artist
-        fields = ['name', 'username', 'email', 'logo', 'description', 'artistNumber']
+        fields = ['name', 'username', 'email', 'description', 'artistNumber']
 
-
+class LogoForm(ModelForm):
+    class Meta:
+        model = Image
+        fields =["image"]
 class PerformanceForm(ModelForm):
 
     class Meta:

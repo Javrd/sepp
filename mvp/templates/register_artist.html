@@ -10,7 +10,7 @@
         <br>
         <h2>Registro de Artista</h2>
 
-        <form class="form-group" action="" method="post">
+        <form class="form-group" enctype="multipart/form-data" action="" method="post">
 
             {% with WIDGET_ERROR_CLASS='form-control-danger' %}
             {% csrf_token %}
@@ -66,10 +66,10 @@
             <br>
 			
 
-            <label for="{{ artist_form.logo.id_for_label }}">Logo:</label>
-            {% render_field  artist_form.logo class+="form-control" placeholder="Url del logo o foto de perfil" %}
-{#            <input class="form-control" name="logo" required id="id_logo" placeholder="Url del logo o foto de perfil"></input>#}
-            {{ artist_form.logo.errors }}
+            <label for="{{ logo_form.image.id_for_label }}">Logo:</label>
+            {% render_field  logo_form.image class+="form-control" %}
+{#            <input class="form-control" name="logo" required id="id_logo" ></input>#}
+            {{ logo_form.image.errors }}
             <br>
 
 

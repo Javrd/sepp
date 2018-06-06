@@ -273,16 +273,22 @@ class register_artist(View):
             url = request.GET.get('next', 'index')
             return redirect(url)
 
-        form = ArtistForm()
-        context = {'artist_form': form}
+        artistform = ArtistForm(prefix='ArtistForm')
+        logoform = LogoForm(prefix='LogoForm')
+        
+        context = {'artist_form': artistform,'logo_form':logoform}
 
         return render(request, 'register_artist.html', context)
 
     def post(self, request):
 
-        form = ArtistForm(request.POST)
-        if form.is_valid():
-            new_artist = form.save()
+        artistform = ArtistForm(request.POST,prefix='ArtistForm')
+        logoform = LogoForm(request.FILES,prefix='LogoForm')
+        print(logoform)
+        if artistform.is_valid() and logoform.is_valid():
+            new_image=logoform.save()
+            new_artist = artistform.save()
+            new_artist.logo=new_image
             permission = Permission.objects.get(codename='artist')
             new_artist.user_permissions.add(permission)
             new_artist.save()
@@ -290,7 +296,7 @@ class register_artist(View):
             url = request.GET.get('next', 'index')
             return redirect(url)
 
-        context = {'artist_form': form}
+        context = {'artist_form': artistform,'logo_form':logoform}
         return render(request, 'register_artist.html', context)
 
 

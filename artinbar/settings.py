@@ -144,3 +144,6 @@ STATIC_URL = '/static/'
 
 CSRF_COOKIE_SECURE = os.getenv('HTTPS', 'False')=='True'
 SESSION_COOKIE_SECURE = os.getenv('HTTPS', 'False')=='True'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

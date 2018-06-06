@@ -51,11 +51,8 @@
             <input type="date" class="form-control" name="performanceDate" id="performanceDate" required/>  
             <br>
 
-            <label class="custom-control custom-checkbox d-block">
-                <input class="custom-control-input" checked="true" type="checkbox" name="performancePublic" id="performancePublic">
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">¿Quieres anunciar el evento públicamente?</span>
-            </label> 
+            <input class="custom-control-input" value="on" type="hidden" name="performancePublic" id="performancePublic">
+               
             <br>
         </div>
 
@@ -119,7 +116,7 @@
                 performanceName: $('#performanceName').val(),
                 performanceDes: $('#performanceDes').val(),
                 performanceDate: $('#performanceDate').val(),
-                performancePublic: $('#performancePublic').val(),
+                performancePublic: true,
                 relatedOffer: $('#relatedOffer option:checked').val(),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }

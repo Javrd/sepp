@@ -4,12 +4,15 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from datetime import datetime, timedelta
 from django.core.validators import ValidationError, EMPTY_VALUES
 
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/<user_id>/<filename>
+    return 'logos/{0}'.format(filename)
 
 class User(AbstractUser):
     name = models.CharField(max_length=100)
     email = models.EmailField('email address', blank=False, unique=True)
     description = models.CharField(max_length=500, null=True)
-    logo = models.URLField(null=True, blank=True)
+    logo = models.FileField(null=True, upload_to=user_directory_path)
     receivers = models.ManyToManyField(
         'self', symmetrical=False, through='Message', related_name="senders")
 

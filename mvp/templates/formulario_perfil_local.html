@@ -57,7 +57,7 @@
         <section class="container fullPage" style="z-index: 1;">
                 <br>
                 <h2>Perfil</h2>
-    <form class="form-group" action="/editar_local" method="post">
+    <form class="form-group" action="/editar_local" method="post" enctype="multipart/form-data">
         {% with WIDGET_ERROR_CLASS='form-control-danger' %}
         {% csrf_token %}
         

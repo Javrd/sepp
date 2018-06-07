@@ -35,7 +35,7 @@
                             {% if not artista.logo %}
                             <img src="https://freakuotes.com/users/avatars/default.jpg" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
                             {% else %}
-                                 <img src="{{artista.logo}}" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+                                 <img src="{{ MEDIA_URL }}{{artista.logo}}" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
                             {% endif %}
                             </div>
                             <div class="col-6 vcenter">

@@ -59,7 +59,11 @@
                             <div class="card-block">
                             <div class="row">
                             <div class="col-3 w-25 p-3 vcenter" >
-                            <img src="{{local.logo}}" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+                            {% if not local.logo %}
+                                <img src="https://freakuotes.com/users/avatars/default.jpg" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+                            {% else %}
+                                <img src="{{ MEDIA_URL }}{{local.logo}}" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+                            {% endif %}
                             </div>
                             <div class="col-6 vcenter">
                                 <div class="row">
@@ -120,6 +124,10 @@
                 <p>¡Contacta con {{local.name}} para iniciar el chat y preparar un nuevo evento!</p>
                 <a href="/chat/{{local.id}}" class="btn btn-primary btn-lg">Contactar ahora</a>
             </div>
+            {% endif %}
+            {% if user.id == local.id %}
+                <br></br>
+                <a href="/editar_local" class="btn btn-primary btn-lg">Editar</a>
             {% endif %}
         </div>
     </div>

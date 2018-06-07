@@ -1,0 +1,15 @@
+#!/bin/bash
+mkdir logos
+wget -O logos/logo101.png https://seeklogo.com/images/B/bon-jovi-logo-9000E70EC5-seeklogo.com.png
+wget -O logos/logo102.jpg https://www.elnacional.cat/enblau//uploads/s1/25/81/55/1/Dani%20Rovira%20-GTRES_1_630x630.jpg
+wget -O logos/logo103.jpg http://cadenaser00.epimg.net/ser/imagenes/2013/12/10/television/1386646526_740215_0000000000_noticia_normal.jpg
+wget -O logos/logo104.jpg http://nfgraphics.com/wp-content/uploads/2014/08/The-Who_41.jpg
+wget -O logos/logo105.png https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Extremoduro_logo.svg/2000px-Extremoduro_logo.svg.png
+wget -O logos/logo106.jpg https://i.pinimg.com/originals/16/af/04/16af04d977fa1db02a2a10b88d1bf9f9.jpg
+wget -O logos/logo107.jpg https://is4-ssl.mzstatic.com/image/thumb/Music/v4/40/de/c2/40dec211-b7ae-8193-1ba9-e84b7f063f9a/UMG_cvrart_00602537277353_01_RGB72_1424x1419_06UMGIM10251.jpg/1200x630bb.jpg
+wget -O logos/logo108.jpg http://media.laguiago.com/wp-content/uploads/2017/09/juan-tamariz-go.jpg
+wget -O logos/logo201.jpg https://png.pngtree.com/element_origin_min_pic/17/01/07/8ca565efc02b1b0a3294c566438b865d.jpg
+wget -O logos/logo202.png https://i.pinimg.com/originals/cf/4b/91/cf4b912518d06c25b52010fa5f5abd4f.png
+wget -O logos/logo203.jpg http://www.fullblog.com.ar/blogs/argentavis/1269714062767856.jpg
+wget -O logos/logo204.jpg http://fotologimg.s3.amazonaws.com/photo/27/20/120/ju_tiago/1240775466257_f.jpg
+wget -O logos/logo205.jpg https://t4.ftcdn.net/jpg/01/40/62/15/240_F_140621506_bHQkLf3akfveFCVVi4PZ5qS7DQtaGfkh.jpg

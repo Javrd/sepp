@@ -643,7 +643,7 @@ def payout(request):
     performance.name = serializedPerformance['name']
     performance.description = serializedPerformance['description']
     performance.date = serializedPerformance['date']
-    performance.public = serializedPerformance['public'] == 'on'
+    performance.public = True #changes for lecturer request
     performance.artist = Artist.objects.get(id=serializedPerformance['artist'])
     performance.venue = Venue.objects.get(id=serializedPerformance['venue'])
 

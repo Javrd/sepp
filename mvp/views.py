@@ -84,7 +84,7 @@ def formulario_perfil_venue(request):
     formSet = modelformset_factory(Photo, fields=('url', 'id',), extra=3)
     if request.method == 'POST':
         venueForm = VenueProfileForm(
-            request.POST, instance=venue, prefix='Ven')
+            request.POST, request.FILES, instance=venue, prefix='Ven')
         geoForm = GeolocationForm(request.POST, instance=geoloc, prefix='Geo')
         photoFormSet = formSet(request.POST, request.FILES, )
 
@@ -129,7 +129,7 @@ def formulario_perfil_artist(request):
 
     if request.method == 'POST':
         artistForm = ArtistProfileForm(
-            request.POST, instance=artist, prefix='Art')
+            request.POST, request.FILES, instance=artist, prefix='Art')
         photoFormSet = formSetPhoto(
             request.POST, request.FILES, prefix='Photo', )
         tagFormSet = formSetTag(request.POST, request.FILES, prefix='Tag', )
@@ -250,7 +250,7 @@ class register_venue(View):
         return render(request, 'register_venue.html', context)
 
     def post(self, request):
-        form = VenueForm(request.POST)
+        form = VenueForm(request.POST, request.FILES)
         sub_form = GeolocationForm(request.POST)
         if form.is_valid() and sub_form.is_valid():
             new_venue = form.save()
@@ -280,7 +280,7 @@ class register_artist(View):
 
     def post(self, request):
 
-        form = ArtistForm(request.POST)
+        form = ArtistForm(request.POST, request.FILES)
         if form.is_valid():
             new_artist = form.save()
             permission = Permission.objects.get(codename='artist')

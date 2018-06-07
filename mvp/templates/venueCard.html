@@ -2,7 +2,11 @@
     <div class="card-block">
     <div class="row">
     <div class="col-3 w-25 p-3 vcenter" >
-    <img src="{{venue.logo}}" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+    {% if not venue.logo %}
+        <img src="https://freakuotes.com/users/avatars/default.jpg" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+    {% else %}
+        <img src="{{MEDIA_URL}}{{venue.logo}}" alt="Logo" style="max-height: 100px"class="rounded-circle img-fluid" />
+    {% endif %}
     </div>
     <div class="col-6 vcenter">
         <div class="row">

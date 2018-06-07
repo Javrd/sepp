@@ -1,9 +1,9 @@
 ##artist:name,email,description,logo,artistId,username
-Bon Jovi,bon_jovi@gmail.com,Esta es la descripcion del grupo estadounidense de rock Bon Jovi.,https://seeklogo.com/images/B/bon-jovi-logo-9000E70EC5-seeklogo.com.png,4,101,BonJovi
-Dani Rovira,dani_rovira@gmail.com,Esta es la descripcion del cómico español Daniel Rovira.,https://www.elnacional.cat/enblau//uploads/s1/25/81/55/1/Dani%20Rovira%20-GTRES_1_630x630.jpg,1,102,DaniRovira
-Hora Chanante,hora_chanante@gmail.com,Esta es la descripcion del grupo cómico español Hora Chanante.,http://cadenaser00.epimg.net/ser/imagenes/2013/12/10/television/1386646526_740215_0000000000_noticia_normal.jpg,6,103,HoraChanante
-The Who,thewho@gmail.com,Esta es la descripcion del grupo estadounidense de rock The Who.,http://nfgraphics.com/wp-content/uploads/2014/08/The-Who_41.jpg,4,104,TheWho
-Extremoduro,extremoduro@gmail.com,Esta es la descripcion del grupo español de rock Extremoduro.,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Extremoduro_logo.svg/2000px-Extremoduro_logo.svg.png,4,105,Extremoduro
-Eagles,eagles@gmail.com,Esta es la descripcion del grupo estadounidense de country-rock Eagles.,https://i.pinimg.com/originals/16/af/04/16af04d977fa1db02a2a10b88d1bf9f9.jpg,5,106,Eagles
-Johnny Cash,johnny_cash@gmail.com,Esta es la descripcion del cantautor y músico estadounidense de country-rock Johnny Cash.,https://is4-ssl.mzstatic.com/image/thumb/Music/v4/40/de/c2/40dec211-b7ae-8193-1ba9-e84b7f063f9a/UMG_cvrart_00602537277353_01_RGB72_1424x1419_06UMGIM10251.jpg/1200x630bb.jpg,1,107,JohnnyCash
-Juan Tamariz, juan_tamariz@gmail.com, Esta es la descripcion del mago español Juan Tamariz., http://media.laguiago.com/wp-content/uploads/2017/09/juan-tamariz-go.jpg,1,108,JuanTamariz
+Bon Jovi,bon_jovi@gmail.com,Esta es la descripcion del grupo estadounidense de rock Bon Jovi.,logos/logo101.png,4,101,BonJovi
+Dani Rovira,dani_rovira@gmail.com,Esta es la descripcion del cómico español Daniel Rovira.,logos/logo102.jpg,1,102,DaniRovira
+Hora Chanante,hora_chanante@gmail.com,Esta es la descripcion del grupo cómico español Hora Chanante.,logos/logo103.jpg,6,103,HoraChanante
+The Who,thewho@gmail.com,Esta es la descripcion del grupo estadounidense de rock The Who.,logos/logo104.jpg,4,104,TheWho
+Extremoduro,extremoduro@gmail.com,Esta es la descripcion del grupo español de rock Extremoduro.,logos/logo105.png,4,105,Extremoduro
+Eagles,eagles@gmail.com,Esta es la descripcion del grupo estadounidense de country-rock Eagles.,logos/logo106.jpg,5,106,Eagles
+Johnny Cash,johnny_cash@gmail.com,Esta es la descripcion del cantautor y músico estadounidense de country-rock Johnny Cash.,logos/logo107.jpg,1,107,JohnnyCash
+Juan Tamariz, juan_tamariz@gmail.com, Esta es la descripcion del mago español Juan Tamariz.,,1,108,JuanTamariz

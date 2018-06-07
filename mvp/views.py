@@ -81,7 +81,7 @@ def formulario_oferta(request):
 def formulario_perfil_venue(request):
     venue = Venue.objects.get(id=request.user.id)
     geoloc = Geolocation.objects.get(venue=request.user.id)
-    formSet = modelformset_factory(Photo, fields=('url', 'id',), extra=3)
+    formSet = modelformset_factory(Photo, form=PhotoForm, fields=('url', 'id',), extra=3)
     if request.method == 'POST':
         venueForm = VenueProfileForm(
             request.POST, request.FILES, instance=venue, prefix='Ven')
@@ -123,7 +123,7 @@ def formulario_perfil_venue(request):
 @permission_required('mvp.artist', login_url="/login")
 def formulario_perfil_artist(request):
     artist = Artist.objects.get(id=request.user.id)
-    formSetPhoto = modelformset_factory(Photo, fields=('url', 'id',), extra=3)
+    formSetPhoto = modelformset_factory(Photo, form=PhotoForm, fields=('url', 'id',), extra=3)
     formSetTag = modelformset_factory(Tag, fields=('name', 'id',), extra=3)
     formSetMedia = modelformset_factory(Media, fields=('url', 'id',), extra=3)
 

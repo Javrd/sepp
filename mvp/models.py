@@ -8,11 +8,19 @@ def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<user_id>/<filename>
     return 'logos/{0}'.format(filename)
 
+def logos_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/<user_id>/<filename>
+    return 'logos/{0}'.format(filename)
+
+def photos_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/<user_id>/<filename>
+    return 'photos/{0}'.format(filename)
+
 class User(AbstractUser):
     name = models.CharField(max_length=100)
     email = models.EmailField('email address', blank=False, unique=True)
     description = models.CharField(max_length=500, null=True)
-    logo = models.FileField(null=True, upload_to=user_directory_path)
+    logo = models.FileField(null=True, upload_to=logos_directory_path)
     receivers = models.ManyToManyField(
         'self', symmetrical=False, through='Message', related_name="senders")
 
@@ -29,7 +37,7 @@ class Venue(User):
 
 
 class Photo(models.Model):
-    url = models.URLField()
+    url = models.FileField(upload_to=photos_directory_path)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="photos")
 

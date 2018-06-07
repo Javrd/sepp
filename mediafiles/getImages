@@ -1,0 +1,34 @@
+#!/bin/bash
+mkdir logos
+wget -O logos/logo101.png https://seeklogo.com/images/B/bon-jovi-logo-9000E70EC5-seeklogo.com.png
+wget -O logos/logo102.jpg https://www.elnacional.cat/enblau//uploads/s1/25/81/55/1/Dani%20Rovira%20-GTRES_1_630x630.jpg
+wget -O logos/logo103.jpg http://cadenaser00.epimg.net/ser/imagenes/2013/12/10/television/1386646526_740215_0000000000_noticia_normal.jpg
+wget -O logos/logo104.jpg http://nfgraphics.com/wp-content/uploads/2014/08/The-Who_41.jpg
+wget -O logos/logo105.png https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Extremoduro_logo.svg/2000px-Extremoduro_logo.svg.png
+wget -O logos/logo106.jpg https://i.pinimg.com/originals/16/af/04/16af04d977fa1db02a2a10b88d1bf9f9.jpg
+wget -O logos/logo107.jpg https://is4-ssl.mzstatic.com/image/thumb/Music/v4/40/de/c2/40dec211-b7ae-8193-1ba9-e84b7f063f9a/UMG_cvrart_00602537277353_01_RGB72_1424x1419_06UMGIM10251.jpg/1200x630bb.jpg
+wget -O logos/logo108.jpg http://media.laguiago.com/wp-content/uploads/2017/09/juan-tamariz-go.jpg
+wget -O logos/logo201.jpg https://png.pngtree.com/element_origin_min_pic/17/01/07/8ca565efc02b1b0a3294c566438b865d.jpg
+wget -O logos/logo202.png https://i.pinimg.com/originals/cf/4b/91/cf4b912518d06c25b52010fa5f5abd4f.png
+wget -O logos/logo203.jpg http://www.fullblog.com.ar/blogs/argentavis/1269714062767856.jpg
+wget -O logos/logo205.jpg https://t4.ftcdn.net/jpg/01/40/62/15/240_F_140621506_bHQkLf3akfveFCVVi4PZ5qS7DQtaGfkh.jpg
+mkdir photos
+wget -O photos/photo401.jpg https://s.hdnux.com/photos/62/07/07/13136339/3/920x920.jpg
+wget -O photos/photo402.jpg https://d1bi2srgse3uhl.cloudfront.net/uploads/2018/02/image5a947a704532a.jpg
+wget -O photos/photo403.jpg http://cdn.revistagq.com/uploads/images/thumbs/201547/dani_rovira_gq_1523_645x485.jpg
+wget -O photos/photo404.jpg http://is.mtv.it/?p=ccentral-es-medium-events&u=http://www.comedycentral.es/wp-content/uploads/sites/4/2014/03/dani_rovira_281x211-1.jpg
+wget -O photos/photo405.jpg http://blogs.revistacuore.com/quemando-el-mando/files/2012/01/muchachada.jpg
+wget -O photos/photo406.jpeg http://www.abc.es/media/play/2017/05/03/ganan-kiDG--620x349@abc.jpeg
+wget -O photos/photo407.jpg https://images-na.ssl-images-amazon.com/images/I/C19aHV-E1gS._SL1000_.png
+wget -O photos/photo408.jpg https://secure.i.telegraph.co.uk/multimedia/archive/03354/the-who-1965_3354772k.jpg
+wget -O photos/photo409.jpg https://i.ytimg.com/vi/q_203DJyi-c/maxresdefault.jpg
+wget -O photos/photo410.jpg http://ksassets.timeincuk.net/wp/uploads/sites/55/2017/08/johnny-cash-t-shirt-neo-nazi-920x598.jpg
+wget -O photos/photo411.jpg http://www.7rojo.com/wp-content/media/gallery/juantamariz/juantamariz-03.jpg
+wget -O photos/photo412.jpg https://ep00.epimg.net/cultura/imagenes/2016/02/24/actualidad/1456334639_833197_1456334732_noticia_normal.jpg
+wget -O photos/photo413.jpg http://blog.ticketea.com/wp-content/uploads/2017/11/noche-boca-arriba-lavapies-1024x684.jpg
+wget -O photos/photo414.jpg https://estaticos.elperiodico.com/resources/jpg/2/3/1462980778632.jpg
+wget -O photos/photo415.jpg https://estaticos.elperiodico.com/resources/jpg/8/2/1453982060028.jpg
+wget -O photos/photo416.jpg https://indiespot.es/wp-content/uploads/2016/03/heliogabal1-1012x675.jpg
+wget -O photos/photo417.jpg https://upload.wikimedia.org/wikipedia/commons/4/43/Bar-P1030319.jpg
+wget -O photos/photo418.jpg https://media-cdn.tripadvisor.com/media/photo-o/08/2c/a7/13/cloud-9-sky-bar-lounge.jpg
+wget -O photos/photo419.jpg https://media.timeout.com/images/103958943/image.jpg

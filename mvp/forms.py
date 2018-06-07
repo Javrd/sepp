@@ -2,6 +2,20 @@ from django.forms import ModelForm
 from .models import *
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import *
+from django.core.files.base import File
+from django.core.files.uploadedfile import UploadedFile
+from django.template.defaultfilters import filesizeformat
+from django.conf import settings
+    
+def validate_image(content):
+    if isinstance(content,UploadedFile):
+        content_type = content.content_type.split('/')[0]
+        if content_type in settings.CONTENT_TYPES:
+            if content._size > float(settings.MAX_UPLOAD_SIZE):
+                raise forms.ValidationError(_('El archivo no puede ser mayor a %s. El tamaño es %s') % (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(content._size)))
+        else:
+            raise forms.ValidationError(_('Formato de archivo incompatible'))
+    return content
 
 class OfferForm(ModelForm):
     class Meta:
@@ -20,11 +34,19 @@ class GeolocationForm(ModelForm):
 
 
 class VenueForm(UserCreationForm):
+    
+    def clean_logo(self):
+        content = self.cleaned_data['logo']
+        return validate_image(content)
     class Meta:
         model = Venue
         fields = ['name', 'email', 'username', 'logo', 'description', 'address', 'capacity']
 
 class ArtistForm(UserCreationForm):
+    
+    def clean_logo(self):
+        content = self.cleaned_data['logo']
+        return validate_image(content)
 
     class Meta:
         model = Artist
@@ -39,16 +61,28 @@ class PerformanceForm(ModelForm):
 
 
 class VenueProfileForm(ModelForm):
+    
+    def clean_logo(self):
+        content = self.cleaned_data['logo']
+        return validate_image(content)
     class Meta:
         model = Venue
         fields = ['name', 'email', 'logo', 'description', 'address', 'capacity']
 
 class ArtistProfileForm(ModelForm):
+    
+    def clean_logo(self):
+        content = self.cleaned_data['logo']
+        return validate_image(content)
     class Meta:
         model = Artist
         fields = ['name', 'email', 'logo', 'description', 'artistNumber']
 
 class PhotoForm(ModelForm):
+    
+    def clean_url(self):
+        content = self.cleaned_data['url']
+        return validate_image(content)
     class Meta:
         model = Photo
         fields = ['url', 'id']

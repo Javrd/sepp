@@ -149,3 +149,17 @@ MEDIA_URL = '/media/'
 
 CSRF_COOKIE_SECURE = os.getenv('HTTPS', 'False')=='True'
 SESSION_COOKIE_SECURE = os.getenv('HTTPS', 'False')=='True'
+
+# Files uploads
+
+CONTENT_TYPES = ['image']
+
+# 2.5MB - 2621440
+# 5MB - 5242880
+# 10MB - 10485760
+# 20MB - 20971520
+# 50MB - 5242880
+# 100MB 104857600
+# 250MB - 214958080
+# 500MB - 429916160
+MAX_UPLOAD_SIZE = "20971520"

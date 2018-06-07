@@ -115,7 +115,7 @@
             </div>
             <div class="tab-pane fade" id="photos" role="tabpanel">
                 {% for foto in fotos %}
-                    <img class="rounded img-fluid" src="{{foto.url}}" />
+                    <img class="rounded img-fluid" src="{{ MEDIA_URL }}{{foto.url}}" />
                     <br><br>
                 {% endfor %}
             </div>

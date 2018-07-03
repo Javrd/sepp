@@ -26,6 +26,7 @@
         <label for="{{ artistForm.logo.id_for_label }}">Logo:</label>
         {% render_field artistForm.logo class+="form-control" %}
         {{ artistForm.logo.errors }}
+        <div style="color: red" class="hidden" id="fileError">Por favor, utilice una imagen con un tamaño inferior a 20MB</div>
         <br>
 
         <label for="{{ artistForm.description.id_for_label }}">Descripción:</label>
@@ -89,7 +90,7 @@
         
         
         <div class="text-center">
-                <input type="submit" class="btn btn-round btn-primary" name="edit" value="Editar" />
+                <input type="submit" class="btn btn-round btn-primary" name="edit" value="Editar" id="submitButton" />
             </div>
             {% endwith %}
     </form>
@@ -99,5 +100,16 @@
 <div class="fixed-bottom" style="z-index: 0;">
         <img src="../static/img/crowd.png" class="img-fluid" />
     </div>
+
+<script type="text/javascript">
+    $('#id_logo').on('change', function() {
+    $('#fileError').addClass('hidden');
+    $('#submitButton').prop('disabled',false)
+    if (this.files[0].size/1024/1024 > 20.0){
+        $('#fileError').removeClass('hidden');
+        $('#submitButton').prop('disabled',true)
+    }
+    });
+</script>
 
 {% endblock %}

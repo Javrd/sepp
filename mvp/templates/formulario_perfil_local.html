@@ -75,6 +75,7 @@
         <label for="{{ venueForm.logo.id_for_label }}">Logo:</label>
         {% render_field venueForm.logo class+="form-control" %}
         {{ venueForm.logo.errors }}
+        <div style="color: red" class="hidden" id="fileError">Por favor, utilice una imagen con un tamaño inferior a 20MB</div>
         <br>
 
         <label for="{{ venueForm.description.id_for_label }}">Descripción:</label>
@@ -128,7 +129,7 @@
         </div>
 
         <div class="text-center">
-            <input type="submit" name="edit" class="btn btn-round btn-primary" value="Editar" />
+            <input type="submit" name="edit" class="btn btn-round btn-primary" value="Editar" id="submitButton" />
         </div>
     {% endwith %}
     </form>
@@ -143,5 +144,15 @@
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdGla1CET4Qscd4i_tnk7o1JTosQQvVZk&&callback=initialize">
 </script>
 
+<script type="text/javascript">
+    $('#id_logo').on('change', function() {
+    $('#fileError').addClass('hidden');
+    $('#submitButton').prop('disabled',false)
+    if (this.files[0].size/1024/1024 > 20.0){
+        $('#fileError').removeClass('hidden');
+        $('#submitButton').prop('disabled',true)
+    }
+    });
+</script>
 
 {% endblock %}

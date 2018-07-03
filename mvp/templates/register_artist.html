@@ -70,7 +70,7 @@
             {% render_field  artist_form.logo class+="form-control" placeholder="Url del logo o foto de perfil" %}
 {#            <input class="form-control" name="logo" required id="id_logo" placeholder="Url del logo o foto de perfil"></input>#}
             {{ artist_form.logo.errors }}
-            <div style="color: red" class="hidden" id="fileError">Por favor, utilice una imagen con un tamaño inferior a 1MB</div>
+            <div style="color: red" class="hidden" id="fileError">Por favor, utilice una imagen con un tamaño inferior a 20MB</div>
             <br>
 
 
@@ -97,7 +97,7 @@
     $('#id_logo').on('change', function() {
     $('#fileError').addClass('hidden');
     $('#submitButton').prop('disabled',false)
-    if (this.files[0].size/1024/1024 > 0.90){
+    if (this.files[0].size/1024/1024 > 20.0){
         $('#fileError').removeClass('hidden');
         $('#submitButton').prop('disabled',true)
     }

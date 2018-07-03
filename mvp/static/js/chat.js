@@ -56,7 +56,7 @@ function loadChat(userId, contactId, proto) {
     };
 
     document.querySelector('#text').onkeydown = function (e) {
-        if ($('#text').val().length === 0) {
+        if ($('#text').val() == '') {
             $('#pay').removeClass("d-none")
             $('#send').addClass("d-none")
         } else {
@@ -73,5 +73,7 @@ function loadChat(userId, contactId, proto) {
         }));
 
         messageInputDom.value = '';
+        $('#pay').removeClass("d-none")
+        $('#send').addClass("d-none")
     };
 }

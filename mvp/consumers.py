@@ -54,7 +54,7 @@ class ChatConsumer(WebsocketConsumer):
                     'type': 'chat_message',
                     'message': message.text,
                     'userId': message.sender.id,
-                    'image': message.sender.logo,
+                    'image': message.sender.logo.name,
                     'date': message.timeStamp.strftime("%d/%m/%Y %H:%M")
                 }
             )

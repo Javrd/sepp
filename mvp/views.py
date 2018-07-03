@@ -81,7 +81,8 @@ def formulario_oferta(request):
 def formulario_perfil_venue(request):
     venue = Venue.objects.get(id=request.user.id)
     geoloc = Geolocation.objects.get(venue=request.user.id)
-    formSet = modelformset_factory(Photo, form=PhotoForm, fields=('url', 'id',), extra=3)
+    formSet = modelformset_factory(
+        Photo, form=PhotoForm, fields=('url', 'id',), extra=3)
     if request.method == 'POST':
         venueForm = VenueProfileForm(
             request.POST, request.FILES, instance=venue, prefix='Ven')
@@ -123,7 +124,8 @@ def formulario_perfil_venue(request):
 @permission_required('mvp.artist', login_url="/login")
 def formulario_perfil_artist(request):
     artist = Artist.objects.get(id=request.user.id)
-    formSetPhoto = modelformset_factory(Photo, form=PhotoForm, fields=('url', 'id',), extra=3)
+    formSetPhoto = modelformset_factory(
+        Photo, form=PhotoForm, fields=('url', 'id',), extra=3)
     formSetTag = modelformset_factory(Tag, fields=('name', 'id',), extra=3)
     formSetMedia = modelformset_factory(Media, fields=('url', 'id',), extra=3)
 
@@ -404,6 +406,11 @@ def payment(request):
     if (form['performanceDate'] is None or form['performanceDate'] == ""):
         errors.append("Por favor, introduzca una fecha.")
 
+    pattern = re.compile("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")
+
+    if (form['performanceHour'] is None or form['performanceHour'] == "" or not pattern.match(form['performanceHour'])):
+        errors.append("Por favor, introduzca una hora correcta (HH:mm).")
+
     dateFormat = "%Y-%m-%d"
 
     try:
@@ -421,7 +428,7 @@ def payment(request):
         venue = Venue.objects.get(id=payee.id).id
 
     serializedPerformance = {
-        'name': form['performanceName'],
+        'name': form['performanceHour']+' - '+form['performanceName'],
         'description': form['performanceDes'],
         'date': form['performanceDate'],
         'public': form['performancePublic'],
@@ -643,7 +650,7 @@ def payout(request):
     performance.name = serializedPerformance['name']
     performance.description = serializedPerformance['description']
     performance.date = serializedPerformance['date']
-    performance.public = True #changes for lecturer request
+    performance.public = True  # changes for lecturer request
     performance.artist = Artist.objects.get(id=serializedPerformance['artist'])
     performance.venue = Venue.objects.get(id=serializedPerformance['venue'])
 

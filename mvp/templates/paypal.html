@@ -51,6 +51,11 @@
             <input type="date" class="form-control" name="performanceDate" id="performanceDate" required/>  
             <br>
 
+            <label for="performanceHour">Hora: </label>
+            <br>
+            <input type="text" class="form-control" name="performanceHour" id="performanceHour" placeholder="HH:mm" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" required/>  
+            <br>
+
             <input class="custom-control-input" value="on" type="hidden" name="performancePublic" id="performancePublic">
                
             <br>
@@ -116,6 +121,7 @@
                 performanceName: $('#performanceName').val(),
                 performanceDes: $('#performanceDes').val(),
                 performanceDate: $('#performanceDate').val(),
+                performanceHour: $('#performanceHour').val(),
                 performancePublic: true,
                 relatedOffer: $('#relatedOffer option:checked').val(),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
@@ -125,7 +131,8 @@
                 if (data.status != null && data.status == "formError"){
                     data.errors.forEach(function(error){
                         $('#msg').append("<p class='text-danger'>"+error+"</p>");
-                    });                    
+                    });
+                    window.scrollTo(0, 0);                    
                     return false;
                 }
                 return data.id;
